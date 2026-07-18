@@ -157,7 +157,11 @@ ${FOOTER}`;
   return page("Fleet audit: ryanportfolio", body);
 }
 
-export function generateReportHtml(report: ScoreReport): string {
+/** Site pages render from the published PublicReport JSON, which may carry
+ * an owner attestation on top of the ScoreReport shape. */
+export type SiteReport = ScoreReport & { attestation?: string | null };
+
+export function generateReportHtml(report: SiteReport): string {
   const dims = report.dimensions
     .map((d) => {
       const q = PLAIN_QUESTIONS[d.key as keyof typeof PLAIN_QUESTIONS];
@@ -184,6 +188,13 @@ ${report.sample.mergedPullRequests} merged PRs${report.sample.pullRequestsTrunca
 ${dims}
 </tbody></table>
 ${unverified}
+${
+  report.attestation
+    ? `<h2>Owner attestation</h2>
+<div class="panel small"><p class="muted">Stated by the repo owner. The tool has not verified this and it earns no score credit.</p>
+<p>${esc(report.attestation)}</p></div>`
+    : ""
+}
 <h2>${esc(PLAIN_MEANING_TITLE)}</h2>
 ${PLAIN_MEANING.map((p) => `<p class="small">${esc(p)}</p>`).join("\n")}
 <h2>${esc(PLAIN_LIMITS_TITLE)}</h2>

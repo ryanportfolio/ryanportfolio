@@ -27,6 +27,9 @@ export interface PublicReport {
   unverified: string[];
   sample: ScoreReport["sample"];
   dimensions: PublicDimension[];
+  /** Owner-stated context. Never verified, never scored; rendered under an
+   * explicit label. Null when the owner attested nothing. */
+  attestation: string | null;
 }
 
 function projectDimension(d: DimensionResult): PublicDimension {
@@ -44,8 +47,9 @@ function projectDimension(d: DimensionResult): PublicDimension {
   };
 }
 
-export function toPublicReport(report: ScoreReport): PublicReport {
+export function toPublicReport(report: ScoreReport, attestation: string | null = null): PublicReport {
   return {
+    attestation,
     repo: report.repo,
     collectedAt: report.collectedAt,
     headSha: report.headSha,
@@ -63,8 +67,8 @@ export function toPublicReport(report: ScoreReport): PublicReport {
 }
 
 /** Serialized public artifact, the only string fleet.ts writes to reports/data/. */
-export function publicReportJson(report: ScoreReport): string {
-  return JSON.stringify(toPublicReport(report), null, 2) + "\n";
+export function publicReportJson(report: ScoreReport, attestation: string | null = null): string {
+  return JSON.stringify(toPublicReport(report, attestation), null, 2) + "\n";
 }
 
 /** Sanitized artifact filename, consistent with the site's HTML slug rules. */

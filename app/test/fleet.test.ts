@@ -17,6 +17,7 @@ describe("writeReportArtifacts", () => {
     const json = readFileSync(join(dir, "data", "my-repo.json"), "utf8");
     const parsed = JSON.parse(json) as Record<string, unknown>;
     expect(Object.keys(parsed).sort()).toEqual([
+      "attestation",
       "collectedAt",
       "dimensions",
       "grade",
@@ -28,6 +29,15 @@ describe("writeReportArtifacts", () => {
     ]);
     const md = readFileSync(join(dir, "My Repo.md"), "utf8");
     expect(md).toContain("# Agentic-SDLC audit");
+  });
+
+  it("whitespace-only attestation normalizes to null (nothing renders)", () => {
+    writeReportArtifacts(dir, "wsatt", report, new Map(), "   ");
+    const json = JSON.parse(readFileSync(join(dir, "data", "wsatt.json"), "utf8")) as {
+      attestation: string | null;
+    };
+    expect(json.attestation).toBeNull();
+    expect(readFileSync(join(dir, "wsatt.md"), "utf8")).not.toContain("Owner attestation");
   });
 
   it("colliding artifact filenames throw instead of overwriting", () => {

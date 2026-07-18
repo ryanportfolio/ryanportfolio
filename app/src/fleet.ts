@@ -32,6 +32,9 @@ interface FleetConfig {
   include: string[];
   /** Do-not-feature list: refused even if also present in include. */
   exclude: string[];
+  /** Optional owner attestations per repo name. Rendered under an explicit
+   * "stated, not verified, not scored" label. */
+  attestations?: Record<string, string>;
 }
 
 const appDir = resolve(import.meta.dirname, "..");
@@ -65,17 +68,20 @@ export function writeReportArtifacts(
   name: string,
   report: ReturnType<typeof scoreRepo>,
   written: Map<string, string> = new Map(),
+  attestation: string | null = null,
 ): void {
+  // Absent, empty, and whitespace-only all mean "no attestation".
+  attestation = attestation?.trim() || null;
   const jsonName = jsonArtifactName(name);
   const prior = written.get(jsonName);
   if (prior !== undefined) {
     throw new Error(`artifact collision: "${prior}" and "${name}" both map to ${jsonName}`);
   }
   written.set(jsonName, name);
-  writeFileSync(resolve(reportsDir, `${name}.md`), renderReportMarkdown(report));
+  writeFileSync(resolve(reportsDir, `${name}.md`), renderReportMarkdown(report, attestation));
   const dataDir = resolve(reportsDir, "data");
   mkdirSync(dataDir, { recursive: true });
-  writeFileSync(resolve(dataDir, jsonName), publicReportJson(report));
+  writeFileSync(resolve(dataDir, jsonName), publicReportJson(report, attestation));
 }
 
 async function main(): Promise<void> {
@@ -101,7 +107,13 @@ async function main(): Promise<void> {
     console.error(`auditing ${config.owner}/${name}...`);
     const facts = await collectRepoFacts(client, config.owner, name);
     const report = scoreRepo(facts);
-    writeReportArtifacts(reportsDir, name, report, writtenArtifacts);
+    writeReportArtifacts(
+      reportsDir,
+      name,
+      report,
+      writtenArtifacts,
+      config.attestations?.[name] ?? null,
+    );
     rows.push(toScoreboardRow(report, facts.repo.isPrivate));
     console.error(
       `  → ${report.overall === null ? "unscorable" : report.overall + "/100"} (${report.grade}) written to reports/${name}.md`,

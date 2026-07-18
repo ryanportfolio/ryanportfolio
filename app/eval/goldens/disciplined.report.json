@@ -17,7 +17,7 @@
     },
     {
       "key": "review_coverage",
-      "label": "PR review coverage",
+      "label": "Recorded review coverage",
       "score": 100,
       "weight": 0.15,
       "detail": "3/3 merged PRs received at least one review not authored by the PR author.",
@@ -28,7 +28,7 @@
     },
     {
       "key": "review_catch_rate",
-      "label": "Review catch rate",
+      "label": "Recorded review catch rate",
       "score": 66.7,
       "weight": 0.1,
       "detail": "2/3 reviewed PRs had commits pushed after the first review and before merge (review produced change).",

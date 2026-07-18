@@ -17,7 +17,7 @@
     },
     {
       "key": "review_coverage",
-      "label": "PR review coverage",
+      "label": "Recorded review coverage",
       "score": 0,
       "weight": 0.15,
       "detail": "0/2 merged PRs received at least one review not authored by the PR author.",
@@ -28,7 +28,7 @@
     },
     {
       "key": "review_catch_rate",
-      "label": "Review catch rate",
+      "label": "Recorded review catch rate",
       "score": null,
       "weight": 0.1,
       "detail": "Could not verify: no reviewed PRs in sample.",

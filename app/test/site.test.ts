@@ -105,8 +105,17 @@ describe("generateReportHtml", () => {
       expect(html).toContain("Solo accounts have a built-in blind spot");
     }
     expect(generateReportHtml(healthy)).toContain(
-      "how many did anyone other than the author look at before merge?",
+      "how many carry a recorded review by anyone other than the author?",
     );
+  });
+
+  it("owner attestation renders with the not-verified label; absent renders nothing", () => {
+    const withAtt = { ...healthy, attestation: "Reviews happen in fresh AI sessions." };
+    const html = generateReportHtml(withAtt);
+    expect(html).toContain("Owner attestation");
+    expect(html).toContain("has not verified this and it earns no score credit");
+    expect(html).toContain("Reviews happen in fresh AI sessions.");
+    expect(generateReportHtml(healthy)).not.toContain("Owner attestation");
   });
 
   it("slug collisions throw instead of silently overwriting", () => {
