@@ -31,3 +31,8 @@ match that file; nothing invented.
 ## Verification
 
 - Typecheck, tests, gate green; screenshot check; live check post-merge.
+- Known accepted risk (review finding): the skill link targets blob/main,
+  a mutable ref in another repo; the published description can drift if
+  that file changes and no CI here would notice. Owner-accepted in favor
+  of always pointing at the current skill; revisit if the skill is
+  reworked.

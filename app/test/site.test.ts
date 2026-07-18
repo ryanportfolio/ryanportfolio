@@ -140,8 +140,10 @@ describe("generateReportHtml", () => {
     expect(index).toContain("The tool has not verified that claim");
     expect(index).toContain("if the claim is accurate");
     // The declared practice links the real public skill, described accurately.
+    // Pin the live anchor markup, not just the URL text: if refHtml is ever
+    // routed through esc(), the dead-link regression must fail here.
     expect(index).toContain(
-      "https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/handoff-audit/SKILL.md",
+      `<a href="https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/handoff-audit/SKILL.md">`,
     );
     expect(index).toContain("falsify the work, not approve it");
     const page = generateReportHtml(healthy);
