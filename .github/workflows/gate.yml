@@ -1,0 +1,23 @@
+# Test + eval gate. Phase 0: repo-invariant checks via scripts/gate.mjs.
+# Phase 1 adds the Vitest suite for app/. Copy-pastable into other repos:
+# swap the gate script for your own test command.
+name: gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Repo invariants
+        run: node scripts/gate.mjs
