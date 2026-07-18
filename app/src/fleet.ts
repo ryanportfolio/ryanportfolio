@@ -78,6 +78,12 @@ async function main(): Promise<void> {
     const markdown = renderReportMarkdown(report);
     const outPath = resolve(reportsDir, `${name}.md`);
     writeFileSync(outPath, markdown);
+    const dataDir = resolve(reportsDir, "data");
+    mkdirSync(dataDir, { recursive: true });
+    writeFileSync(
+      resolve(dataDir, `${name}.json`),
+      JSON.stringify(report, null, 2) + "\n",
+    );
     rows.push(toScoreboardRow(report, facts.repo.isPrivate));
     console.error(
       `  → ${report.overall === null ? "unscorable" : report.overall + "/100"} (${report.grade}) written to reports/${name}.md`,

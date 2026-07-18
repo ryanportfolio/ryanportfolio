@@ -16,7 +16,8 @@
     "test": "vitest run",
     "eval": "tsx eval/run-eval.ts",
     "audit": "tsx src/cli.ts",
-    "fleet": "tsx src/fleet.ts"
+    "fleet": "tsx src/fleet.ts",
+    "build:site": "tsx src/site/build.ts"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
