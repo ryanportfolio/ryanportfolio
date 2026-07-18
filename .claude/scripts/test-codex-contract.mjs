@@ -117,9 +117,12 @@ for (const target of [".claude-plugin/", "bootstrap/", ".github/workflows/valida
   if (!initProject.includes(target)) failures.push(`init-project: cleanup contract omits ${target}`);
 }
 
-const bootstrap = read("bootstrap/new-claude-project.ps1");
-for (const target of [".claude-plugin", ".github\\workflows\\validate-template.yml"]) {
-  if (!bootstrap.includes(target)) failures.push(`new-claude-project.ps1: cleanup contract omits ${target}`);
+// Template-only contract: bootstrap/ is stripped in spawned repos.
+if (fs.existsSync(path.join(root, "bootstrap", "new-claude-project.ps1"))) {
+  const bootstrap = read("bootstrap/new-claude-project.ps1");
+  for (const target of [".claude-plugin", ".github\\workflows\\validate-template.yml"]) {
+    if (!bootstrap.includes(target)) failures.push(`new-claude-project.ps1: cleanup contract omits ${target}`);
+  }
 }
 
 if (failures.length) {

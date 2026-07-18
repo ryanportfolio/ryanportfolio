@@ -20,6 +20,10 @@ Five lanes, one rule each:
 3. **Review** — a *different* agent session with fresh context reviews the
    PR with an adversarial prompt: refute, don't approve. It posts findings
    and has no approve/merge power. The builder never grades its own work.
+   Two equivalent runtimes: an event-driven CI workflow (needs an API/OAuth
+   secret), or a locally invoked fresh-context session on a subscription —
+   for a solo dev who only pushes PRs while at the machine, the local lane
+   loses nothing as long as the merge gate blocks unreviewed PRs.
 4. **Gate** — deterministic CI on every PR: tests, typecheck, and evals
    (golden outputs + determinism checks) that fail on any unexplained drift.
 5. **Merge** — a human reads the diff, the review, and the gate result, and
@@ -30,9 +34,13 @@ Five lanes, one rule each:
 
 1. Copy `.github/workflows/gate.yml` from this repo; replace the app test
    steps with your own test/eval commands. Keep it failing-closed.
-2. Copy `.github/workflows/ai-review.yml`; adjust the review checklist to
-   your project's invariants. Add an `ANTHROPIC_API_KEY` repo secret to
-   activate it (it skips with a visible notice until then).
+2. Pick a review-lane runtime. Event-driven: copy
+   `.github/workflows/ai-review.yml`, adjust the checklist to your
+   project's invariants, add an `ANTHROPIC_API_KEY` (or subscription
+   OAuth-token) secret — it skips with a visible notice until then.
+   Local/subscription: copy `.claude/skills/adversarial-review` and invoke
+   it on every PR before merge, with the merge gate refusing unreviewed
+   PRs.
 3. Create `plans/` and require a linked plan note in every PR body.
 4. Decide what agents may never do (merge, release, touch main) and write it
    down — in this repo that lives in [governance/](governance/README.md).

@@ -11,7 +11,7 @@ which did not all run this full pipeline.
 |---|-----------|------------------|-------------|
 | 1 | **Plan before code** | Agent writes `plans/NNNN-*.md`; scope is fixed before the diff exists | PR convention; plan linkage checked by the AI reviewer |
 | 2 | **CI test+eval gate** | Deterministic: repo invariants, typecheck, 44-test Vitest suite, golden-report + determinism evals | `.github/workflows/gate.yml` — must pass on every PR |
-| 3 | **Independent AI review** | Fresh-context reviewer with an adversarial prompt (refute, don't approve); posts findings, holds no approve/merge power | `.github/workflows/ai-review.yml` |
+| 3 | **Independent AI review** | Fresh-context reviewer with an adversarial prompt (refute, don't approve); posts findings, holds no approve/merge power | Local lane: `.claude/skills/adversarial-review` (subscription-billed, invoked before merge; the human gate blocks on a missing review). CI variant ships as a portable template: `.github/workflows/ai-review.yml`, intentionally inert here |
 | 4 | **Human-only merge** | The owner reads the diff, the review, and the gate result; only a human merges | Repo practice: no agent has merge rights; every merge in the history is human |
 | 5 | **Report publication** | Every fleet-audit report is read and explicitly approved by the owner before it is committed; excluded repos are never audited or published | Local-only fleet config with a mandatory exclude list; publication only via human-merged PR |
 
@@ -42,7 +42,10 @@ Every merged change leaves, publicly:
 
 ## Honest limits
 
-Solo project, zero external users. The AI-review lane is inert until the
-`ANTHROPIC_API_KEY` secret is configured. Branch-protection settings are not
-publicly verifiable from outside the repo; the enforceable public evidence
-for checkpoint 4 is the merge history itself.
+Solo project, zero external users. The review lane runs locally on
+invocation, not on PR events — the guarantee is the human gate refusing to
+merge unreviewed PRs, and the public evidence is the posted review comment
+on each PR (the CI template stays inert unless a secret is added).
+Branch-protection settings are not publicly verifiable from outside the
+repo; the enforceable public evidence for checkpoint 4 is the merge history
+itself.
