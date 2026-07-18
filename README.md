@@ -15,7 +15,6 @@ This repo is the flagship piece: a public, auditable agentic software-developmen
 | Repo | Score | Grade | Report |
 |------|-------|-------|--------|
 | ryanportfolio/ryanportfolio | 78/100 | Strong | [report](reports/ryanportfolio.md) |
-| ryanportfolio/local (private) | 71.6/100 | Developing | [report](reports/local.md) |
 | ryanportfolio/Truenote | 71.2/100 | Developing | [report](reports/Truenote.md) |
 | ryanportfolio/Corewise.Academy (private) | 69/100 | Developing | [report](reports/Corewise.Academy.md) |
 | ryanportfolio/AI-Firmware | 68.6/100 | Developing | [report](reports/AI-Firmware.md) |
@@ -56,5 +55,5 @@ The public PR history of this repo *is* the living demo. Solo project, zero exte
 | `.github/workflows/` | The pipeline itself: test+eval gate, AI-reviewer template. Written to be copy-pastable into other repos. Viewer deploys via Vercel (`vercel.json`). |
 | `governance/` | Human-in-the-loop checkpoint map, audit-trail contents, NIST AI RMF mapping, merge-execution disclosure. |
 | `plans/` | One plan note per PR, the plan-before-code evidence this tool scores. |
-| `reports/` | Published fleet audit reports (10 repos, live). Each report was owner-approved before publication. |
+| `reports/` | Published fleet audit reports, live. One per audited repo. Each report was owner-approved before publication. |
 | `playbook.md` | How to run this pipeline on any repo. |
