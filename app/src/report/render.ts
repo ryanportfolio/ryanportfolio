@@ -4,6 +4,13 @@
  * (collection never retains source excerpts, message bodies, or config).
  */
 import type { ScoreReport } from "../types.js";
+import {
+  PLAIN_LIMITS,
+  PLAIN_LIMITS_TITLE,
+  PLAIN_MEANING,
+  PLAIN_MEANING_TITLE,
+  PLAIN_QUESTIONS,
+} from "./plain.js";
 
 function scoreCell(score: number | null): string {
   return score === null ? "could not verify" : `${score}/100`;
@@ -23,12 +30,22 @@ export function renderReportMarkdown(report: ScoreReport): string {
     `- Sample: ${report.sample.commits} commits${report.sample.commitsTruncated ? " (truncated at collection limit)" : ""}, ${report.sample.mergedPullRequests} merged PRs${report.sample.pullRequestsTruncated ? " (truncated at collection limit)" : ""}`,
   );
   lines.push("");
+  lines.push(`## ${PLAIN_MEANING_TITLE}`);
+  lines.push("");
+  for (const p of PLAIN_MEANING) lines.push(p, "");
   lines.push("## Dimensions");
   lines.push("");
   lines.push("| Dimension | Score | Weight | Basis |");
   lines.push("|-----------|-------|--------|-------|");
   for (const d of report.dimensions) {
     lines.push(`| ${d.label} | ${scoreCell(d.score)} | ${d.weight} | ${d.detail} |`);
+  }
+  lines.push("");
+  lines.push("In plain terms, each dimension asks:");
+  lines.push("");
+  for (const d of report.dimensions) {
+    const q = PLAIN_QUESTIONS[d.key as keyof typeof PLAIN_QUESTIONS];
+    if (q) lines.push(`- **${d.label}**: ${q}`);
   }
   lines.push("");
 
@@ -57,6 +74,10 @@ export function renderReportMarkdown(report: ScoreReport): string {
     lines.push("");
   }
 
+  lines.push(`## ${PLAIN_LIMITS_TITLE}`);
+  lines.push("");
+  for (const p of PLAIN_LIMITS) lines.push(`- ${p}`);
+  lines.push("");
   lines.push("## Methodology");
   lines.push("");
   lines.push(
