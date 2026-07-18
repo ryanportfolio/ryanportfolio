@@ -1,7 +1,6 @@
 # Ryan Allen
 
 [![gate](https://github.com/ryanportfolio/ryanportfolio/actions/workflows/gate.yml/badge.svg)](https://github.com/ryanportfolio/ryanportfolio/actions/workflows/gate.yml)
-[![pages](https://github.com/ryanportfolio/ryanportfolio/actions/workflows/pages.yml/badge.svg)](https://github.com/ryanportfolio/ryanportfolio/actions/workflows/pages.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 AI systems builder shipping end to end: AI agents do the work, a human gate on every merge. Live systems: [CoreWise](https://corewise.video) (turns videos and articles into actionable insights across multiple AI models), [Truenote](https://truenote.org) (cited knowledge answers for customer-service teams; answers with citations or declines), [willaicite](https://willaicite.com) (free deterministic audit of whether AI answer engines can retrieve and quote your page), and [KineFractal](https://kinefractal.com) (systematic trading). Guides and process notes at [corewise.academy](https://corewise.academy/about).
@@ -57,5 +56,5 @@ The public PR history of this repo *is* the living demo. Solo project, zero exte
 | `.github/workflows/` | The pipeline itself: test+eval gate, AI-reviewer template. Written to be copy-pastable into other repos. Viewer deploys via Vercel (`vercel.json`). |
 | `governance/` | Human-in-the-loop checkpoint map, audit-trail contents, NIST AI RMF mapping, merge-execution disclosure. |
 | `plans/` | One plan note per PR, the plan-before-code evidence this tool scores. |
-| `reports/` | Published fleet audit reports. *Lands with the Phase 3 fleet run; each report is owner-approved before publication.* |
+| `reports/` | Published fleet audit reports (10 repos, live). Each report was owner-approved before publication. |
 | `playbook.md` | How to run this pipeline on any repo. |
