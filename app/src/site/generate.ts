@@ -201,10 +201,9 @@ ${body}
 `;
 }
 
-/** Owner-voice declaration for the fleet index only. The generic tool copy
- * in PLAIN_LIMITS_ITEMS stays repo-agnostic; this states the owner's own
- * practice, attributed and conditional, tagged UNVERIFIED in the render. */
-/** First person by design: this is the owner speaking about his own
+/** Owner-voice declaration for the fleet index only; the generic tool copy
+ * in PLAIN_LIMITS_ITEMS stays repo-agnostic.
+ * First person by design: this is the owner speaking about his own
  * practice, stated as fact (owner decision, plan 0021; evidenced there
  * from local session history). The honest limit that remains published
  * is scoring status: the scorer cannot see those sessions. */

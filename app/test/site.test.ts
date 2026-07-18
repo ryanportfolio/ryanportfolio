@@ -165,7 +165,7 @@ describe("generateReportHtml", () => {
     expect(index).toContain(`<span class="tag-notscored">Not scored</span>`);
     const page = generateReportHtml(healthy);
     expect(page).toContain(`href="#e-1">E-1</a>`);
-    // The declaration and its unverified tag are index-only.
+    // The declaration and its Not scored tag are index-only.
     expect(page).not.toContain(`clause-no">D-1`);
     expect(page).not.toContain(`<span class="tag-notscored">`);
   });

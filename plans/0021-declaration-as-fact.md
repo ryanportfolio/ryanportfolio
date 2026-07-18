@@ -8,13 +8,19 @@ directed that it be stated as fact.
 ## Evidence (recorded here so the change is provenance-backed, not spin)
 
 Verified this session, on the owner's machine, from the local Claude
-session history (~/.claude/projects): 30 distinct sessions across
-roughly 20 projects and worktrees invoked the /handoff-audit skill
-(counted by its skill-launch and slash-command markers, not by incidental
-mentions). The skill file itself is public in AI-Firmware. The practice
-claim is factual and evidenced; what remains true and stays published is
-that the deterministic scorer cannot see those sessions and gives them no
-score credit.
+session history (~/.claude/projects): roughly 29 distinct sessions
+invoked the /handoff-audit skill, concentrated in about 7 projects
+(over half in Extract-Video-Wisdom; the rest across range, kbase,
+Corewise.Academy, tracebench, claude-starter). Caveats per the
+independent review of this PR: the grep-marker method admits
+quoted-mention false positives (the pipeline session that ran the count
+matches itself), so the figure is approximate; and the count proves the
+practice is real and recurrent, not a proportion of all reviews. The
+"almost always" characterization is the owner's own statement about his
+own practice, made in first person on owner-voice surfaces only. The
+skill file itself is public in AI-Firmware. What remains true and stays
+published is that the deterministic scorer cannot see those sessions and
+gives them no score credit.
 
 ## Scope (this PR)
 
