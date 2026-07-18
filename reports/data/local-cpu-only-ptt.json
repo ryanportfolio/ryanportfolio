@@ -1,0 +1,118 @@
+{
+  "attestation": "Independent review for this repo happens as fresh-context AI audit sessions outside GitHub (handoff audits). Those sessions leave no GitHub artifacts, so they earn no credit in the recorded-review dimensions above.",
+  "repo": "ryanportfolio/Local-CPU-only-PTT",
+  "collectedAt": "2026-07-18T18:47:14.268Z",
+  "headSha": "790cc51ac322573865fbd1d477f01e003109c564",
+  "overall": 64.9,
+  "grade": "Developing",
+  "unverified": [
+    "review_catch_rate"
+  ],
+  "sample": {
+    "commits": 30,
+    "mergedPullRequests": 12,
+    "commitsTruncated": false,
+    "pullRequestsTruncated": false
+  },
+  "dimensions": [
+    {
+      "key": "agent_attribution",
+      "label": "Agent attribution & provenance",
+      "score": 100,
+      "weight": 0.1,
+      "detail": "30/30 commits have clear provenance (linked account, bot identity, or co-author trailer). Agent-involved share is reported as context, not judged.",
+      "metrics": {
+        "commits_sampled": 30,
+        "agent_involved_pct": 53.3,
+        "commits_per_week": 36
+      }
+    },
+    {
+      "key": "review_coverage",
+      "label": "Recorded review coverage",
+      "score": 0,
+      "weight": 0.15,
+      "detail": "0/12 merged PRs received at least one review not authored by the PR author.",
+      "metrics": {
+        "merged_prs": 12,
+        "reviewed_prs": 0
+      }
+    },
+    {
+      "key": "review_catch_rate",
+      "label": "Recorded review catch rate",
+      "score": null,
+      "weight": 0.1,
+      "detail": "Could not verify: no reviewed PRs in sample.",
+      "metrics": {}
+    },
+    {
+      "key": "human_merge_gate",
+      "label": "Human merge gate",
+      "score": 100,
+      "weight": 0.15,
+      "detail": "12/12 sampled merges were performed by a non-bot account.",
+      "metrics": {
+        "merges_with_known_merger": 12,
+        "human_merges": 12
+      }
+    },
+    {
+      "key": "ci_gate",
+      "label": "CI test/eval gate",
+      "score": 100,
+      "weight": 0.15,
+      "detail": "2 workflow file(s) present (40pts). 100% of sampled merged PRs had all check runs passing at head (up to 60pts).",
+      "metrics": {
+        "workflow_files": 2,
+        "prs_with_checks": 12,
+        "pr_check_pass_rate_pct": 100
+      }
+    },
+    {
+      "key": "batch_size",
+      "label": "Batch size",
+      "score": 70,
+      "weight": 0.1,
+      "detail": "Median merged-PR diff size is 606 lines (additions+deletions). Small batches score higher.",
+      "metrics": {
+        "median_diff_lines": 606,
+        "p90_diff_lines": 28293
+      }
+    },
+    {
+      "key": "lead_time",
+      "label": "Lead time (first commit → merge)",
+      "score": 100,
+      "weight": 0.05,
+      "detail": "Median lead time from first PR commit to merge is 0.1h.",
+      "metrics": {
+        "median_lead_time_hours": 0.1,
+        "prs_measured": 12
+      }
+    },
+    {
+      "key": "plan_evidence",
+      "label": "Plan-before-code evidence",
+      "score": 0,
+      "weight": 0.1,
+      "detail": "0/12 merged PRs reference a linked issue or plan document in the PR body.",
+      "metrics": {
+        "merged_prs": 12,
+        "prs_with_plan_ref": 0
+      }
+    },
+    {
+      "key": "audit_trail",
+      "label": "Audit-trail completeness",
+      "score": 63.9,
+      "weight": 0.1,
+      "detail": "Mean of: substantive PR description ≥120 chars (11/12), review recorded (0/12), CI checks recorded (12/12).",
+      "metrics": {
+        "substantive_description_prs": 11,
+        "review_recorded_prs": 0,
+        "checks_recorded_prs": 12
+      }
+    }
+  ]
+}

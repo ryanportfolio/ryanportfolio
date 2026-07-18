@@ -13,9 +13,18 @@ This repo is the flagship piece: a public, auditable agentic software-developmen
 *One scored engineering report per repo in the portfolio. Browse the visual viewer at **[ryanportfolio.github.io/ryanportfolio](https://ryanportfolio.github.io/ryanportfolio/)**. Most of the portfolio is private: the audit tool and pipeline are public and deterministic, and the published reports give a scored read on repos you cannot open (reproducible by the owner from the pinned commit). First fleet run lands in Phase 3.*
 
 <!-- scoreboard:start -->
-| Repo | Score | Report |
-|------|-------|--------|
-| *pending first audit run* | – | – |
+| Repo | Score | Grade | Report |
+|------|-------|-------|--------|
+| ryanportfolio/ryanportfolio | 78/100 | Strong | [report](reports/ryanportfolio.md) |
+| ryanportfolio/local (private) | 71.6/100 | Developing | [report](reports/local.md) |
+| ryanportfolio/Truenote | 71.2/100 | Developing | [report](reports/Truenote.md) |
+| ryanportfolio/Corewise.Academy (private) | 69/100 | Developing | [report](reports/Corewise.Academy.md) |
+| ryanportfolio/AI-Firmware | 68.6/100 | Developing | [report](reports/AI-Firmware.md) |
+| ryanportfolio/PixelSwarm (private) | 68.4/100 | Developing | [report](reports/PixelSwarm.md) |
+| ryanportfolio/Local-CPU-only-PTT | 64.9/100 | Developing | [report](reports/Local-CPU-only-PTT.md) |
+| ryanportfolio/range (private) | 56.6/100 | Early | [report](reports/range.md) |
+| ryanportfolio/Extract-Video-Wisdom (private) | 55.7/100 | Early | [report](reports/Extract-Video-Wisdom.md) |
+| ryanportfolio/githelp (private) | 52.1/100 | Early | [report](reports/githelp.md) |
 <!-- scoreboard:end -->
 
 ## What this repo is
