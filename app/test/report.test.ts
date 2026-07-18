@@ -116,7 +116,7 @@ describe("scoreboard", () => {
     expect(table).toContain("unscorable");
   });
 
-  it("index includes honesty note and prefixed links", () => {
+  it("index includes honesty note and plain-filename links", () => {
     const index = renderReportsIndex(rows, "2026-03-01T00:00:00Z");
     expect(index).toContain("[report](example.md)");
     expect(index).not.toContain("../reports/");

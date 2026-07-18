@@ -121,6 +121,14 @@ describe("generateReportHtml", () => {
     expect(generateReportHtml(healthy)).not.toContain("Owner attestation");
   });
 
+  it("legacy bare-string attestations still render and escape", () => {
+    const legacy = { ...healthy, attestation: `Legacy <b>"note"</b>` };
+    const html = generateReportHtml(legacy);
+    expect(html).toContain("Owner attestation");
+    expect(html).toContain("Legacy &lt;b&gt;&quot;note&quot;&lt;/b&gt;");
+    expect(html).not.toContain(`Legacy <b>`);
+  });
+
   it("slug collisions throw instead of silently overwriting", () => {
     const a = structuredClone(healthy);
     const b = structuredClone(healthy);

@@ -197,13 +197,14 @@ ${report.sample.mergedPullRequests} merged PRs${report.sample.pullRequestsTrunca
 ${dims}
 </tbody></table>
 ${unverified}
-${
-  attestationText(report)
+${(() => {
+  const att = attestationText(report);
+  return att
     ? `<h2>Owner attestation</h2>
 <div class="panel small"><p class="muted">Stated by the repo owner. The tool has not verified this and it earns no score credit.</p>
-<p>${esc(attestationText(report) as string)}</p></div>`
-    : ""
-}
+<p>${esc(att)}</p></div>`
+    : "";
+})()}
 <h2>${esc(PLAIN_MEANING_TITLE)}</h2>
 ${PLAIN_MEANING.map((p) => `<p class="small">${esc(p)}</p>`).join("\n")}
 <h2>${esc(PLAIN_LIMITS_TITLE)}</h2>
