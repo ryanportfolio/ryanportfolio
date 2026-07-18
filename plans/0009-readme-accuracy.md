@@ -10,16 +10,17 @@ adjacent overclaims.
 
 - corewise.academy/about: "Ryan Allen — AI systems builder shipping end to
   end"; free guides on working with AI; four live systems, AI agents as
-  workforce, human approval gates on deployments.
+  workforce, "a human gate on every merge".
 - corewise.video (CoreWise): turns videos and articles into actionable
   insights, synthesized across multiple AI models.
 - truenote.org (Truenote): "Cited Knowledge Answers for Customer Service
   Teams"; cites or declines when documentation doesn't support an answer.
 - willaicite.com (willaicite): free deterministic audit scoring whether AI
   answer engines can retrieve, extract, and quote a page.
-- kinefractal.com (KineFractal): tagline "buys fear → trims the strength";
-  a systematic trading strategy. Described minimally — least
-  self-describing site; owner should correct if off.
+- kinefractal.com (KineFractal): site carries only the tagline "buys fear →
+  trims the strength"; the "systematic trading" descriptor is grounded in
+  corewise.academy/about ("rule-based signal engine" between signal and
+  order). Least self-describing system — owner should correct if off.
 
 ## Also fixed
 

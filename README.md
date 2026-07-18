@@ -1,6 +1,6 @@
 # Ryan Allen
 
-AI systems builder shipping end to end — AI agents do the work, human approval gates every deploy. Live systems: [CoreWise](https://corewise.video) (turns videos and articles into actionable insights across multiple AI models), [Truenote](https://truenote.org) (cited knowledge answers for customer-service teams — answers with citations or declines), [willaicite](https://willaicite.com) (free deterministic audit of whether AI answer engines can retrieve and quote your page), and [KineFractal](https://kinefractal.com) (systematic trading); guides and process notes at [corewise.academy](https://corewise.academy/about).
+AI systems builder shipping end to end — AI agents do the work, a human gate on every merge. Live systems: [CoreWise](https://corewise.video) (turns videos and articles into actionable insights across multiple AI models), [Truenote](https://truenote.org) (cited knowledge answers for customer-service teams — answers with citations or declines), [willaicite](https://willaicite.com) (free deterministic audit of whether AI answer engines can retrieve and quote your page), and [KineFractal](https://kinefractal.com) (systematic trading); guides and process notes at [corewise.academy](https://corewise.academy/about).
 
 This repo is the flagship piece: a public, auditable agentic software-development pipeline **and** the audit tool it exists to build.
 
