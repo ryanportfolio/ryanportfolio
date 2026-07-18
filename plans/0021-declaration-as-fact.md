@@ -7,20 +7,33 @@ directed that it be stated as fact.
 
 ## Evidence (recorded here so the change is provenance-backed, not spin)
 
-Verified this session, on the owner's machine, from the local Claude
-session history (~/.claude/projects): roughly 29 distinct sessions
-invoked the /handoff-audit skill, concentrated in about 7 projects
-(over half in Extract-Video-Wisdom; the rest across range, kbase,
-Corewise.Academy, tracebench, claude-starter). Caveats per the
-independent review of this PR: the grep-marker method admits
+Verified this session, on the owner's machine, from local agent session
+history. Two runtimes, because the owner runs the skill in both:
+
+- Claude Code (~/.claude/projects): roughly 29 distinct sessions by the
+  slash-command / skill-launch markers, concentrated in about 7 projects
+  (over half in Extract-Video-Wisdom; the rest across range, kbase,
+  Corewise.Academy, tracebench, claude-starter).
+- Codex (~/.codex/sessions): the original count omitted this runtime
+  entirely; the owner flagged the gap. Re-checked with a cleaner,
+  tool-agnostic signal: the distinctive skill-body line "single fenced
+  markdown block" appears only when the SKILL.md is loaded into a
+  session, so it does not match catalog listings. That signal finds 6
+  Codex sessions (Extract-Video-Wisdom, Resume x2, firewall,
+  claude-starter, kbase) and, applied to Claude for consistency, 34
+  Claude sessions: about 40 skill-body loads across both runtimes.
+
+Caveats: the raw file-mention counts (hundreds per runtime) are dominated
+by skill-catalog listings and git file dumps and are NOT usage; only the
+marker / body-load signals above are. The grep-marker method also admits
 quoted-mention false positives (the pipeline session that ran the count
-matches itself), so the figure is approximate; and the count proves the
-practice is real and recurrent, not a proportion of all reviews. The
-"almost always" characterization is the owner's own statement about his
-own practice, made in first person on owner-voice surfaces only. The
-skill file itself is public in AI-Firmware. What remains true and stays
-published is that the deterministic scorer cannot see those sessions and
-gives them no score credit.
+matches itself), so figures are approximate. The counts prove the
+practice is real and recurrent across both tools, not a proportion of all
+reviews. The "almost always" characterization is the owner's own
+statement about his own practice, made in first person on owner-voice
+surfaces only. The skill file itself is public in AI-Firmware. What
+remains true and stays published is that the deterministic scorer cannot
+see those sessions and gives them no score credit.
 
 ## Scope (this PR)
 
