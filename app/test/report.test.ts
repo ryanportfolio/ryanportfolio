@@ -26,6 +26,12 @@ describe("renderReportMarkdown", () => {
     expect(md).toContain("process discipline, not code quality");
     expect(md).toContain("## What this score cannot see");
     expect(md).toContain("Solo accounts have a built-in blind spot");
+    // Upfront by design: limits render once, before the meaning section and table.
+    expect(md.match(/## What this score cannot see/g)).toHaveLength(1);
+    expect(md.indexOf("## What this score cannot see")).toBeLessThan(
+      md.indexOf("## What this score means"),
+    );
+    expect(md.indexOf("## What this score cannot see")).toBeLessThan(md.indexOf("## Dimensions"));
     expect(md).toContain("In plain terms, each dimension asks:");
     expect(md).toContain(
       "- **Recorded review coverage**: Of the merged pull requests, how many carry a recorded review by anyone other than the author?",

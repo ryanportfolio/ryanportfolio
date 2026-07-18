@@ -127,6 +127,9 @@ th{font-family:var(--font-mono);color:var(--ink-mute);font-weight:500;font-size:
 .question{margin-top:.25rem;max-width:28rem}
 .panel{background:var(--panel);border:1px solid var(--line);padding:1rem 1.2rem;margin:.8rem 0}
 .panel ul{padding-left:1.1rem}
+.callout{border:1px solid var(--accent);border-left:4px solid var(--accent);background:var(--accent-wash);padding:1.1rem 1.3rem;margin:1.4rem 0}
+.callout .callout-title{font-family:var(--font-mono);font-weight:500;font-size:.76rem;text-transform:uppercase;letter-spacing:var(--tracking-caps);color:var(--accent-deep);display:block;margin-bottom:.6rem}
+.callout p{margin:.55rem 0}
 footer{margin-top:3.5rem;padding-top:1.2rem;border-top:1px solid var(--line);font-family:var(--font-mono);font-size:.72rem;line-height:1.7;letter-spacing:.02em;color:var(--ink-mute)}
 footer a{color:var(--ink-soft)}
 @media(max-width:720px){.masthead{padding:.8rem 1rem}.masthead nav{display:none}
@@ -158,6 +161,18 @@ ${body}
 </main></body>
 </html>
 `;
+}
+
+/** Owner-voice context for the fleet index only. The generic tool copy in
+ * PLAIN_LIMITS stays repo-agnostic; this states the owner's own practice,
+ * and score-credit language stays tied to the unverified-attestation frame. */
+const FLEET_CONTEXT =
+  "Every repo on this board is solo. The owner states that his reviews almost always run as handoff audits in separate AI sessions, which leave no GitHub artifact. The tool has not verified that claim and cannot credit what it cannot see; if the claim is accurate, the review dimensions here understate actual practice. Where the owner has stated that practice for a repo, the report carries it as an unverified attestation.";
+
+function limitsCallout(lead: string | null): string {
+  return `<aside class="callout"><span class="callout-title">${esc(PLAIN_LIMITS_TITLE)}</span>
+${lead ? `<p>${esc(lead)}</p>\n` : ""}${PLAIN_LIMITS.map((p) => `<p>${esc(p)}</p>`).join("\n")}
+</aside>`;
 }
 
 const FOOTER = `<footer class="small muted">
@@ -196,14 +211,11 @@ ${sorted
 <a href="https://github.com/ryanportfolio">ryanportfolio</a>'s repos, most private. The
 tool and pipeline are public and deterministic; reports on private repos are reproducible
 by the owner from the pinned commit. Unflattering scores stay in.</p>
+${limitsCallout(FLEET_CONTEXT)}
 <h2>Scoreboard</h2>
 ${rows}
 <h2>${esc(PLAIN_MEANING_TITLE)}</h2>
 ${PLAIN_MEANING.map((p) => `<p class="small">${esc(p)}</p>`).join("\n")}
-<h2>${esc(PLAIN_LIMITS_TITLE)}</h2>
-<div class="panel small"><ul>
-${PLAIN_LIMITS.map((p) => `<li>${esc(p)}</li>`).join("\n")}
-</ul></div>
 <h2>How these scores are made</h2>
 <div class="panel small">
 Every change to the audit tool itself flows: plan → agent build → independent fresh-context
@@ -249,6 +261,7 @@ export function generateReportHtml(report: SiteReport): string {
 <p class="small muted">Collected ${esc(report.collectedAt)} at <code>${esc(report.headSha ?? "(no commits)")}</code>;
 sample: ${report.sample.commits} commits${report.sample.commitsTruncated ? " (truncated)" : ""},
 ${report.sample.mergedPullRequests} merged PRs${report.sample.pullRequestsTruncated ? " (truncated)" : ""}.</p>
+${limitsCallout(null)}
 <h2>Dimensions</h2>
 <table><thead><tr><th>Dimension</th><th>Score</th><th>Basis</th></tr></thead><tbody>
 ${dims}
@@ -264,10 +277,6 @@ ${(() => {
 })()}
 <h2>${esc(PLAIN_MEANING_TITLE)}</h2>
 ${PLAIN_MEANING.map((p) => `<p class="small">${esc(p)}</p>`).join("\n")}
-<h2>${esc(PLAIN_LIMITS_TITLE)}</h2>
-<div class="panel small"><ul>
-${PLAIN_LIMITS.map((p) => `<li>${esc(p)}</li>`).join("\n")}
-</ul></div>
 ${FOOTER}`;
   return page(`${report.repo}: agentic-SDLC audit`, body);
 }
