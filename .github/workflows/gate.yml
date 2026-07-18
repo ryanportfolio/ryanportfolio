@@ -1,6 +1,6 @@
-# Test + eval gate. Phase 0: repo-invariant checks via scripts/gate.mjs.
-# Phase 1 adds the Vitest suite for app/. Copy-pastable into other repos:
-# swap the gate script for your own test command.
+# Test + eval gate. Repo-invariant checks (scripts/gate.mjs) + the app/
+# Vitest suite and typecheck. Copy-pastable into other repos: swap the
+# invariant script and test commands for your own.
 name: gate
 
 on:
@@ -19,5 +19,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+          cache-dependency-path: app/package-lock.json
       - name: Repo invariants
         run: node scripts/gate.mjs
+      - name: Install app dependencies
+        working-directory: app
+        run: npm ci
+      - name: Typecheck
+        working-directory: app
+        run: npm run typecheck
+      - name: Tests
+        working-directory: app
+        run: npm test

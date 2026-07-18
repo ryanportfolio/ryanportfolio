@@ -1,0 +1,25 @@
+{
+  "name": "agentic-sdlc-audit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Deterministic scored audit of AI-agent development discipline for any GitHub repo",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "agentic-audit": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "audit": "tsx src/cli.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}
