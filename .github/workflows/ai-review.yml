@@ -1,0 +1,67 @@
+# Independent adversarial AI review on every PR.
+#
+# Fresh context by construction: this job starts with no builder-session
+# state — it sees only the diff, the repo, and the instructions below.
+# It posts a review comment; it has NO merge or approval power. Merging is
+# human-only. Inert until the ANTHROPIC_API_KEY repo secret is configured.
+#
+# Copy-pastable into other repos: adjust the review checklist to taste.
+name: ai-review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: read
+
+jobs:
+  adversarial-review:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    env:
+      HAS_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+    steps:
+      - name: Notice when unconfigured
+        if: env.HAS_KEY != 'true'
+        run: echo "::notice::ANTHROPIC_API_KEY secret not set — AI review skipped."
+      - uses: actions/checkout@v4
+        if: env.HAS_KEY == 'true'
+        with:
+          fetch-depth: 0
+      - name: Adversarial review
+        if: env.HAS_KEY == 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            You are the independent reviewer lane of this repo's agentic
+            pipeline. You did not build this change and you have no stake in
+            it. Your job is to REFUTE it, not approve it. Review PR
+            #${{ github.event.pull_request.number }}.
+
+            Actively look for reasons the change is wrong, unsafe, or
+            off-plan:
+            1. Plan linkage: does the PR link a plans/NNNN-*.md note, and does
+               the diff stay inside that plan's scope?
+            2. Determinism: nothing nondeterministic (clock, network, LLM,
+               randomness, unordered iteration) may enter app/src/score/.
+            3. Privacy boundary: collected facts and rendered reports must
+               never carry source excerpts, commit-message bodies, PR
+               titles/bodies, file contents, or config values.
+            4. Honesty rails: unverifiable signal must surface as "could not
+               verify"; no metric may silently guess; copy must not overclaim
+               (solo project, zero external users).
+            5. Tests: is every changed behavior covered by a test that would
+               fail without the change? Are goldens updated only with
+               justification?
+            6. Correctness: edge cases, error handling, API misuse.
+
+            Post your findings as a PR review comment using the GitHub tools
+            available to you. Lead with the most serious issue. If after a
+            genuine attempt to refute you find nothing wrong, say exactly
+            that — and list what you checked. Never rubber-stamp. Do not
+            approve, request changes, or merge; a human makes those calls.

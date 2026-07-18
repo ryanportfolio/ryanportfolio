@@ -1,0 +1,154 @@
+{
+  "repo": {
+    "owner": "fixtures",
+    "name": "disciplined",
+    "defaultBranch": "main",
+    "isPrivate": false,
+    "collectedAt": "2026-03-01T00:00:00Z",
+    "headSha": "d000001"
+  },
+  "commits": [
+    {
+      "sha": "d000001",
+      "authorLogin": "ryan",
+      "authorIsBot": false,
+      "hasAgentCoAuthorTrailer": true,
+      "hasAnyCoAuthorTrailer": true,
+      "committedAt": "2026-02-20T10:00:00Z"
+    },
+    {
+      "sha": "d000002",
+      "authorLogin": "ryan",
+      "authorIsBot": false,
+      "hasAgentCoAuthorTrailer": false,
+      "hasAnyCoAuthorTrailer": false,
+      "committedAt": "2026-02-18T10:00:00Z"
+    },
+    {
+      "sha": "d000003",
+      "authorLogin": "ryan",
+      "authorIsBot": false,
+      "hasAgentCoAuthorTrailer": true,
+      "hasAnyCoAuthorTrailer": true,
+      "committedAt": "2026-02-15T10:00:00Z"
+    },
+    {
+      "sha": "d000004",
+      "authorLogin": "ryan",
+      "authorIsBot": false,
+      "hasAgentCoAuthorTrailer": false,
+      "hasAnyCoAuthorTrailer": false,
+      "committedAt": "2026-02-10T10:00:00Z"
+    },
+    {
+      "sha": "d000005",
+      "authorLogin": "ryan",
+      "authorIsBot": false,
+      "hasAgentCoAuthorTrailer": false,
+      "hasAnyCoAuthorTrailer": false,
+      "committedAt": "2026-02-01T10:00:00Z"
+    }
+  ],
+  "pullRequests": [
+    {
+      "number": 12,
+      "authorLogin": "ryan",
+      "authorIsBot": false,
+      "bodyLength": 400,
+      "bodyRefsIssue": true,
+      "bodyRefsPlanDoc": true,
+      "createdAt": "2026-01-10T12:00:00Z",
+      "mergedAt": "2026-01-12T12:00:00Z",
+      "mergedByLogin": "ryan",
+      "mergedByIsBot": false,
+      "additions": 80,
+      "deletions": 20,
+      "changedFiles": 4,
+      "commitCount": 3,
+      "firstCommitAt": "2026-01-10T09:00:00Z",
+      "reviews": [
+        {
+          "reviewerLogin": "reviewer-bot[bot]",
+          "reviewerIsBot": true,
+          "state": "CHANGES_REQUESTED",
+          "submittedAt": "2026-01-11T12:00:00Z"
+        }
+      ],
+      "commitsAfterFirstReview": 2,
+      "checks": {
+        "total": 2,
+        "passed": 2
+      }
+    },
+    {
+      "number": 11,
+      "authorLogin": "ryan",
+      "authorIsBot": false,
+      "bodyLength": 400,
+      "bodyRefsIssue": true,
+      "bodyRefsPlanDoc": true,
+      "createdAt": "2026-01-10T12:00:00Z",
+      "mergedAt": "2026-01-12T12:00:00Z",
+      "mergedByLogin": "ryan",
+      "mergedByIsBot": false,
+      "additions": 150,
+      "deletions": 40,
+      "changedFiles": 4,
+      "commitCount": 3,
+      "firstCommitAt": "2026-01-10T09:00:00Z",
+      "reviews": [
+        {
+          "reviewerLogin": "reviewer-bot[bot]",
+          "reviewerIsBot": true,
+          "state": "CHANGES_REQUESTED",
+          "submittedAt": "2026-01-11T12:00:00Z"
+        }
+      ],
+      "commitsAfterFirstReview": 0,
+      "checks": {
+        "total": 2,
+        "passed": 2
+      }
+    },
+    {
+      "number": 10,
+      "authorLogin": "ryan",
+      "authorIsBot": false,
+      "bodyLength": 400,
+      "bodyRefsIssue": true,
+      "bodyRefsPlanDoc": true,
+      "createdAt": "2026-01-10T12:00:00Z",
+      "mergedAt": "2026-01-12T12:00:00Z",
+      "mergedByLogin": "ryan",
+      "mergedByIsBot": false,
+      "additions": 60,
+      "deletions": 10,
+      "changedFiles": 4,
+      "commitCount": 3,
+      "firstCommitAt": "2026-01-10T09:00:00Z",
+      "reviews": [
+        {
+          "reviewerLogin": "reviewer-bot[bot]",
+          "reviewerIsBot": true,
+          "state": "APPROVED",
+          "submittedAt": "2026-01-11T12:00:00Z"
+        }
+      ],
+      "commitsAfterFirstReview": 1,
+      "checks": {
+        "total": 2,
+        "passed": 2
+      }
+    }
+  ],
+  "workflows": {
+    "hasWorkflowDir": true,
+    "workflowFileCount": 2
+  },
+  "limits": {
+    "maxCommits": 300,
+    "maxPullRequests": 50,
+    "commitsTruncated": false,
+    "pullRequestsTruncated": false
+  }
+}

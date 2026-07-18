@@ -1,0 +1,101 @@
+{
+  "repo": "fixtures/thin-signal",
+  "collectedAt": "2026-03-01T00:00:00Z",
+  "headSha": "t000001",
+  "dimensions": [
+    {
+      "key": "agent_attribution",
+      "label": "Agent attribution & provenance",
+      "score": 100,
+      "weight": 0.1,
+      "detail": "2/2 commits have clear provenance (linked account, bot identity, or co-author trailer). Agent-involved share is reported as context, not judged.",
+      "metrics": {
+        "commits_sampled": 2,
+        "agent_involved_pct": 0,
+        "commits_per_week": 14
+      }
+    },
+    {
+      "key": "review_coverage",
+      "label": "PR review coverage",
+      "score": null,
+      "weight": 0.15,
+      "detail": "Could not verify: no merged PRs in sample.",
+      "metrics": {}
+    },
+    {
+      "key": "review_catch_rate",
+      "label": "Review catch rate",
+      "score": null,
+      "weight": 0.1,
+      "detail": "Could not verify: no reviewed PRs in sample.",
+      "metrics": {}
+    },
+    {
+      "key": "human_merge_gate",
+      "label": "Human merge gate",
+      "score": null,
+      "weight": 0.15,
+      "detail": "Could not verify: merger identity unavailable for sampled PRs.",
+      "metrics": {}
+    },
+    {
+      "key": "ci_gate",
+      "label": "CI test/eval gate",
+      "score": null,
+      "weight": 0.15,
+      "detail": "Could not verify: no workflows detected and no merged PRs sampled.",
+      "metrics": {}
+    },
+    {
+      "key": "batch_size",
+      "label": "Batch size",
+      "score": null,
+      "weight": 0.1,
+      "detail": "Could not verify: no merged PRs in sample.",
+      "metrics": {}
+    },
+    {
+      "key": "lead_time",
+      "label": "Lead time (first commit → merge)",
+      "score": null,
+      "weight": 0.05,
+      "detail": "Could not verify: no PRs with both first-commit and merge timestamps.",
+      "metrics": {}
+    },
+    {
+      "key": "plan_evidence",
+      "label": "Plan-before-code evidence",
+      "score": null,
+      "weight": 0.1,
+      "detail": "Could not verify: no merged PRs in sample.",
+      "metrics": {}
+    },
+    {
+      "key": "audit_trail",
+      "label": "Audit-trail completeness",
+      "score": null,
+      "weight": 0.1,
+      "detail": "Could not verify: no merged PRs in sample.",
+      "metrics": {}
+    }
+  ],
+  "overall": null,
+  "grade": "Unscorable",
+  "unverified": [
+    "review_coverage",
+    "review_catch_rate",
+    "human_merge_gate",
+    "ci_gate",
+    "batch_size",
+    "lead_time",
+    "plan_evidence",
+    "audit_trail"
+  ],
+  "sample": {
+    "commits": 2,
+    "mergedPullRequests": 0,
+    "commitsTruncated": false,
+    "pullRequestsTruncated": false
+  }
+}
