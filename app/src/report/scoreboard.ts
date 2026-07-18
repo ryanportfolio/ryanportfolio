@@ -28,7 +28,8 @@ export function sortRows(rows: ScoreboardRow[]): ScoreboardRow[] {
       return b.overall - a.overall;
     }
     if ((a.overall === null) !== (b.overall === null)) return a.overall === null ? 1 : -1;
-    return a.repo.localeCompare(b.repo);
+    // Code-point compare, not localeCompare: byte-determinism across runtimes.
+    return a.repo < b.repo ? -1 : a.repo > b.repo ? 1 : 0;
   });
 }
 

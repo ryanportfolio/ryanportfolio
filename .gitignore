@@ -16,6 +16,7 @@ app/fleet.config.json
 node_modules/
 dist/
 build/
+site/dist/
 
 # OS noise
 Thumbs.db

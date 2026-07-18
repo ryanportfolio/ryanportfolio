@@ -4,7 +4,7 @@ Solo builder shipping AI-assisted software end to end — video-knowledge toolin
 
 ## Fleet audit scoreboard
 
-*Coming in Phase 3: one scored engineering report per repo in the portfolio. Most of the portfolio is private — the published reports are how a recruiter reads a scored, verifiable engineering assessment of repos they cannot open.*
+*One scored engineering report per repo in the portfolio — browse the visual viewer at **[ryanportfolio.github.io/ryanportfolio](https://ryanportfolio.github.io/ryanportfolio/)**. Most of the portfolio is private; the published reports are how a recruiter reads a scored, verifiable engineering assessment of repos they cannot open. First fleet run lands in Phase 3.*
 
 <!-- scoreboard:start -->
 | Repo | Score | Report |
