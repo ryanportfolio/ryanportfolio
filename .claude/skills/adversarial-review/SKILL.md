@@ -1,5 +1,5 @@
 ---
-description: Run the independent adversarial AI-review lane on a PR and post findings as a PR comment. Use when the user says /adversarial-review <PR#>, asks to run the review lane on a PR, or a PR still needs its independent review before human merge.
+description: Run the independent adversarial AI-review lane on a PR and post findings as a PR comment. Use when the user says /adversarial-review <PR#>, asks to run the review lane on a PR, or a PR still needs its independent review before merge.
 ---
 
 # Adversarial review — independent fresh-context PR review lane
@@ -8,7 +8,8 @@ Runs the review lane of this repo's pipeline locally (subscription-billed).
 The reviewer must have **fresh context**: it never reuses the builder
 session's state, sees only the PR itself, and tries to refute the change.
 Output is a posted PR comment; it has no approve/request-changes/merge
-power — merging stays human-only.
+power — merge authority stays with the owner (see governance/ for the
+merge-execution disclosure).
 
 The PR number comes from `adversarial-review — fresh-context adversarial PR review lane run locally via subscription`; if missing, ask which open PR to review.
 
