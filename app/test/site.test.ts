@@ -133,16 +133,24 @@ describe("generateReportHtml", () => {
     const index = generateIndexHtml([healthy]);
     expect(index.match(/What this score cannot see/g)).toHaveLength(1);
     expect(index.indexOf("What this score cannot see")).toBeLessThan(index.indexOf("Scoreboard"));
-    expect(index).toContain("almost always run as handoff audits");
-    // The practice claim stays attributed and conditional, never site-voice fact.
-    expect(index).toContain("The owner states that");
+    // First person by owner decision; attribution lives in the D-1 label.
+    expect(index).toContain("My reviews almost always run as handoff audits");
+    expect(index).toContain("Owner's declaration");
+    // The practice claim stays conditional, never site-voice fact.
     expect(index).toContain("The tool has not verified that claim");
     expect(index).toContain("if the claim is accurate");
+    // The declared practice links the real public skill, described accurately.
+    expect(index).toContain(
+      "https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/handoff-audit/SKILL.md",
+    );
+    expect(index).toContain("falsify the work, not approve it");
     const page = generateReportHtml(healthy);
     expect(page.match(/What this score cannot see/g)).toHaveLength(1);
     expect(page.indexOf("What this score cannot see")).toBeLessThan(page.indexOf("Dimensions"));
-    // Report pages stay repo-agnostic: no fleet-specific practice claims.
+    // Report pages stay repo-agnostic: no fleet-specific practice claims,
+    // no owner skill links.
     expect(page).not.toContain("handoff audits");
+    expect(page).not.toContain("handoff-audit/SKILL.md");
   });
 
   it("info sections render as audit clauses, not paragraph walls", () => {
