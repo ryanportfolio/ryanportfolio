@@ -10,7 +10,7 @@ This repo is the flagship piece: a public, auditable agentic software-developmen
 
 ## Fleet audit scoreboard
 
-*One scored engineering report per repo in the portfolio. Browse the visual viewer at **[ryanportfolio.github.io/ryanportfolio](https://ryanportfolio.github.io/ryanportfolio/)**. Most of the portfolio is private: the audit tool and pipeline are public and deterministic, and the published reports give a scored read on repos you cannot open (reproducible by the owner from the pinned commit). First fleet run lands in Phase 3.*
+*One scored engineering report per repo in the portfolio. Browse the visual viewer at **[audit.corewise.academy](https://audit.corewise.academy/)**. Most of the portfolio is private: the audit tool and pipeline are public and deterministic, and the published reports give a scored read on repos you cannot open (reproducible by the owner from the pinned commit).*
 
 <!-- scoreboard:start -->
 | Repo | Score | Grade | Report |
@@ -54,7 +54,7 @@ The public PR history of this repo *is* the living demo. Solo project, zero exte
 | Path | Purpose |
 |------|---------|
 | `app/` | The audit tool: scoring engine, collector, CLI, report renderer, site generator (TypeScript / Node 20, GitHub API). |
-| `.github/workflows/` | The pipeline itself: test+eval gate, AI-reviewer template, Pages deploy. Written to be copy-pastable into other repos. |
+| `.github/workflows/` | The pipeline itself: test+eval gate, AI-reviewer template. Written to be copy-pastable into other repos. Viewer deploys via Vercel (`vercel.json`). |
 | `governance/` | Human-in-the-loop checkpoint map, audit-trail contents, NIST AI RMF mapping, merge-execution disclosure. |
 | `plans/` | One plan note per PR, the plan-before-code evidence this tool scores. |
 | `reports/` | Published fleet audit reports. *Lands with the Phase 3 fleet run; each report is owner-approved before publication.* |
