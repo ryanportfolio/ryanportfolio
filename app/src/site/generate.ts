@@ -167,7 +167,7 @@ ${body}
  * PLAIN_LIMITS stays repo-agnostic; this states the owner's own practice,
  * and score-credit language stays tied to the unverified-attestation frame. */
 const FLEET_CONTEXT =
-  "Every repo on this board is solo, and the owner's reviews almost always run as handoff audits in separate AI sessions, which leave no GitHub artifact. The tool cannot credit what it cannot see, so the review dimensions understate actual practice here. Each report carries the owner's account of that practice as an attestation the tool has not verified.";
+  "Every repo on this board is solo. The owner states that his reviews almost always run as handoff audits in separate AI sessions, which leave no GitHub artifact. The tool has not verified that claim and cannot credit what it cannot see; if the claim is accurate, the review dimensions here understate actual practice. Where the owner has stated that practice for a repo, the report carries it as an unverified attestation.";
 
 function limitsCallout(lead: string | null): string {
   return `<aside class="callout"><span class="callout-title">${esc(PLAIN_LIMITS_TITLE)}</span>

@@ -131,12 +131,15 @@ describe("generateReportHtml", () => {
 
   it("limits callout sits upfront: before the scoreboard and the dimension table", () => {
     const index = generateIndexHtml([healthy]);
-    expect(index.indexOf("What this score cannot see")).toBeGreaterThan(-1);
+    expect(index.match(/What this score cannot see/g)).toHaveLength(1);
     expect(index.indexOf("What this score cannot see")).toBeLessThan(index.indexOf("Scoreboard"));
     expect(index).toContain("almost always run as handoff audits");
-    expect(index).toContain("an attestation the tool has not verified");
+    // The practice claim stays attributed and conditional, never site-voice fact.
+    expect(index).toContain("The owner states that");
+    expect(index).toContain("The tool has not verified that claim");
+    expect(index).toContain("if the claim is accurate");
     const page = generateReportHtml(healthy);
-    expect(page.indexOf("What this score cannot see")).toBeGreaterThan(-1);
+    expect(page.match(/What this score cannot see/g)).toHaveLength(1);
     expect(page.indexOf("What this score cannot see")).toBeLessThan(page.indexOf("Dimensions"));
     // Report pages stay repo-agnostic: no fleet-specific practice claims.
     expect(page).not.toContain("handoff audits");
