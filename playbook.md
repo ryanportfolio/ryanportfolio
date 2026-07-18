@@ -6,7 +6,7 @@ project. It assumes GitHub, but nothing here is specific to this codebase.
 ## The loop
 
 ```
-plan → agent build → independent AI review → CI test+eval gate → human-only merge
+plan → agent build → independent AI review → CI test+eval gate → owner-gated merge
 ```
 
 Five lanes, one rule each:
@@ -26,9 +26,13 @@ Five lanes, one rule each:
    loses nothing as long as the merge gate blocks unreviewed PRs.
 4. **Gate** — deterministic CI on every PR: tests, typecheck, and evals
    (golden outputs + determinism checks) that fail on any unexplained drift.
-5. **Merge** — a human reads the diff, the review, and the gate result, and
-   merges. Every merge in history is a human decision; that history is the
-   audit trail.
+5. **Merge** — merge authority belongs to a human. Two honest modes: the
+   owner clicks every merge themselves, or the owner grants the agent a
+   standing, session-scoped, revocable merge authorization. Either is
+   defensible — what is not defensible is running the second while
+   claiming the first. State which mode you run (this repo's statement
+   lives in its governance page); the merge history plus that disclosure
+   is the audit trail.
 
 ## Setup on a fresh repo
 
@@ -50,7 +54,7 @@ Five lanes, one rule each:
 
 ## Conventions that make it work
 
-- **Small batches.** Big PRs defeat both the reviewer and the human gate.
+- **Small batches.** Big PRs defeat both the reviewer and the merge gate.
 - **Verification is claimed, not assumed.** A PR says what was actually run
   and what could not be verified from the environment.
 - **Unverifiable signal is reported as such** — "could not verify" beats a

@@ -10,8 +10,8 @@
 #
 # Fresh context by construction: the job starts with no builder-session
 # state — it sees only the diff, the repo, and the instructions below.
-# It posts a review comment; it has NO merge or approval power. Merging is
-# human-only.
+# It posts a review comment; it has NO merge or approval power. Merge
+# authority stays with the repo owner.
 name: ai-review
 
 on:

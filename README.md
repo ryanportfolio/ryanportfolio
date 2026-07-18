@@ -21,11 +21,11 @@ An **agentic-SDLC audit tool**: point it at any GitHub repo and get a determinis
 This repo is built **exclusively through the pipeline it documents**. Every change flows:
 
 ```
-plan → agent build → independent fresh-context AI review → CI test+eval gate → human-only merge
+plan → agent build → independent fresh-context AI review → CI test+eval gate → owner-authorized merge
 ```
 
 - The building agent never grades its own work: the reviewing agent gets fresh context and an adversarial prompt (refute, don't approve).
-- No agent merges anything. Every merge is a human decision.
+- Merge authority stays with the owner. Merges are agent-executed under a standing, session-scoped owner authorization, revocable at any time — disclosed, not dressed up as a manual click; details in [governance](governance/README.md).
 - Every PR links a plan note, passes the gate, and carries its review trail.
 
 The public PR history of this repo *is* the living demo. Solo project, zero external users — the pitch is publicly auditable process, a reusable framework, and verified portfolio evidence, not adoption.
