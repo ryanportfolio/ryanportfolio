@@ -15,7 +15,6 @@ This repo is the flagship piece: a public, auditable agentic software-developmen
 | Repo | Score | Grade | Report |
 |------|-------|-------|--------|
 | ryanportfolio/ryanportfolio | 78/100 | Strong | [report](reports/ryanportfolio.md) |
-| ryanportfolio/local (private) | 71.6/100 | Developing | [report](reports/local.md) |
 | ryanportfolio/Truenote | 71.2/100 | Developing | [report](reports/Truenote.md) |
 | ryanportfolio/Corewise.Academy (private) | 69/100 | Developing | [report](reports/Corewise.Academy.md) |
 | ryanportfolio/AI-Firmware | 68.6/100 | Developing | [report](reports/AI-Firmware.md) |
