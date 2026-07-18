@@ -14,6 +14,7 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { collectRepoFacts } from "./collect.js";
 import { GithubClient } from "./github.js";
+import { jsonArtifactName, publicReportJson } from "./report/public.js";
 import { renderReportMarkdown } from "./report/render.js";
 import {
   renderReportsIndex,
@@ -80,10 +81,7 @@ async function main(): Promise<void> {
     writeFileSync(outPath, markdown);
     const dataDir = resolve(reportsDir, "data");
     mkdirSync(dataDir, { recursive: true });
-    writeFileSync(
-      resolve(dataDir, `${name}.json`),
-      JSON.stringify(report, null, 2) + "\n",
-    );
+    writeFileSync(resolve(dataDir, `${jsonArtifactName(name)}`), publicReportJson(report));
     rows.push(toScoreboardRow(report, facts.repo.isPrivate));
     console.error(
       `  → ${report.overall === null ? "unscorable" : report.overall + "/100"} (${report.grade}) written to reports/${name}.md`,

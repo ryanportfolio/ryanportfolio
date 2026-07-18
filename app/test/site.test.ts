@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { esc, generateIndexHtml, generateReportHtml, slugOf } from "../src/site/generate.js";
+import {
+  assertUniqueSlugs,
+  esc,
+  generateIndexHtml,
+  generateReportHtml,
+  slugOf,
+} from "../src/site/generate.js";
 import { scoreRepo } from "../src/score/index.js";
 import { makeFacts, makePull } from "./helpers.js";
 
@@ -65,9 +71,30 @@ describe("generateReportHtml", () => {
     expect(html).toContain("Excluded from the overall score rather than guessed");
   });
 
-  it("escapes repo-derived strings", () => {
-    const html = generateReportHtml(thin);
-    expect(html).not.toContain("<script");
-    expect(html).toContain("ryanportfolio/Thin.Repo");
+  it("escapes hostile repo-derived strings through the real render path", () => {
+    const hostile = structuredClone(thin);
+    (hostile as { repo: string }).repo = `ryanportfolio/<script>alert("x")</script>`;
+    hostile.dimensions[0]!.detail = `<img src=x onerror="pwn()">`;
+    const html = generateReportHtml(hostile);
+    expect(html).not.toContain("<script>alert");
+    expect(html).not.toContain(`<img src=x`);
+    expect(html).toContain("&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;");
+    expect(html).toContain("&lt;img src=x onerror=&quot;pwn()&quot;&gt;");
+  });
+
+  it("score 0 renders an empty bar, not a fake sliver", () => {
+    const zeroed = structuredClone(thin);
+    zeroed.dimensions[0]!.score = 0;
+    const html = generateReportHtml(zeroed);
+    expect(html).toContain(`style="width:0%"`);
+  });
+
+  it("slug collisions throw instead of silently overwriting", () => {
+    const a = structuredClone(healthy);
+    const b = structuredClone(healthy);
+    (a as { repo: string }).repo = "o/My Repo";
+    (b as { repo: string }).repo = "o/My-Repo";
+    expect(() => assertUniqueSlugs([a, b])).toThrow(/slug collision/);
+    expect(() => assertUniqueSlugs([healthy, thin])).not.toThrow();
   });
 });

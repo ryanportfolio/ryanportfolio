@@ -17,6 +17,19 @@ export function slugOf(report: ScoreReport): string {
   return (report.repo.split("/")[1] ?? report.repo).toLowerCase().replace(/[^a-z0-9._-]/g, "-");
 }
 
+/** Throw on slug collisions instead of silently overwriting a report page. */
+export function assertUniqueSlugs(reports: ScoreReport[]): void {
+  const seen = new Map<string, string>();
+  for (const r of reports) {
+    const slug = slugOf(r);
+    const prior = seen.get(slug);
+    if (prior !== undefined) {
+      throw new Error(`slug collision: "${prior}" and "${r.repo}" both map to ${slug}.html`);
+    }
+    seen.set(slug, r.repo);
+  }
+}
+
 const GRADE_CLASS: Record<string, string> = {
   Elite: "elite",
   Strong: "strong",
@@ -36,7 +49,8 @@ function bar(d: DimensionResult): string {
   if (d.score === null) {
     return `<div class="bar unverified" title="could not verify"><span>could not verify</span></div>`;
   }
-  const width = Math.max(2, Math.round(d.score));
+  // A true 0 renders as an empty bar — unflattering scores stay unflattering.
+  const width = d.score === 0 ? 0 : Math.min(100, Math.max(2, Math.round(d.score)));
   return `<div class="bar"><i style="width:${width}%"></i><span>${esc(String(d.score))}</span></div>`;
 }
 
@@ -85,8 +99,9 @@ ${body}
 const FOOTER = `<footer class="small muted">
 Scores are deterministic — same repo state, same score; no LLM in the scoring path.
 Reports contain aggregate metrics only: no source code, commit messages, PR text, or config values.
-Every published report is explicitly approved by the owner first.
-<a href="https://github.com/ryanportfolio/ryanportfolio">Pipeline, tool source &amp; governance</a>.
+Every published report is explicitly approved by the owner first — the rule lives in the
+<a href="https://github.com/ryanportfolio/ryanportfolio/blob/main/governance/README.md">governance page</a>.
+<a href="https://github.com/ryanportfolio/ryanportfolio">Pipeline &amp; tool source</a>.
 </footer>`;
 
 export function generateIndexHtml(reports: ScoreReport[]): string {
@@ -95,7 +110,8 @@ export function generateIndexHtml(reports: ScoreReport[]): string {
       return b.overall - a.overall;
     }
     if ((a.overall === null) !== (b.overall === null)) return a.overall === null ? 1 : -1;
-    return a.repo.localeCompare(b.repo);
+    // Code-point compare, not localeCompare: byte-determinism across runtimes.
+    return a.repo < b.repo ? -1 : a.repo > b.repo ? 1 : 0;
   });
 
   const rows =
@@ -112,8 +128,9 @@ ${sorted
 
   const body = `<h1>Fleet audit — agentic engineering discipline</h1>
 <p class="muted">Deterministic, scored reports on AI-agent development discipline across
-<a href="https://github.com/ryanportfolio">ryanportfolio</a>'s repos — most private; these
-reports are the publicly verifiable evidence layer. Unflattering scores stay in.</p>
+<a href="https://github.com/ryanportfolio">ryanportfolio</a>'s repos — most private. The
+tool and pipeline are public and deterministic; reports on private repos are reproducible
+by the owner from the pinned commit. Unflattering scores stay in.</p>
 <h2>Scoreboard</h2>
 ${rows}
 <h2>How these scores are made</h2>

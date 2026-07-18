@@ -3,7 +3,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { ScoreReport } from "../types.js";
-import { generateIndexHtml, generateReportHtml, slugOf } from "./generate.js";
+import { assertUniqueSlugs, generateIndexHtml, generateReportHtml, slugOf } from "./generate.js";
 
 const appDir = resolve(import.meta.dirname, "..", "..");
 const repoRoot = resolve(appDir, "..");
@@ -17,6 +17,7 @@ const reports: ScoreReport[] = existsSync(dataDir)
       .map((f) => JSON.parse(readFileSync(resolve(dataDir, f), "utf8")) as ScoreReport)
   : [];
 
+assertUniqueSlugs(reports);
 mkdirSync(outDir, { recursive: true });
 writeFileSync(resolve(outDir, "index.html"), generateIndexHtml(reports));
 for (const report of reports) {
