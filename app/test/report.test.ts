@@ -9,7 +9,8 @@ import {
   SCOREBOARD_END,
   SCOREBOARD_START,
 } from "../src/report/scoreboard.js";
-import { scoreRepo } from "../src/score/index.js";
+import { gradeFor, scoreRepo } from "../src/score/index.js";
+import { PLAIN_MEANING, PLAIN_QUESTIONS } from "../src/report/plain.js";
 import { makeFacts, makePull } from "./helpers.js";
 
 describe("renderReportMarkdown", () => {
@@ -26,6 +27,35 @@ describe("renderReportMarkdown", () => {
     expect(md).toContain("## What this score cannot see");
     expect(md).toContain("Solo accounts have a built-in blind spot");
     expect(md).toContain("In plain terms, each dimension asks:");
+    expect(md).toContain(
+      "- **PR review coverage**: Of the merged pull requests, how many did anyone other than the author look at before merge?",
+    );
+  });
+
+  it("plain-language grade bands match the engine's gradeFor thresholds", () => {
+    const sentence = PLAIN_MEANING.join(" ");
+    for (const [score, grade] of [
+      [90, "Elite"],
+      [75, "Strong"],
+      [60, "Developing"],
+      [40, "Early"],
+      [39.9, "Ad-hoc"],
+    ] as const) {
+      expect(gradeFor(score)).toBe(grade);
+    }
+    expect(sentence).toContain("90+ Elite");
+    expect(sentence).toContain("75+ Strong");
+    expect(sentence).toContain("60+ Developing");
+    expect(sentence).toContain("40+ Early");
+    expect(sentence).toContain("under 40 Ad-hoc");
+    expect(sentence).toContain("could not verify");
+  });
+
+  it("every scored dimension has a plain question", () => {
+    const report = scoreRepo(makeFacts());
+    for (const d of report.dimensions) {
+      expect(PLAIN_QUESTIONS[d.key as keyof typeof PLAIN_QUESTIONS], d.key).toBeTruthy();
+    }
   });
 
   it("lists could-not-verify dimensions explicitly", () => {

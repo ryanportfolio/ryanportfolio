@@ -160,7 +160,7 @@ ${FOOTER}`;
 export function generateReportHtml(report: ScoreReport): string {
   const dims = report.dimensions
     .map((d) => {
-      const q = PLAIN_QUESTIONS[d.key];
+      const q = PLAIN_QUESTIONS[d.key as keyof typeof PLAIN_QUESTIONS];
       const question = q ? `<div class="small muted question">${esc(q)}</div>` : "";
       return `<tr><td>${esc(d.label)}${question}</td><td>${bar(d)}</td><td class="small muted">${esc(d.detail)}</td></tr>`;
     })

@@ -44,7 +44,7 @@ export function renderReportMarkdown(report: ScoreReport): string {
   lines.push("In plain terms, each dimension asks:");
   lines.push("");
   for (const d of report.dimensions) {
-    const q = PLAIN_QUESTIONS[d.key];
+    const q = PLAIN_QUESTIONS[d.key as keyof typeof PLAIN_QUESTIONS];
     if (q) lines.push(`- **${d.label}**: ${q}`);
   }
   lines.push("");

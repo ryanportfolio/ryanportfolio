@@ -3,15 +3,18 @@
  * generator, so both surfaces always say the same thing. Voice: short,
  * concrete, no jargon, no em dashes.
  */
+import type { DimensionKey } from "../score/dimensions.js";
 
 export const PLAIN_MEANING: string[] = [
   "This score measures process discipline, not code quality. The tool never reads the code. It reads only GitHub metadata: commits, pull requests, reviews, check runs, and merge events.",
   "It answers one question: when AI agents help write the code, what does this repo's history prove about the checks standing between a change and the main branch?",
-  "Each dimension is a 0 to 100 answer to one concrete question. The overall score is their weighted average, and grades band it: 90+ Elite, 75+ Strong, 60+ Developing, 40+ Early, under 40 Ad-hoc.",
+  "Each dimension is a 0 to 100 answer to one concrete question, or 'could not verify' when the evidence is missing. The overall score is the weighted average of the verified dimensions, and grades band it: 90+ Elite, 75+ Strong, 60+ Developing, 40+ Early, under 40 Ad-hoc.",
 ];
 
-/** One plain question per dimension key, rendered next to each score. */
-export const PLAIN_QUESTIONS: Record<string, string> = {
+/** One plain question per dimension key, rendered next to each score.
+ * Typed against DimensionKey so adding a dimension without a question is a
+ * compile error, not a silently missing row. */
+export const PLAIN_QUESTIONS: Record<DimensionKey, string> = {
   agent_attribution:
     "Can every commit be traced to who or what made it (a linked account, a bot identity, or a co-author trailer)?",
   review_coverage:
