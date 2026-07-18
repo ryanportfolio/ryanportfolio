@@ -7,20 +7,47 @@ directed that it be stated as fact.
 
 ## Evidence (recorded here so the change is provenance-backed, not spin)
 
-Verified this session, on the owner's machine, from the local Claude
-session history (~/.claude/projects): roughly 29 distinct sessions
-invoked the /handoff-audit skill, concentrated in about 7 projects
-(over half in Extract-Video-Wisdom; the rest across range, kbase,
-Corewise.Academy, tracebench, claude-starter). Caveats per the
-independent review of this PR: the grep-marker method admits
-quoted-mention false positives (the pipeline session that ran the count
-matches itself), so the figure is approximate; and the count proves the
-practice is real and recurrent, not a proportion of all reviews. The
-"almost always" characterization is the owner's own statement about his
-own practice, made in first person on owner-voice surfaces only. The
-skill file itself is public in AI-Firmware. What remains true and stays
-published is that the deterministic scorer cannot see those sessions and
-gives them no score credit.
+Verified this session, on the owner's machine, from local agent session
+history. Two runtimes, because the owner runs the skill in both. All
+figures are approximate; the signals and their known false positives are
+stated so the count can be re-audited, not trusted blind.
+
+- Codex (~/.codex/sessions): the original count omitted this runtime
+  entirely; the owner flagged the gap. Checked with a tool-agnostic
+  body-load signal: the distinctive skill-body line "single fenced
+  markdown block" lands in a session only when the SKILL.md is loaded, so
+  it excludes catalog listings. 6 Codex sessions match
+  (Extract-Video-Wisdom, Resume x2, firewall, claude-starter, kbase).
+- Claude Code (~/.claude/projects): the same body-load signal finds 34
+  sessions. A stricter slash-invocation marker
+  (`<command-name>/handoff-audit`) finds 14; an earlier looser count put
+  it near 29. Treat 14 as the floor of clean slash invocations and the
+  body-load figure as the wider "skill was loaded" set.
+
+False positives, per the independent review of this PR (do not read the
+raw numbers as clean usage):
+
+- The body-load signal also fires when the SKILL.md is being edited, not
+  run. The claude-starter match in BOTH runtimes is an authoring session
+  (that repo is where the skill lives), not an audit; subtract one per
+  runtime before reading these as usage.
+- The signal self-increments: any session that greps or quotes the phrase
+  matches, including this pipeline's own review sessions. Excluding those
+  self-matches, the Claude body-load set is about 32.
+- Raw file-mention counts (thousands per runtime for bare "handoff-audit",
+  and even literal "/handoff-audit", which sits in the skill's own
+  description line) are catalog noise from the always-loaded skills list,
+  NOT usage. Only the marker and body-load signals count.
+
+Net: genuine invocations are in the low tens across both runtimes,
+concentrated in Extract-Video-Wisdom with a real spread across range,
+kbase, Corewise.Academy, firewall, Resume, and others. That proves the
+practice is real and recurrent across both tools; it does not measure a
+proportion of all reviews. The "almost always" characterization is the
+owner's own statement about his own practice, made in first person on
+owner-voice surfaces only. The skill file itself is public in AI-Firmware.
+What remains true and stays published is that the deterministic scorer
+cannot see those sessions and gives them no score credit.
 
 ## Scope (this PR)
 
