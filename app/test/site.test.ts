@@ -110,7 +110,10 @@ describe("generateReportHtml", () => {
   });
 
   it("owner attestation renders with the not-verified label; absent renders nothing", () => {
-    const withAtt = { ...healthy, attestation: "Reviews happen in fresh AI sessions." };
+    const withAtt = {
+      ...healthy,
+      attestation: { text: "Reviews happen in fresh AI sessions.", verified: false, scored: false },
+    };
     const html = generateReportHtml(withAtt);
     expect(html).toContain("Owner attestation");
     expect(html).toContain("has not verified this and it earns no score credit");

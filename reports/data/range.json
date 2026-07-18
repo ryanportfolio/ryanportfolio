@@ -1,5 +1,9 @@
 {
-  "attestation": "Independent review for this repo happens as fresh-context AI audit sessions outside GitHub (handoff audits). Those sessions leave no GitHub artifacts, so they earn no credit in the recorded-review dimensions above.",
+  "attestation": {
+    "text": "Independent review for this repo happens as fresh-context AI audit sessions outside GitHub (handoff audits). Those sessions leave no GitHub artifacts, so they earn no credit in the recorded-review dimensions above.",
+    "verified": false,
+    "scored": false
+  },
   "repo": "ryanportfolio/range",
   "collectedAt": "2026-07-18T18:43:47.805Z",
   "headSha": "aa067b5eaa6a64eef0f72892eebf69ad8cae5009",

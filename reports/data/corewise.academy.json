@@ -1,5 +1,9 @@
 {
-  "attestation": "Independent review for this repo happens as fresh-context AI audit sessions outside GitHub (handoff audits). Those sessions leave no GitHub artifacts, so they earn no credit in the recorded-review dimensions above.",
+  "attestation": {
+    "text": "Independent review for this repo happens as fresh-context AI audit sessions outside GitHub (handoff audits). Those sessions leave no GitHub artifacts, so they earn no credit in the recorded-review dimensions above.",
+    "verified": false,
+    "scored": false
+  },
   "repo": "ryanportfolio/Corewise.Academy",
   "collectedAt": "2026-07-18T18:45:20.375Z",
   "headSha": "7dba4905d1c76a77488c3bce4ea1464848f21b52",

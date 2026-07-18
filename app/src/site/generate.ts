@@ -158,8 +158,17 @@ ${FOOTER}`;
 }
 
 /** Site pages render from the published PublicReport JSON, which may carry
- * an owner attestation on top of the ScoreReport shape. */
-export type SiteReport = ScoreReport & { attestation?: string | null };
+ * an owner attestation on top of the ScoreReport shape. Both the legacy
+ * bare-string and the self-describing object shapes are accepted. */
+export type SiteReport = ScoreReport & {
+  attestation?: string | { text: string } | null;
+};
+
+function attestationText(report: SiteReport): string | null {
+  const a = report.attestation;
+  if (!a) return null;
+  return typeof a === "string" ? a : a.text;
+}
 
 export function generateReportHtml(report: SiteReport): string {
   const dims = report.dimensions
@@ -189,10 +198,10 @@ ${dims}
 </tbody></table>
 ${unverified}
 ${
-  report.attestation
+  attestationText(report)
     ? `<h2>Owner attestation</h2>
 <div class="panel small"><p class="muted">Stated by the repo owner. The tool has not verified this and it earns no score credit.</p>
-<p>${esc(report.attestation)}</p></div>`
+<p>${esc(attestationText(report) as string)}</p></div>`
     : ""
 }
 <h2>${esc(PLAIN_MEANING_TITLE)}</h2>
