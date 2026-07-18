@@ -6,9 +6,11 @@ Solo builder shipping AI-assisted software end to end — video-knowledge toolin
 
 *Coming in Phase 3: one scored engineering report per repo in the portfolio. Most of the portfolio is private — the published reports are how a recruiter reads a scored, verifiable engineering assessment of repos they cannot open.*
 
+<!-- scoreboard:start -->
 | Repo | Score | Report |
 |------|-------|--------|
 | *pending first audit run* | — | — |
+<!-- scoreboard:end -->
 
 ## What this repo is
 

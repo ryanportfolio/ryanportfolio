@@ -4,11 +4,12 @@ import { writeFileSync } from "node:fs";
 import process from "node:process";
 import { collectRepoFacts } from "./collect.js";
 import { GithubClient } from "./github.js";
+import { renderReportMarkdown } from "./report/render.js";
 import { scoreRepo } from "./score/index.js";
 import type { ScoreReport } from "./types.js";
 
 function usage(): never {
-  console.error("Usage: agentic-audit <owner>/<repo> [--json <file>]");
+  console.error("Usage: agentic-audit <owner>/<repo> [--json <file>] [--report <file.md>]");
   process.exit(2);
 }
 
@@ -42,6 +43,9 @@ async function main(): Promise<void> {
   const jsonIdx = args.indexOf("--json");
   const jsonPath = jsonIdx >= 0 ? args[jsonIdx + 1] : undefined;
   if (jsonIdx >= 0 && !jsonPath) usage();
+  const reportIdx = args.indexOf("--report");
+  const reportPath = reportIdx >= 0 ? args[reportIdx + 1] : undefined;
+  if (reportIdx >= 0 && !reportPath) usage();
 
   const [owner, name] = target.split("/") as [string, string];
   const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
@@ -54,6 +58,10 @@ async function main(): Promise<void> {
   if (jsonPath) {
     writeFileSync(jsonPath, JSON.stringify(report, null, 2) + "\n");
     console.error(`Report JSON written to ${jsonPath}`);
+  }
+  if (reportPath) {
+    writeFileSync(reportPath, renderReportMarkdown(report));
+    console.error(`Markdown report written to ${reportPath}`);
   }
   console.log(renderTable(report));
 }
