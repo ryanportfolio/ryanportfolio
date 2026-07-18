@@ -11,7 +11,7 @@ This repo is the flagship piece: a public, auditable agentic software-developmen
 
 *One scored engineering report per repo in the portfolio. Browse the visual viewer at **[audit.corewise.academy](https://audit.corewise.academy/)**. Most of the portfolio is private: the audit tool and pipeline are public and deterministic, and the published reports give a scored read on repos you cannot open (reproducible by the owner from the pinned commit).*
 
-*Read the scores with this in mind: the tool counts only what is recorded on GitHub. Every repo here is solo, and my reviews almost always run as handoff audits in separate AI sessions, which leave no GitHub artifact. The tool cannot see that work and does not take my word for it, so I read the review dimensions as understating my actual practice; judge that claim yourself. Most reports carry it as an owner attestation the tool has not verified, and every report lists what it could not see.*
+*Read the scores with this in mind: the tool counts only what is recorded on GitHub. Every repo here is solo, and my reviews almost always run as [handoff audits](https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/handoff-audit/SKILL.md) in separate AI sessions, which leave no GitHub artifact. That link is the actual skill: it drafts a self-contained audit prompt for a zero-context session and charges it to falsify the work, not approve it. The tool cannot see that work and does not take my word for it, so I read the review dimensions as understating my actual practice; judge that claim yourself. Most reports carry it as an owner attestation the tool has not verified, and every report lists what it could not see.*
 
 <!-- scoreboard:start -->
 | Repo | Score | Grade | Report |

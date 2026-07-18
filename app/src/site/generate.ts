@@ -141,6 +141,7 @@ a.clause-no:hover{text-decoration:underline}
 .clauses{margin:.4rem 0 0}
 .tag-unverified{font-family:var(--font-mono);font-weight:400;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--developing);background:var(--panel);border:1px dashed currentColor;padding:.1rem .45rem;white-space:nowrap}
 .callout .clause-detail{color:var(--ink-soft)}
+.clause-ref{margin:.35rem 0 0;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.02em;color:var(--ink-soft)}
 .dot-row{display:flex;align-items:baseline;gap:.5rem}
 .dot-row .dots{flex:1;min-width:2rem;border-bottom:1px dotted var(--line);transform:translateY(-.28em)}
 .report-arrow{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--accent-deep)}
@@ -203,28 +204,38 @@ ${body}
 /** Owner-voice declaration for the fleet index only. The generic tool copy
  * in PLAIN_LIMITS_ITEMS stays repo-agnostic; this states the owner's own
  * practice, attributed and conditional, tagged UNVERIFIED in the render. */
+/** First person by design: this is the owner speaking, under the tool's
+ * UNVERIFIED tag. The conditional framing is the honesty rail. */
 const FLEET_DECLARATION: PlainClause = {
   id: "D-1",
   label: "Owner's declaration: reviews run off GitHub",
-  text: "Every repo on this board is solo. The owner states that his reviews almost always run as handoff audits in separate AI sessions, which leave no GitHub artifact. The tool has not verified that claim; if the claim is accurate, the review dimensions here understate actual practice. Where the owner has stated that practice for a repo, the report carries it as an unverified attestation.",
+  text: "Every repo on this board is solo. My reviews almost always run as handoff audits in separate AI sessions, which leave no GitHub artifact. The tool has not verified that claim; if the claim is accurate, the review dimensions here understate actual practice. Where I have stated that practice for a repo, its report carries it as an unverified attestation.",
 };
+
+/** The public skill behind the declared practice: it drafts a
+ * self-contained audit prompt for a zero-context session, charged to
+ * falsify the work, not approve it. Description must track that file. */
+const HANDOFF_SKILL_URL =
+  "https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/handoff-audit/SKILL.md";
+const HANDOFF_SKILL_REF = `The skill behind that practice is public: <a href="${HANDOFF_SKILL_URL}">/handoff-audit</a> drafts a self-contained audit prompt for a zero-context session and charges it to falsify the work, not approve it.`;
 
 /** One audit clause: mono number (a self-link anchor), scannable label,
  * full sentence(s) as a small detail line. The detail keeps every qualifier
- * of the approved copy; only the wall-of-text presentation is gone. */
-function clauseRow(c: PlainClause, tag: string | null = null): string {
+ * of the approved copy; only the wall-of-text presentation is gone.
+ * refHtml is trusted markup from module constants only, never data. */
+function clauseRow(c: PlainClause, tag: string | null = null, refHtml: string | null = null): string {
   const anchor = c.id.toLowerCase();
   return `<div class="clause" id="${esc(anchor)}"><a class="clause-no" href="#${esc(anchor)}">${esc(c.id)}</a><div>
 <p class="clause-label"><span>${esc(c.label)}</span>${tag ? `<span class="tag-unverified">${esc(tag)}</span>` : ""}</p>
 <p class="clause-detail">${esc(c.text)}</p>
-</div></div>`;
+${refHtml ? `<p class="clause-ref">${refHtml}</p>\n` : ""}</div></div>`;
 }
 
 /** Exclusions first, then the owner's declaration: what the instrument
  * cannot see, followed by what the owner states about that gap. */
 function limitsCallout(withDeclaration: boolean): string {
   return `<aside class="callout"><span class="callout-title">${esc(PLAIN_LIMITS_TITLE)}</span>
-${PLAIN_LIMITS_ITEMS.map((c) => clauseRow(c)).join("\n")}${withDeclaration ? "\n" + clauseRow(FLEET_DECLARATION, "Unverified") : ""}
+${PLAIN_LIMITS_ITEMS.map((c) => clauseRow(c)).join("\n")}${withDeclaration ? "\n" + clauseRow(FLEET_DECLARATION, "Unverified", HANDOFF_SKILL_REF) : ""}
 </aside>`;
 }
 
