@@ -28,8 +28,17 @@ describe("renderReportMarkdown", () => {
     expect(md).toContain("Solo accounts have a built-in blind spot");
     expect(md).toContain("In plain terms, each dimension asks:");
     expect(md).toContain(
-      "- **PR review coverage**: Of the merged pull requests, how many did anyone other than the author look at before merge?",
+      "- **Recorded review coverage**: Of the merged pull requests, how many carry a recorded review by anyone other than the author?",
     );
+  });
+
+  it("owner attestation renders labeled and unscored; absent renders nothing", () => {
+    const report = scoreRepo(makeFacts());
+    const md = renderReportMarkdown(report, "Reviews happen in fresh AI sessions.");
+    expect(md).toContain("## Owner attestation");
+    expect(md).toContain("has not verified this and it earns no score credit");
+    expect(md).toContain("> Reviews happen in fresh AI sessions.");
+    expect(renderReportMarkdown(report)).not.toContain("## Owner attestation");
   });
 
   it("plain-language grade bands match the engine's gradeFor thresholds", () => {

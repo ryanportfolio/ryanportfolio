@@ -87,7 +87,7 @@ export function scoreAgentAttribution(facts: RepoFacts): DimensionResult {
 
 export function scoreReviewCoverage(facts: RepoFacts): DimensionResult {
   const key = "review_coverage";
-  const label = "PR review coverage";
+  const label = "Recorded review coverage";
   const prs = facts.pullRequests;
   if (prs.length === 0) {
     return {
@@ -112,7 +112,7 @@ export function scoreReviewCoverage(facts: RepoFacts): DimensionResult {
 
 export function scoreReviewCatchRate(facts: RepoFacts): DimensionResult {
   const key = "review_catch_rate";
-  const label = "Review catch rate";
+  const label = "Recorded review catch rate";
   const reviewed = facts.pullRequests.filter((p) => p.reviews.length > 0);
   if (reviewed.length === 0) {
     return {

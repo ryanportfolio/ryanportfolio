@@ -17,7 +17,7 @@
     },
     {
       "key": "review_coverage",
-      "label": "PR review coverage",
+      "label": "Recorded review coverage",
       "score": null,
       "weight": 0.15,
       "detail": "Could not verify: no merged PRs in sample.",
@@ -25,7 +25,7 @@
     },
     {
       "key": "review_catch_rate",
-      "label": "Review catch rate",
+      "label": "Recorded review catch rate",
       "score": null,
       "weight": 0.1,
       "detail": "Could not verify: no reviewed PRs in sample.",

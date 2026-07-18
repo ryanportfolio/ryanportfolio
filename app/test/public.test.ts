@@ -9,6 +9,7 @@ describe("toPublicReport (privacy projection)", () => {
   it("emits exactly the allowlisted top-level keys, nothing rides along", () => {
     const pub = toPublicReport(report);
     expect(Object.keys(pub).sort()).toEqual([
+      "attestation",
       "collectedAt",
       "dimensions",
       "grade",
@@ -50,6 +51,15 @@ describe("toPublicReport (privacy projection)", () => {
     for (const forbidden of ["diff --git", "commit message", "function ", "```"]) {
       expect(json).not.toContain(forbidden);
     }
+  });
+});
+
+describe("attestation passthrough", () => {
+  it("defaults to null, carries owner text when given, appears in the key set", () => {
+    expect(toPublicReport(report).attestation).toBeNull();
+    const withText = toPublicReport(report, "Reviews happen in fresh sessions.");
+    expect(withText.attestation).toBe("Reviews happen in fresh sessions.");
+    expect(publicReportJson(report, "stated context")).toContain("stated context");
   });
 });
 

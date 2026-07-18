@@ -52,6 +52,25 @@ Five lanes, one rule each:
    commit golden outputs and make CI compare against them byte-for-byte, so
    changes are explicit and reviewed.
 
+## Making solo review measurable
+
+Solo workflows have a measurement trap: real review discipline (audits run
+in a fresh AI session, local verification) leaves no GitHub artifact, so
+any artifact-based audit scores it zero. The audit tool in this repo states
+that blind spot on every report instead of correcting for it. To convert
+the practice into evidence:
+
+1. Run `claude setup-token` locally (needs a Claude subscription) and add
+   the result as a `CLAUDE_CODE_OAUTH_TOKEN` repo secret. The
+   `ai-review.yml` workflow then posts a recorded review on every PR from
+   a non-author identity, which artifact-based audits can count.
+2. Alternatively, post fresh-session audit output as a formal PR review
+   from a second (machine) account. A comment from your own account does
+   not count: review credit requires a reviewer who is not the author.
+3. Do not launder self-review through a bot re-poster just to earn credit;
+   that games the metric the audit exists to measure. Either produce an
+   independent recorded review or let the report state the gap.
+
 ## Conventions that make it work
 
 - **Small batches.** Big PRs defeat both the reviewer and the merge gate.

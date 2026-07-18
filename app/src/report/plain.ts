@@ -6,7 +6,7 @@
 import type { DimensionKey } from "../score/dimensions.js";
 
 export const PLAIN_MEANING: string[] = [
-  "This score measures process discipline, not code quality. The tool never reads the code. It reads only GitHub metadata: commits, pull requests, reviews, check runs, and merge events.",
+  "This score measures process discipline, not code quality. The tool never reads the code. It reads only GitHub metadata: commits, pull requests, reviews, check runs, and merge events. It scores only what is recorded on GitHub; discipline that leaves no artifact there earns nothing.",
   "It answers one question: when AI agents help write the code, what does this repo's history prove about the checks standing between a change and the main branch?",
   "Each dimension is a 0 to 100 answer to one concrete question, or 'could not verify' when the evidence is missing. The overall score is the weighted average of the verified dimensions, and grades band it: 90+ Elite, 75+ Strong, 60+ Developing, 40+ Early, under 40 Ad-hoc.",
 ];
@@ -18,9 +18,9 @@ export const PLAIN_QUESTIONS: Record<DimensionKey, string> = {
   agent_attribution:
     "Can every commit be traced to who or what made it (a linked account, a bot identity, or a co-author trailer)?",
   review_coverage:
-    "Of the merged pull requests, how many did anyone other than the author look at before merge?",
+    "Of the merged pull requests, how many carry a recorded review by anyone other than the author?",
   review_catch_rate:
-    "When a review happened, did it change anything (new commits after the review, before the merge)?",
+    "When a recorded review happened, did it change anything (new commits after the review, before the merge)?",
   human_merge_gate: "Are merges performed by people, or does automation merge by itself?",
   ci_gate: "Do automated tests exist, and did pull requests actually pass them before merging?",
   batch_size: "Are changes small, reviewable chunks, or thousand-line dumps?",

@@ -1,5 +1,8 @@
 {
   "owner": "your-github-account",
   "include": ["public-repo-one", "private-repo-two", "this-repo"],
-  "exclude": ["repo-you-never-want-featured"]
+  "exclude": ["repo-you-never-want-featured"],
+  "attestations": {
+    "private-repo-two": "Optional owner-stated context, rendered as not verified and not scored."
+  }
 }

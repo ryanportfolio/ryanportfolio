@@ -16,7 +16,10 @@ function scoreCell(score: number | null): string {
   return score === null ? "could not verify" : `${score}/100`;
 }
 
-export function renderReportMarkdown(report: ScoreReport): string {
+export function renderReportMarkdown(
+  report: ScoreReport,
+  attestation: string | null = null,
+): string {
   const lines: string[] = [];
   lines.push(`# Agentic-SDLC audit: ${report.repo}`);
   lines.push("");
@@ -74,6 +77,16 @@ export function renderReportMarkdown(report: ScoreReport): string {
     lines.push("");
   }
 
+  if (attestation) {
+    lines.push("## Owner attestation");
+    lines.push("");
+    lines.push(
+      "Stated by the repo owner. The tool has not verified this and it earns no score credit.",
+    );
+    lines.push("");
+    lines.push(`> ${attestation}`);
+    lines.push("");
+  }
   lines.push(`## ${PLAIN_LIMITS_TITLE}`);
   lines.push("");
   for (const p of PLAIN_LIMITS) lines.push(`- ${p}`);

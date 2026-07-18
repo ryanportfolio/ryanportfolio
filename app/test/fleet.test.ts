@@ -17,6 +17,7 @@ describe("writeReportArtifacts", () => {
     const json = readFileSync(join(dir, "data", "my-repo.json"), "utf8");
     const parsed = JSON.parse(json) as Record<string, unknown>;
     expect(Object.keys(parsed).sort()).toEqual([
+      "attestation",
       "collectedAt",
       "dimensions",
       "grade",
