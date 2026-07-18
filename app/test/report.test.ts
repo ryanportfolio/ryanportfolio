@@ -21,6 +21,11 @@ describe("renderReportMarkdown", () => {
     expect(md).toContain("Head commit: `abc1234`");
     expect(md).toContain("| Dimension | Score | Weight | Basis |");
     expect(md).toContain("## Methodology");
+    expect(md).toContain("## What this score means");
+    expect(md).toContain("process discipline, not code quality");
+    expect(md).toContain("## What this score cannot see");
+    expect(md).toContain("Solo accounts have a built-in blind spot");
+    expect(md).toContain("In plain terms, each dimension asks:");
   });
 
   it("lists could-not-verify dimensions explicitly", () => {

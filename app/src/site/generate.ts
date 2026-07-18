@@ -4,6 +4,13 @@
  * reports → same bytes. Renders aggregates only (privacy boundary upstream).
  */
 import type { DimensionResult, ScoreReport } from "../types.js";
+import {
+  PLAIN_LIMITS,
+  PLAIN_LIMITS_TITLE,
+  PLAIN_MEANING,
+  PLAIN_MEANING_TITLE,
+  PLAIN_QUESTIONS,
+} from "../report/plain.js";
 
 export function esc(s: string): string {
   return s
@@ -76,6 +83,7 @@ th{color:var(--muted);font-weight:600;font-size:.8rem;text-transform:uppercase;l
 .bar i{position:absolute;inset:0;width:0;background:var(--strong);opacity:.55}
 .bar span{position:absolute;inset:0;display:flex;align-items:center;padding-left:.5rem;font-size:.8rem}
 .bar.unverified span{color:var(--muted);font-style:italic}
+.question{margin-top:.25rem;max-width:28rem}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:1rem 1.2rem;margin:.8rem 0}
 footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line)}
 `;
@@ -133,6 +141,12 @@ tool and pipeline are public and deterministic; reports on private repos are rep
 by the owner from the pinned commit. Unflattering scores stay in.</p>
 <h2>Scoreboard</h2>
 ${rows}
+<h2>${esc(PLAIN_MEANING_TITLE)}</h2>
+${PLAIN_MEANING.map((p) => `<p class="small">${esc(p)}</p>`).join("\n")}
+<h2>${esc(PLAIN_LIMITS_TITLE)}</h2>
+<div class="panel small"><ul>
+${PLAIN_LIMITS.map((p) => `<li>${esc(p)}</li>`).join("\n")}
+</ul></div>
 <h2>How these scores are made</h2>
 <div class="panel small">
 Every change to the audit tool itself flows: plan → agent build → independent fresh-context
@@ -145,9 +159,11 @@ ${FOOTER}`;
 
 export function generateReportHtml(report: ScoreReport): string {
   const dims = report.dimensions
-    .map(
-      (d) => `<tr><td>${esc(d.label)}</td><td>${bar(d)}</td><td class="small muted">${esc(d.detail)}</td></tr>`,
-    )
+    .map((d) => {
+      const q = PLAIN_QUESTIONS[d.key];
+      const question = q ? `<div class="small muted question">${esc(q)}</div>` : "";
+      return `<tr><td>${esc(d.label)}${question}</td><td>${bar(d)}</td><td class="small muted">${esc(d.detail)}</td></tr>`;
+    })
     .join("\n");
 
   const unverified =
@@ -168,6 +184,12 @@ ${report.sample.mergedPullRequests} merged PRs${report.sample.pullRequestsTrunca
 ${dims}
 </tbody></table>
 ${unverified}
+<h2>${esc(PLAIN_MEANING_TITLE)}</h2>
+${PLAIN_MEANING.map((p) => `<p class="small">${esc(p)}</p>`).join("\n")}
+<h2>${esc(PLAIN_LIMITS_TITLE)}</h2>
+<div class="panel small"><ul>
+${PLAIN_LIMITS.map((p) => `<li>${esc(p)}</li>`).join("\n")}
+</ul></div>
 ${FOOTER}`;
   return page(`${report.repo}: agentic-SDLC audit`, body);
 }

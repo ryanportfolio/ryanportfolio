@@ -96,6 +96,19 @@ describe("generateReportHtml", () => {
     expect(html).toContain(`style="width:0%"`);
   });
 
+  it("index and report pages carry the plain-language meaning and limits", () => {
+    for (const html of [generateIndexHtml([healthy]), generateReportHtml(healthy)]) {
+      expect(html).toContain("What this score means");
+      expect(html).toContain("process discipline, not code quality");
+      expect(html).toContain("What this score cannot see");
+      expect(html).toContain("no GitHub artifact is invisible");
+      expect(html).toContain("Solo accounts have a built-in blind spot");
+    }
+    expect(generateReportHtml(healthy)).toContain(
+      "how many did anyone other than the author look at before merge?",
+    );
+  });
+
   it("slug collisions throw instead of silently overwriting", () => {
     const a = structuredClone(healthy);
     const b = structuredClone(healthy);
