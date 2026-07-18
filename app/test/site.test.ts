@@ -160,6 +160,20 @@ describe("generateReportHtml", () => {
     expect(page).not.toContain(`<span class="tag-unverified">`);
   });
 
+  it("report pages carry the stamp chip and colophon; index chips stay flat", () => {
+    const page = generateReportHtml(healthy);
+    expect(page).toMatch(/class="chip [a-z]+ stamp"/);
+    for (const dt of ["Commit", "Collected", "Sample", "Publication"]) {
+      expect(page).toContain(`<dt>${dt}</dt>`);
+    }
+    // The publication row states the rule, never asserts a per-report event.
+    expect(page).toContain("Requires prior owner approval");
+    expect(page).not.toContain("Owner-approved before publication");
+    // Markup check, not raw substring: the CSS block names .chip.stamp on
+    // every page; only report markup may apply the class.
+    expect(generateIndexHtml([healthy])).not.toContain(` stamp"`);
+  });
+
   it("chrome invariants: brand-font origin, fallback stacks, zero scripts", () => {
     for (const html of [generateIndexHtml([healthy]), generateReportHtml(healthy)]) {
       expect(html).toContain("https://corewise.academy/fonts/");

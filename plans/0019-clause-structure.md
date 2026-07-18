@@ -20,8 +20,10 @@ clauses: scope, exclusions, declarations. So:
 
 ## Constraint contract
 
-- Accent blue: tool voice and structure. Amber (the existing developing
-  token): unverified owner claims only. No other semantic color use.
+- Accent blue: tool voice and structure. The unverified marker is amber
+  with a dashed border and panel background: dashed means unconfirmed,
+  and the shape keeps it a different species from the solid-border grade
+  chips that share the amber hue. No other semantic color use.
 - Mono uppercase: clause numbers, tags, labels only. Serif: content.
 - Info sections: no paragraph block over two rendered lines except
   clause detail lines, which are intentionally small and secondary.

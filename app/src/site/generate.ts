@@ -133,13 +133,14 @@ th{font-family:var(--font-mono);color:var(--ink-mute);font-weight:500;font-size:
 .callout .callout-title{font-family:var(--font-mono);font-weight:500;font-size:.76rem;text-transform:uppercase;letter-spacing:var(--tracking-caps);color:var(--accent-deep);display:block;margin-bottom:.3rem}
 .clause{display:grid;grid-template-columns:2.8rem 1fr;gap:0 .7rem;padding:.6rem 0;border-top:1px solid var(--line-soft)}
 .clauses .clause:first-child{border-top:0}
-.clause:target{background:var(--accent-wash)}
+.clause:target{box-shadow:inset 3px 0 0 var(--accent)}
 a.clause-no{font-family:var(--font-mono);font-size:.72rem;color:var(--accent-deep);padding-top:.28rem;text-decoration:none}
 a.clause-no:hover{text-decoration:underline}
 .clause-label{margin:0;font-size:1rem;font-weight:600;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}
 .clause-detail{margin:.15rem 0 0;font-size:.82rem;line-height:1.55;color:var(--ink-mute)}
 .clauses{margin:.4rem 0 0}
-.tag-unverified{font-family:var(--font-mono);font-weight:400;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--developing);border:1px solid currentColor;padding:.1rem .45rem;white-space:nowrap}
+.tag-unverified{font-family:var(--font-mono);font-weight:400;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--developing);background:var(--panel);border:1px dashed currentColor;padding:.1rem .45rem;white-space:nowrap}
+.callout .clause-detail{color:var(--ink-soft)}
 .dot-row{display:flex;align-items:baseline;gap:.5rem}
 .dot-row .dots{flex:1;min-width:2rem;border-bottom:1px dotted var(--line);transform:translateY(-.28em)}
 .report-arrow{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--accent-deep)}
@@ -321,7 +322,7 @@ export function generateReportHtml(report: SiteReport): string {
 <div><dt>Commit</dt><dd><code>${esc(report.headSha ?? "(no commits)")}</code></dd></div>
 <div><dt>Collected</dt><dd>${esc(report.collectedAt)}</dd></div>
 <div><dt>Sample</dt><dd>${report.sample.commits} commits${report.sample.commitsTruncated ? " (truncated)" : ""} · ${report.sample.mergedPullRequests} merged PRs${report.sample.pullRequestsTruncated ? " (truncated)" : ""}</dd></div>
-<div><dt>Status</dt><dd>Owner-approved before publication</dd></div>
+<div><dt>Publication</dt><dd>Requires prior owner approval: <a href="https://github.com/ryanportfolio/ryanportfolio/blob/main/governance/README.md">rule</a></dd></div>
 </dl>
 ${limitsCallout(false)}
 <h2>Dimensions</h2>
