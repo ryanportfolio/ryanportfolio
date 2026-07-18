@@ -1,0 +1,5 @@
+{
+  "owner": "your-github-account",
+  "include": ["public-repo-one", "private-repo-two", "this-repo"],
+  "exclude": ["repo-you-never-want-featured"]
+}

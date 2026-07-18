@@ -15,7 +15,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "eval": "tsx eval/run-eval.ts",
-    "audit": "tsx src/cli.ts"
+    "audit": "tsx src/cli.ts",
+    "fleet": "tsx src/fleet.ts"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",

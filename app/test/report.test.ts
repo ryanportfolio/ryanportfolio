@@ -1,0 +1,99 @@
+import { describe, expect, it } from "vitest";
+import { renderReportMarkdown } from "../src/report/render.js";
+import {
+  renderReportsIndex,
+  renderScoreboardTable,
+  sortRows,
+  toScoreboardRow,
+  updateReadmeScoreboard,
+  SCOREBOARD_END,
+  SCOREBOARD_START,
+} from "../src/report/scoreboard.js";
+import { scoreRepo } from "../src/score/index.js";
+import { makeFacts, makePull } from "./helpers.js";
+
+describe("renderReportMarkdown", () => {
+  it("renders grade, provenance, dimensions, and methodology", () => {
+    const report = scoreRepo(makeFacts());
+    const md = renderReportMarkdown(report);
+    expect(md).toContain("# Agentic-SDLC audit — ryanportfolio/example");
+    expect(md).toContain(`— ${report.grade}**`);
+    expect(md).toContain("Head commit: `abc1234`");
+    expect(md).toContain("| Dimension | Score | Weight | Basis |");
+    expect(md).toContain("## Methodology");
+  });
+
+  it("lists could-not-verify dimensions explicitly", () => {
+    const report = scoreRepo(makeFacts({ pullRequests: [] }));
+    const md = renderReportMarkdown(report);
+    expect(md).toContain("## Could not verify");
+    expect(md).toContain("could not verify");
+    expect(md).toContain("**Overall: Unscorable");
+  });
+
+  it("notes sample truncation", () => {
+    const facts = makeFacts();
+    facts.limits.commitsTruncated = true;
+    const md = renderReportMarkdown(scoreRepo(facts));
+    expect(md).toContain("(truncated at collection limit)");
+  });
+});
+
+describe("scoreboard", () => {
+  const rows = [
+    toScoreboardRow(scoreRepo(makeFacts()), true),
+    {
+      repo: "ryanportfolio/other",
+      overall: null,
+      grade: "Unscorable",
+      reportPath: "reports/other.md",
+      isPrivate: false,
+    },
+  ];
+
+  it("sorts scored rows first, descending", () => {
+    const sorted = sortRows(rows);
+    expect(sorted[0]?.overall).not.toBeNull();
+    expect(sorted[sorted.length - 1]?.overall).toBeNull();
+  });
+
+  it("renders table with privacy tag and report links", () => {
+    const table = renderScoreboardTable(rows);
+    expect(table).toContain("ryanportfolio/example (private)");
+    expect(table).toContain("[report](reports/example.md)");
+    expect(table).toContain("unscorable");
+  });
+
+  it("index includes honesty note and prefixed links", () => {
+    const index = renderReportsIndex(rows, "2026-03-01T00:00:00Z");
+    expect(index).toContain("[report](../reports/example.md)");
+    expect(index).toContain("Unflattering scores stay in");
+  });
+
+  it("README block replacement is deterministic and idempotent", () => {
+    const readme = `# hi\n\n${SCOREBOARD_START}\nold\n${SCOREBOARD_END}\n\ntail`;
+    const table = renderScoreboardTable(rows);
+    const once = updateReadmeScoreboard(readme, table);
+    const twice = updateReadmeScoreboard(once, table);
+    expect(once).toBe(twice);
+    expect(once).toContain(table);
+    expect(once).not.toContain("old");
+    expect(once).toContain("tail");
+  });
+
+  it("throws when markers are missing", () => {
+    expect(() => updateReadmeScoreboard("no markers", "t")).toThrow(/markers/);
+  });
+});
+
+describe("privacy: rendered output carries no source text", () => {
+  it("report built from realistic facts contains only aggregates", () => {
+    const facts = makeFacts({ pullRequests: [makePull(), makePull({ number: 2 })] });
+    const md = renderReportMarkdown(scoreRepo(facts));
+    // Facts schema has no message/title/body/diff fields at all; assert the
+    // renderer also never emits placeholders for them.
+    for (const forbidden of ["commit message", "diff --git", "```"]) {
+      expect(md).not.toContain(forbidden);
+    }
+  });
+});
