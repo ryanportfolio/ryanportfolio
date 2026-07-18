@@ -9,7 +9,7 @@
 .env.local
 .env.*.local
 
-# Fleet audit config: names private repos (incl. excluded ones) — never commit
+# Fleet audit config: names private repos (incl. excluded ones); never commit
 app/fleet.config.json
 
 # Dependencies / build output

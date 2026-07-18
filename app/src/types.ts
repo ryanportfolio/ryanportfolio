@@ -13,7 +13,7 @@ export interface RepoFacts {
     name: string;
     defaultBranch: string;
     isPrivate: boolean;
-    /** ISO timestamp of collection — recorded for provenance, never used in scoring. */
+    /** ISO timestamp of collection, recorded for provenance, never used in scoring. */
     collectedAt: string;
     headSha: string | null;
   };
@@ -54,7 +54,7 @@ export interface PullRequestFact {
   number: number;
   authorLogin: string | null;
   authorIsBot: boolean;
-  /** Length only — the body text is discarded at collection. */
+  /** Length only; the body text is discarded at collection. */
   bodyLength: number;
   bodyRefsIssue: boolean;
   bodyRefsPlanDoc: boolean;
@@ -81,7 +81,7 @@ export interface DimensionResult {
   /** 0–100, or null when the underlying signal could not be verified. */
   score: number | null;
   weight: number;
-  /** Human-readable basis for the score — aggregate numbers only. */
+  /** Human-readable basis for the score; aggregate numbers only. */
   detail: string;
   /** Context metrics (aggregates only), for the report. */
   metrics: Record<string, number | string | null>;

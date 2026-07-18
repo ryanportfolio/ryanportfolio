@@ -1,14 +1,14 @@
-# Plan 0009 — README accuracy pass
+# Plan 0009: README accuracy pass
 
 **Goal:** owner flagged the README bio as containing false and misleading
-descriptions (e.g. "audio at truenote.org" — Truenote is a cited-answers
+descriptions (e.g. "audio at truenote.org"; Truenote is a cited-answers
 assistant for customer-service teams). Replace every invented descriptor
 with copy grounded in each site's own published self-description, and fix
 adjacent overclaims.
 
 ## Grounding (fetched 2026-07-18 from the live sites)
 
-- corewise.academy/about: "Ryan Allen — AI systems builder shipping end to
+- corewise.academy/about: "Ryan Allen, AI systems builder shipping end to
   end"; free guides on working with AI; four live systems, AI agents as
   workforce, "a human gate on every merge".
 - corewise.video (CoreWise): turns videos and articles into actionable
@@ -20,7 +20,7 @@ adjacent overclaims.
 - kinefractal.com (KineFractal): site carries only the tagline "buys fear →
   trims the strength"; the "systematic trading" descriptor is grounded in
   corewise.academy/about ("rule-based signal engine" between signal and
-  order). Least self-describing system — owner should correct if off.
+  order). Least self-describing system; owner should correct if off.
 
 ## Also fixed
 
@@ -28,12 +28,12 @@ adjacent overclaims.
   the honest split (tool + pipeline public and deterministic; private-repo
   reports owner-reproducible), matching the site copy fixed in PR #8.
 - "built exclusively through the pipeline it documents" gains "every change
-  since the bootstrap commit" — the two scaffold commits predate the
+  since the bootstrap commit"; the two scaffold commits predate the
   pipeline; the gate-checked phrase is retained.
 - Layout table phase markers updated to what now exists (app/, governance/,
   playbook shipped; reports/ pending Phase 3).
 
 ## Verification
 
-Gate (README link + phrase checks) passes; no invented descriptor remains —
+Gate (README link + phrase checks) passes; no invented descriptor remains;
 every claim traceable to a fetched self-description or removed.

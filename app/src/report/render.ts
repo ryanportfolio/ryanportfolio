@@ -11,10 +11,10 @@ function scoreCell(score: number | null): string {
 
 export function renderReportMarkdown(report: ScoreReport): string {
   const lines: string[] = [];
-  lines.push(`# Agentic-SDLC audit — ${report.repo}`);
+  lines.push(`# Agentic-SDLC audit: ${report.repo}`);
   lines.push("");
   lines.push(
-    `**Overall: ${report.overall === null ? "Unscorable" : `${report.overall}/100`} — ${report.grade}**`,
+    `**Overall: ${report.overall === null ? "Unscorable" : `${report.overall}/100`}, ${report.grade}**`,
   );
   lines.push("");
   lines.push(`- Collected: ${report.collectedAt}`);
@@ -60,7 +60,7 @@ export function renderReportMarkdown(report: ScoreReport): string {
   lines.push("## Methodology");
   lines.push("");
   lines.push(
-    "Scores are computed deterministically from GitHub API metadata (commits, pull requests, reviews, check runs, workflow presence) — same repo state, same score; no LLM in the scoring path. Reports contain aggregate metrics only: no source code, commit-message bodies, PR text, or configuration values are collected or published. Tool: [agentic-sdlc-audit](../app/).",
+    "Scores are computed deterministically from GitHub API metadata (commits, pull requests, reviews, check runs, workflow presence): same repo state, same score; no LLM in the scoring path. Reports contain aggregate metrics only: no source code, commit-message bodies, PR text, or configuration values are collected or published. Tool: [agentic-sdlc-audit](../app/).",
   );
   lines.push("");
   return lines.join("\n");

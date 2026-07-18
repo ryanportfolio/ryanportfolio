@@ -53,7 +53,7 @@ export function renderReportsIndex(rows: ScoreboardRow[], generatedAt: string): 
   lines.push("");
   lines.push(renderScoreboardTable(rows, "../"));
   lines.push("");
-  lines.push(`_Last regenerated: ${generatedAt}. Unflattering scores stay in — the credibility is the honesty._`);
+  lines.push(`_Last regenerated: ${generatedAt}. Unflattering scores stay in; the credibility is the honesty._`);
   lines.push("");
   return lines.join("\n");
 }

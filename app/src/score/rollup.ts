@@ -3,7 +3,7 @@ import type { RepoFacts, ScoreReport } from "../types.js";
 import { ALL_DIMENSIONS } from "./dimensions.js";
 
 /** Below this share of scorable weight, an overall score would be built on
- * too little verified signal — report Unscorable instead of guessing. */
+ * too little verified signal: report Unscorable instead of guessing. */
 const MIN_SCORABLE_WEIGHT = 0.5;
 
 export function gradeFor(overall: number | null): ScoreReport["grade"] {

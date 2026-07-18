@@ -3,7 +3,7 @@
  * Fleet runner: audit every configured repo and write reports/ + scoreboard.
  *
  * Run locally with an owner-scoped token (private repos are never touched by
- * CI). Output lands in the working tree only — publication happens through a
+ * CI). Output lands in the working tree only; publication happens through a
  * human-reviewed, human-merged PR, and every report is approved by the owner
  * before it is committed. The config file is local and gitignored because it
  * names private repos, including excluded ones that must never appear
@@ -95,7 +95,7 @@ async function main(): Promise<void> {
   const writtenArtifacts = new Map<string, string>();
   for (const name of config.include) {
     if (excluded.has(name.toLowerCase())) {
-      console.error(`skip ${name}: on the exclude list — never audited, never published.`);
+      console.error(`skip ${name}: on the exclude list: never audited, never published.`);
       continue;
     }
     console.error(`auditing ${config.owner}/${name}...`);
@@ -116,7 +116,7 @@ async function main(): Promise<void> {
   writeFileSync(readmePath, updateReadmeScoreboard(readme, renderScoreboardTable(rows)));
 
   console.error(
-    `\nDone: ${rows.length} report(s) rendered into the working tree. Review every page, then publish via PR — nothing is public until the owner merges.`,
+    `\nDone: ${rows.length} report(s) rendered into the working tree. Review every page, then publish via PR. Nothing is public until the owner merges.`,
   );
 }
 

@@ -1,15 +1,15 @@
-# Independent adversarial AI review — portable CI template.
+# Independent adversarial AI review: portable CI template.
 #
 # In THIS repo the live review lane runs locally on the owner's Claude
-# subscription (.claude/skills/adversarial-review — solo workflow: PRs are
+# subscription (.claude/skills/adversarial-review; solo workflow: PRs are
 # only pushed while the owner's machine is on), so this workflow is
 # intentionally inert: no ANTHROPIC_API_KEY secret is configured and each
 # run skips with a visible notice. It stays here as the copy-pastable,
-# event-driven variant for repos that want the lane always-on in CI —
+# event-driven variant for repos that want the lane always-on in CI;
 # add the secret (or subscription OAuth-token auth) to activate.
 #
 # Fresh context by construction: the job starts with no builder-session
-# state — it sees only the diff, the repo, and the instructions below.
+# state; it sees only the diff, the repo, and the instructions below.
 # It posts a review comment; it has NO merge or approval power. Merge
 # authority stays with the repo owner.
 name: ai-review
@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Notice when unconfigured
         if: env.HAS_KEY != 'true'
-        run: echo "::notice::ANTHROPIC_API_KEY secret not set — AI review skipped."
+        run: echo "::notice::ANTHROPIC_API_KEY secret not set; AI review skipped."
       - uses: actions/checkout@v4
         if: env.HAS_KEY == 'true'
         with:
@@ -69,5 +69,5 @@ jobs:
             Post your findings as a PR review comment using the GitHub tools
             available to you. Lead with the most serious issue. If after a
             genuine attempt to refute you find nothing wrong, say exactly
-            that — and list what you checked. Never rubber-stamp. Do not
+            that, and list what you checked. Never rubber-stamp. Do not
             approve, request changes, or merge; a human makes those calls.

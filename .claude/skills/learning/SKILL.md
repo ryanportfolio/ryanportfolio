@@ -3,7 +3,7 @@ name: learning
 description: Use after confirmed multi-attempt problem solving reveals durable gotchas, or when the user asks to capture or save session learnings.
 ---
 
-# learning — retrospective synthesis of session lessons
+# learning: retrospective synthesis of session lessons
 
 ## Overview
 
@@ -17,10 +17,10 @@ Looks back at the conversation that just finished, extracts the generalizable le
 
 ## When NOT to use
 
-- Short, surprise-free sessions — nothing to extract, exit
-- Sessions that ended ambiguously or unverified — never capture lessons from outcomes you are not sure about
-- The only insight is a user preference about Claude's behavior — that belongs in CLAUDE.md or personal config, not topical reference
-- The lesson is already documented with the same content — touch the date instead, do not duplicate
+- Short, surprise-free sessions; nothing to extract, exit
+- Sessions that ended ambiguously or unverified; never capture lessons from outcomes you are not sure about
+- The only insight is a user preference about Claude's behavior; that belongs in CLAUDE.md or personal config, not topical reference
+- The lesson is already documented with the same content; touch the date instead, do not duplicate
 
 ## Process
 
@@ -29,7 +29,7 @@ Looks back at the conversation that just finished, extracts the generalizable le
 Look back at the conversation context. A candidate must clear at least one bar:
 
 - **Took >1 attempt** to get right (an incorrect path was tried first)
-- **Contradicted an assumption** — Claude's or the user's
+- **Contradicted an assumption**: Claude's or the user's
 - **Revealed a wrong, stale, or missing entry** in `.claude/reference/` or `CLAUDE.md`
 - **A workaround a future session needs to know about**
 
@@ -42,7 +42,7 @@ For each survivor, write one entry in this format:
 ```markdown
 ### YYYY-MM-DD: <short title>
 
-<1–5 sentences. Symptom + underlying cause + the generalizable rule. Include `file:line` refs where relevant. Do not quote large code blocks. The fix is the least interesting part — the WHY is what makes it transferable.>
+<1–5 sentences. Symptom + underlying cause + the generalizable rule. Include `file:line` refs where relevant. Do not quote large code blocks. The fix is the least interesting part; the WHY is what makes it transferable.>
 ```
 
 Today's date: check the conversation context's `# currentDate` block first; otherwise `date +%Y-%m-%d`.
@@ -60,7 +60,7 @@ Pick the right `.claude/reference/<topic>.md`:
 | Build / dev / deploy commands | `commands.md` |
 | Deploy target, build artifacts | `deployment.md` |
 
-(Check `ls .claude/reference/` — this project may have grown additional topic files beyond the starter set.)
+(Check `ls .claude/reference/`; this project may have grown additional topic files beyond the starter set.)
 
 If no existing topic fits and the lesson is durable, propose a new topic file *and* an index-row update to CLAUDE.md's "Project Reference Library" section so future sessions can find it.
 

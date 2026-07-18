@@ -41,7 +41,7 @@ const GRADE_CLASS: Record<string, string> = {
 
 function gradeChip(grade: string, overall: number | null): string {
   const cls = GRADE_CLASS[grade] ?? "unscorable";
-  const score = overall === null ? "—" : `${overall}`;
+  const score = overall === null ? "–" : `${overall}`;
   return `<span class="chip ${cls}"><b>${esc(score)}</b> ${esc(grade)}</span>`;
 }
 
@@ -49,7 +49,7 @@ function bar(d: DimensionResult): string {
   if (d.score === null) {
     return `<div class="bar unverified" title="could not verify"><span>could not verify</span></div>`;
   }
-  // A true 0 renders as an empty bar — unflattering scores stay unflattering.
+  // A true 0 renders as an empty bar; unflattering scores stay unflattering.
   const width = d.score === 0 ? 0 : Math.min(100, Math.max(2, Math.round(d.score)));
   return `<div class="bar"><i style="width:${width}%"></i><span>${esc(String(d.score))}</span></div>`;
 }
@@ -97,9 +97,9 @@ ${body}
 }
 
 const FOOTER = `<footer class="small muted">
-Scores are deterministic — same repo state, same score; no LLM in the scoring path.
+Scores are deterministic: same repo state, same score; no LLM in the scoring path.
 Reports contain aggregate metrics only: no source code, commit messages, PR text, or config values.
-Every published report is explicitly approved by the owner first — the rule lives in the
+Every published report is explicitly approved by the owner first; the rule lives in the
 <a href="https://github.com/ryanportfolio/ryanportfolio/blob/main/governance/README.md">governance page</a>.
 <a href="https://github.com/ryanportfolio/ryanportfolio">Pipeline &amp; tool source</a>.
 </footer>`;
@@ -116,7 +116,7 @@ export function generateIndexHtml(reports: ScoreReport[]): string {
 
   const rows =
     sorted.length === 0
-      ? `<div class="panel">Fleet audit pending — reports publish here only after per-report owner approval. The pipeline, scoring engine, and governance are already public in the <a href="https://github.com/ryanportfolio/ryanportfolio">repo</a>.</div>`
+      ? `<div class="panel">Fleet audit pending. Reports publish here only after per-report owner approval. The pipeline, scoring engine, and governance are already public in the <a href="https://github.com/ryanportfolio/ryanportfolio">repo</a>.</div>`
       : `<table><thead><tr><th>Repo</th><th>Score</th><th>Report</th></tr></thead><tbody>
 ${sorted
   .map(
@@ -126,9 +126,9 @@ ${sorted
   .join("\n")}
 </tbody></table>`;
 
-  const body = `<h1>Fleet audit — agentic engineering discipline</h1>
+  const body = `<h1>Fleet audit: agentic engineering discipline</h1>
 <p class="muted">Deterministic, scored reports on AI-agent development discipline across
-<a href="https://github.com/ryanportfolio">ryanportfolio</a>'s repos — most private. The
+<a href="https://github.com/ryanportfolio">ryanportfolio</a>'s repos, most private. The
 tool and pipeline are public and deterministic; reports on private repos are reproducible
 by the owner from the pinned commit. Unflattering scores stay in.</p>
 <h2>Scoreboard</h2>
@@ -137,10 +137,10 @@ ${rows}
 <div class="panel small">
 Every change to the audit tool itself flows: plan → agent build → independent fresh-context
 AI review → CI test+eval gate → owner-authorized merge. The repo's own PR history is the
-living demo — <a href="https://github.com/ryanportfolio/ryanportfolio/pulls?q=is%3Apr">read it</a>.
+living demo: <a href="https://github.com/ryanportfolio/ryanportfolio/pulls?q=is%3Apr">read it</a>.
 </div>
 ${FOOTER}`;
-  return page("Fleet audit — ryanportfolio", body);
+  return page("Fleet audit: ryanportfolio", body);
 }
 
 export function generateReportHtml(report: ScoreReport): string {
@@ -160,7 +160,7 @@ export function generateReportHtml(report: ScoreReport): string {
   const body = `<p class="small"><a href="index.html">← scoreboard</a></p>
 <h1>${esc(report.repo)}</h1>
 <p>${gradeChip(report.grade, report.overall)}</p>
-<p class="small muted">Collected ${esc(report.collectedAt)} at <code>${esc(report.headSha ?? "(no commits)")}</code> —
+<p class="small muted">Collected ${esc(report.collectedAt)} at <code>${esc(report.headSha ?? "(no commits)")}</code>;
 sample: ${report.sample.commits} commits${report.sample.commitsTruncated ? " (truncated)" : ""},
 ${report.sample.mergedPullRequests} merged PRs${report.sample.pullRequestsTruncated ? " (truncated)" : ""}.</p>
 <h2>Dimensions</h2>
@@ -169,5 +169,5 @@ ${dims}
 </tbody></table>
 ${unverified}
 ${FOOTER}`;
-  return page(`${report.repo} — agentic-SDLC audit`, body);
+  return page(`${report.repo}: agentic-SDLC audit`, body);
 }

@@ -1,7 +1,7 @@
-# Plan 0006 — Local subscription-billed review lane
+# Plan 0006: Local subscription-billed review lane
 
 **Goal:** make the independent adversarial review lane runnable locally on
-the owner's Claude subscription (decision: solo workflow — PRs are only
+the owner's Claude subscription (decision: solo workflow; PRs are only
 pushed while the owner's machine is on, so a local lane loses nothing), and
 reposition the CI workflow as the portable, inert template.
 
@@ -12,7 +12,7 @@ reposition the CI workflow as the portable, inert template.
   with the same refute-don't-approve checklist as the workflow; it reads
   only the PR (diff, plan note, description) and posts findings as a PR
   comment. No approve/request-changes/merge power.
-- `.github/workflows/ai-review.yml`: header updated — portable template for
+- `.github/workflows/ai-review.yml`: header updated, portable template for
   other repos, intentionally inert here until a secret is added; the live
   lane in this repo is the local skill.
 - `governance/README.md` checkpoint 3 + honest limits, and `playbook.md`
@@ -29,4 +29,4 @@ cross-vendor upgrade). Fleet audit (Phase 3).
 
 - Codex sync + contract scripts pass; repo gate passes.
 - Skill activates in future sessions once merged (session skill list loads
-  at start) — cannot be exercised in this session; flagged, not claimed.
+  at start); cannot be exercised in this session; flagged, not claimed.

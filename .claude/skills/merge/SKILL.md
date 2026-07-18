@@ -2,11 +2,11 @@
 description: Use only when the user explicitly asks to enable session-wide automatic commit, push, PR, and merge; not for one-shot shipping requests.
 ---
 
-# Merge — Auto-Merge Mode (Session-Wide)
+# Merge: Auto-Merge Mode (Session-Wide)
 
-> Note: inside a git worktree this skill may be exposed under a directory-scoped name (e.g. `.claude/worktrees/<name>:merge`). Invoke the scoped name — same skill, same behavior.
+> Note: inside a git worktree this skill may be exposed under a directory-scoped name (e.g. `.claude/worktrees/<name>:merge`). Invoke the scoped name; same skill, same behavior.
 
-Invoking `/merge` does NOT do a one-off merge. It **flips on Auto-Merge Mode for the rest of the session**, like `/caveman` persists. From the moment it is on, every time a task is complete and verified (to the extent this environment allows), you run the **integration cycle** below automatically — no waiting to be asked, no per-merge confirmation.
+Invoking `/merge` does NOT do a one-off merge. It **flips on Auto-Merge Mode for the rest of the session**, like `/caveman` persists. From the moment it is on, every time a task is complete and verified (to the extent this environment allows), you run the **integration cycle** below automatically; no waiting to be asked, no per-merge confirmation.
 
 Invoking `/merge` IS the user's standing authorization to merge into `main` repeatedly for the session. That is why there is no per-merge confirm gate (see [Why no confirm](#why-no-per-merge-confirm)).
 
@@ -20,14 +20,14 @@ Then continue the current work. The cycle fires on the **next** task completion 
 
 ## The Integration Cycle
 
-Run this whenever a task is complete and verified. "Complete" = the requested change is finished and verified to the extent this environment allows (read code / logs / headless rasterize) — NOT mid-task, exploratory, or throwaway work. Never fabricate verification to trigger the cycle.
+Run this whenever a task is complete and verified. "Complete" = the requested change is finished and verified to the extent this environment allows (read code / logs / headless rasterize); NOT mid-task, exploratory, or throwaway work. Never fabricate verification to trigger the cycle.
 
 ### 1. Identify the branch
 - `git branch --show-current`.
 - If on `main` (should not happen mid-session): create a session branch first, never commit to `main` directly. The one session branch is reused for the whole session.
 
 ### 2. Commit + push the work
-- Stage **only the files this task touched** — never blanket-commit unrelated changes (`git status --short` to see what's there).
+- Stage **only the files this task touched**: never blanket-commit unrelated changes (`git status --short` to see what's there).
 - Commit with a clear message; end with the standard `Co-Authored-By:` trailer.
 - `git push` (set upstream on first push of the branch).
 
@@ -52,16 +52,16 @@ If `mergeable` is `CONFLICTING` or the merge is blocked by divergence:
 gh pr merge <number> --merge
 ```
 - `--merge` → merge commit (matches this repo's `Merge pull request #...` history).
-- **No `--delete-branch`** — the one session branch is kept until the session is done.
+- **No `--delete-branch`**; the one session branch is kept until the session is done.
 - **No `--squash` / `--rebase`** unless the user explicitly asked.
-- **No `--admin`** — do not bypass branch protection or failing required checks. If the merge is blocked by checks/protection, report why and stop (pause the cycle for that task); do not force it.
+- **No `--admin`**; do not bypass branch protection or failing required checks. If the merge is blocked by checks/protection, report why and stop (pause the cycle for that task); do not force it.
 
 ### 7. Report
-Confirm the merge landed, give the PR URL, note the branch was kept. If anything blocked it (failing checks, protection, unresolved/ambiguous conflict), report the exact `gh`/`git` output and the reason — never claim success you did not verify.
+Confirm the merge landed, give the PR URL, note the branch was kept. If anything blocked it (failing checks, protection, unresolved/ambiguous conflict), report the exact `gh`/`git` output and the reason; never claim success you did not verify.
 
 ## Why no per-merge confirm
 
-Merging into `main` is outward-facing and hard to fully undo. The single confirmation is **turning the mode on** — that is the explicit, standing authorization for the session. After that, per-merge prompts would defeat the purpose. The safety valves that remain:
+Merging into `main` is outward-facing and hard to fully undo. The single confirmation is **turning the mode on**: that is the explicit, standing authorization for the session. After that, per-merge prompts would defeat the purpose. The safety valves that remain:
 - the mode only fires on genuinely-complete, verified work;
 - ambiguous/semantic conflicts still stop and ask;
 - branch protection / required checks are still respected (no `--admin`);
@@ -69,16 +69,16 @@ Merging into `main` is outward-facing and hard to fully undo. The single confirm
 
 ## Deactivation
 
-Turn the mode OFF when the user says "stop merge", "stop auto-merge", "normal mode for merging", or the session ends. The session branch is **not** deleted on deactivation — clean up manually only when the session's work is truly done.
+Turn the mode OFF when the user says "stop merge", "stop auto-merge", "normal mode for merging", or the session ends. The session branch is **not** deleted on deactivation; clean up manually only when the session's work is truly done.
 
 ## Anti-patterns
 
-- Don't merge mid-task, exploratory, or unverified work — "complete + verified" is the gate.
+- Don't merge mid-task, exploratory, or unverified work; "complete + verified" is the gate.
 - Don't fabricate verification just to trigger the cycle.
-- Don't blanket-commit unrelated files — stage only what the task touched.
-- Don't push merge commits straight to `main` via `git push` — always integrate through `gh pr merge` so history stays `Merge pull request #...`.
-- Don't delete the branch (`--delete-branch`) — one branch for the whole session.
+- Don't blanket-commit unrelated files; stage only what the task touched.
+- Don't push merge commits straight to `main` via `git push`; always integrate through `gh pr merge` so history stays `Merge pull request #...`.
+- Don't delete the branch (`--delete-branch`); one branch for the whole session.
 - Don't switch merge method (`--squash`/`--rebase`) on your own.
-- Don't bypass protections/checks (`--admin`) without an explicit ask — report the block and stop.
-- Don't guess on semantic merge conflicts — resolve the unambiguous ones, stop and ask on the rest.
-- Don't fabricate success — report the real `gh pr merge` / `git merge` outcome.
+- Don't bypass protections/checks (`--admin`) without an explicit ask; report the block and stop.
+- Don't guess on semantic merge conflicts; resolve the unambiguous ones, stop and ask on the rest.
+- Don't fabricate success; report the real `gh pr merge` / `git merge` outcome.

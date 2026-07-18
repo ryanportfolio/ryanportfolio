@@ -1,4 +1,4 @@
-# Humanizer — pattern reference
+# Humanizer: pattern reference
 
 Before/after examples for each tell. The agent reads this file **only when a pattern in SKILL.md is ambiguous**.
 
