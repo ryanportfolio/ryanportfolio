@@ -133,12 +133,12 @@ describe("generateReportHtml", () => {
     const index = generateIndexHtml([healthy]);
     expect(index.match(/What this score cannot see/g)).toHaveLength(1);
     expect(index.indexOf("What this score cannot see")).toBeLessThan(index.indexOf("Scoreboard"));
-    // First person by owner decision; attribution lives in the D-1 label.
+    // First person, stated as fact by owner decision (plan 0021); the
+    // published limit is scoring status, not doubt.
     expect(index).toContain("My reviews almost always run as handoff audits");
     expect(index).toContain("Owner's declaration");
-    // The practice claim stays conditional, never site-voice fact.
-    expect(index).toContain("The tool has not verified that claim");
-    expect(index).toContain("if the claim is accurate");
+    expect(index).toContain("cannot see those sessions and gives them no score credit");
+    expect(index).not.toContain("if the claim is accurate");
     // The declared practice links the real public skill, described accurately.
     // Pin the live anchor markup, not just the URL text: if refHtml is ever
     // routed through esc(), the dead-link regression must fail here.
@@ -162,12 +162,12 @@ describe("generateReportHtml", () => {
     for (const id of ["E-1", "E-2", "E-3", "S-1", "S-2", "S-3", "M-1", "D-1"]) {
       expect(index).toContain(`href="#${id.toLowerCase()}">${id}</a>`);
     }
-    expect(index).toContain(`<span class="tag-unverified">Unverified</span>`);
+    expect(index).toContain(`<span class="tag-notscored">Not scored</span>`);
     const page = generateReportHtml(healthy);
     expect(page).toContain(`href="#e-1">E-1</a>`);
-    // The declaration and its unverified tag are index-only.
+    // The declaration and its Not scored tag are index-only.
     expect(page).not.toContain(`clause-no">D-1`);
-    expect(page).not.toContain(`<span class="tag-unverified">`);
+    expect(page).not.toContain(`<span class="tag-notscored">`);
   });
 
   it("report pages carry the stamp chip and colophon; index chips stay flat", () => {
