@@ -12,6 +12,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import process from "node:process";
+import { pathToFileURL } from "node:url";
 import { collectRepoFacts } from "./collect.js";
 import { GithubClient } from "./github.js";
 import { jsonArtifactName, publicReportJson } from "./report/public.js";
@@ -54,6 +55,29 @@ function loadConfig(): FleetConfig {
   return raw as FleetConfig;
 }
 
+/**
+ * Write the per-repo artifacts. Exported for tests: the JSON artifact MUST
+ * go through the allowlist projection (publicReportJson) and sanitized
+ * filenames must not collide across the fleet.
+ */
+export function writeReportArtifacts(
+  reportsDir: string,
+  name: string,
+  report: ReturnType<typeof scoreRepo>,
+  written: Map<string, string> = new Map(),
+): void {
+  const jsonName = jsonArtifactName(name);
+  const prior = written.get(jsonName);
+  if (prior !== undefined) {
+    throw new Error(`artifact collision: "${prior}" and "${name}" both map to ${jsonName}`);
+  }
+  written.set(jsonName, name);
+  writeFileSync(resolve(reportsDir, `${name}.md`), renderReportMarkdown(report));
+  const dataDir = resolve(reportsDir, "data");
+  mkdirSync(dataDir, { recursive: true });
+  writeFileSync(resolve(dataDir, jsonName), publicReportJson(report));
+}
+
 async function main(): Promise<void> {
   const config = loadConfig();
   const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
@@ -68,6 +92,7 @@ async function main(): Promise<void> {
   mkdirSync(reportsDir, { recursive: true });
 
   const rows: ScoreboardRow[] = [];
+  const writtenArtifacts = new Map<string, string>();
   for (const name of config.include) {
     if (excluded.has(name.toLowerCase())) {
       console.error(`skip ${name}: on the exclude list — never audited, never published.`);
@@ -76,12 +101,7 @@ async function main(): Promise<void> {
     console.error(`auditing ${config.owner}/${name}...`);
     const facts = await collectRepoFacts(client, config.owner, name);
     const report = scoreRepo(facts);
-    const markdown = renderReportMarkdown(report);
-    const outPath = resolve(reportsDir, `${name}.md`);
-    writeFileSync(outPath, markdown);
-    const dataDir = resolve(reportsDir, "data");
-    mkdirSync(dataDir, { recursive: true });
-    writeFileSync(resolve(dataDir, `${jsonArtifactName(name)}`), publicReportJson(report));
+    writeReportArtifacts(reportsDir, name, report, writtenArtifacts);
     rows.push(toScoreboardRow(report, facts.repo.isPrivate));
     console.error(
       `  → ${report.overall === null ? "unscorable" : report.overall + "/100"} (${report.grade}) written to reports/${name}.md`,
@@ -100,7 +120,11 @@ async function main(): Promise<void> {
   );
 }
 
-main().catch((err) => {
-  console.error(err instanceof Error ? err.message : String(err));
-  process.exit(1);
-});
+const isDirectRun =
+  process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (isDirectRun) {
+  main().catch((err) => {
+    console.error(err instanceof Error ? err.message : String(err));
+    process.exit(1);
+  });
+}
