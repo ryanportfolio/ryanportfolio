@@ -4,7 +4,7 @@ description: Use only when the user explicitly invokes /why to challenge the ass
 
 # Why
 
-The user typed `/why`. They just got a recommendation from you; a library, an approach, a file layout, a fix, a tradeoff call; and want a quick, honest, well-rounded look at it: why it matters, the real reasoning, and, critically, what it might be missing. They can already see the recommendation. Don't re-explain the conversation. Explain and pressure-test the *pick*.
+The user typed `/why`. They just got a recommendation from you (a library, an approach, a file layout, a fix, a tradeoff call) and want a quick, honest, well-rounded look at it: why it matters, the real reasoning, and, critically, what it might be missing. They can already see the recommendation. Don't re-explain the conversation. Explain and pressure-test the *pick*.
 
 **Trigger:** this skill runs ONLY on the explicit `/why` command. The word "why" used normally in conversation is not a trigger; never fire on it.
 
@@ -12,7 +12,7 @@ The user typed `/why`. They just got a recommendation from you; a library, an ap
 
 ## Step 1: Lock onto what's being reviewed
 
-- **Default: the assistant message directly before the user's `/why`**: your own immediately-preceding turn. That's the recommendation they're reacting to. Don't scan further back unless that turn has nothing to review.
+- **Default: the assistant message directly before the user's `/why`**; your own immediately-preceding turn. That's the recommendation they're reacting to. Don't scan further back unless that turn has nothing to review.
 - If the user passed an argument (`/why the caching approach`, `/why picking Wouter`), let it scope or redirect; they may mean a specific pick inside that previous turn, or an earlier one. Honor the argument over the default.
 - If that previous turn made **several** distinct recommendations and the argument doesn't disambiguate, ask one short question naming the candidates. Don't guess and burn the review on the wrong one.
 - If the previous turn contains **no actual recommendation** (a question, a status update, a plain answer), say so in one line and stop; don't invent something to critique or reach back for an unrelated older pick without asking.

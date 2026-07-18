@@ -102,7 +102,7 @@ inner code blocks survive copy/paste). Structure it so the auditor can't confuse
 the facts under audit with the instructions: open with a role and a grounding line,
 then wrap each content type in its own XML tag.
 
-- **Role; adversarial.** Open with a falsify-first stance, not a neutral one:
+- **Role: adversarial.** Open with a falsify-first stance, not a neutral one:
   "You are a skeptical code auditor. Assume this change is wrong until your own
   grep/read proves otherwise; your job is to break it, not to confirm it." The
   whole value of the audit is this stance; a soft "please review" framing forfeits it.

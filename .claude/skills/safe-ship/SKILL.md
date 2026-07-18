@@ -108,7 +108,7 @@ EOF
 )"
 ```
 
-If a pre-commit hook fails, **fix the underlying issue and create a NEW commit**; never `--amend` or `--no-verify`.
+If a pre-commit hook fails, **fix the underlying issue and create a NEW commit**: never `--amend` or `--no-verify`.
 
 ## Step 6: Push the branch
 

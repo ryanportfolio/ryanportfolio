@@ -21,7 +21,7 @@ A lab is **scratch tooling, never product**:
 ## Workflow
 
 ### 1. Scope the knobs
-Read the real code for the element. List every tunable parameter and its **current value**; these become the lab's controls. A knob is anything the user might want to feel out: durations, magnitudes, counts, radii, easing, colors, alphas, spacing, font sizes, delays, thresholds. Note the real constant name for each (you'll reuse it as the JSON key).
+Read the real code for the element. List every tunable parameter and its **current value**: these become the lab's controls. A knob is anything the user might want to feel out: durations, magnitudes, counts, radii, easing, colors, alphas, spacing, font sizes, delays, thresholds. Note the real constant name for each (you'll reuse it as the JSON key).
 
 Decide the template (see `templates.md`):
 - **Game / canvas**: anything drawn to a `<canvas>`: particles, flashes, shake, trails, sprites, motion, timing. Mock the world procedurally (dummy actors, auto-fire); do NOT import the real engine.
@@ -33,7 +33,7 @@ Start from the matching skeleton in `templates.md`. For each knob, add a labeled
 ### 3. Add "Copy Settings": and design for the `file://` clipboard gotcha
 A button that serializes the current control values to JSON. Keys = real constant names (contract rule 3).
 
-**CRITICAL gotcha (bit a real session; "I click copy settings but it's not copying"):** every lab here runs from `file://` (step 4), and on a `file://` page `navigator.clipboard` is frequently **`undefined`** (the Clipboard API needs a secure context). `navigator.clipboard.writeText(...)` then throws a **synchronous `TypeError`**; NOT a rejected promise; so a naive `.catch(() => {})` never runs, the click handler aborts, and the visible JSON mirror never gets written → the button looks dead AND nothing is copyable.
+**CRITICAL gotcha (bit a real session; "I click copy settings but it's not copying"):** every lab here runs from `file://` (step 4), and on a `file://` page `navigator.clipboard` is frequently **`undefined`** (the Clipboard API needs a secure context). `navigator.clipboard.writeText(...)` then throws a **synchronous `TypeError`** (NOT a rejected promise) so a naive `.catch(() => {})` never runs, the click handler aborts, and the visible JSON mirror never gets written → the button looks dead AND nothing is copyable.
 
 So make the JSON readable **without** relying on the clipboard:
 

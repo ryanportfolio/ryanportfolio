@@ -8,7 +8,7 @@ You are reviewing work that was probably written too fast; possibly by you. Your
 
 The hardest bias to overcome is defending code you just wrote. The fix is mechanical: dispatch the actual review to fresh-context Sonnet 4.6 subagents that have not seen the conversation that produced the code. Your job in the main session is to gather the diff, brief the subagents, and consolidate findings.
 
-This is a two-stage split, and the stages have opposite jobs. The subagents maximize **coverage**; find everything, including uncertain and low-severity issues. You; running on the strongest available model; supply **precision**, verifying each finding before it reaches the human. Over-reporting upstream of a strong verifier is the design, not a flaw: it is the main model's job to review the subagents' work, not to rubber-stamp it.
+This is a two-stage split, and the stages have opposite jobs. The subagents maximize **coverage**: find everything, including uncertain and low-severity issues. You (running on the strongest available model) supply **precision**, verifying each finding before it reaches the human. Over-reporting upstream of a strong verifier is the design, not a flaw: it is the main model's job to review the subagents' work, not to rubber-stamp it.
 
 ## Step 1: Identify scope
 
@@ -50,14 +50,14 @@ Bucket E (project-aware) gets an **extended** prompt; see its section below. The
 
 ### The five buckets
 
-**Bucket A; Correctness & types**
+**Bucket A: Correctness & types**
 - Bugs, off-by-one, edge cases, logic errors
 - Conditions that look right but aren't (`||` vs `??`, missing `await`, mutating loops, truthy/falsy traps)
 - ORM table ↔ validation schema drift; inferred type drift
 - Consumers of a changed type that no longer compile
 - Optional fields added without updating callers
 
-**Bucket B; Data flow, compatibility, error handling**
+**Bucket B: Data flow, compatibility, error handling**
 - Where input comes from, where output goes, what cache rows look like
 - Concurrent access; stale or wrong-shape cache rows
 - Old data in the DB; old rows in changed-shape tables; old cache rows; old API requests
@@ -65,12 +65,12 @@ Bucket E (project-aware) gets an **extended** prompt; see its section below. The
 - Failure paths, timeouts, retries; external APIs returning null/empty/wrong shape
 - Values assumed present that can be undefined
 
-**Bucket C; Perf, security, observability**
+**Bucket C: Perf, security, observability**
 - Extra DB queries per request, prompt size growth, latency, N+1, full-table scans, unbounded loops
 - Cross-user data leakage, prompt injection, auth bypasses, PII/secrets in logs, public endpoints
 - Logs on paths that matter; silent failure modes (parser returns empty, fallback fires, cache miss) made visible
 
-**Bucket D; Things the author missed** (highest-value bucket; undivided attention, push hard)
+**Bucket D: Things the author missed** (highest-value bucket; undivided attention, push hard)
 
 This is the single highest-leverage category and gets its own dedicated reviewer. The agent should treat the diff as a list of incomplete changes and look for what wasn't done.
 
@@ -89,7 +89,7 @@ This is the single highest-leverage category and gets its own dedicated reviewer
 
 For this bucket specifically: greppability beats cleverness. The agent should `grep` the changed identifiers across the codebase and look at every hit to see if anything was missed.
 
-**Bucket E; Project-aware violations** (the structural blind spot of fresh-context review)
+**Bucket E: Project-aware violations** (the structural blind spot of fresh-context review)
 
 The other four reviewers are deliberately context-free; that's the source of their impartiality, and also why they can't catch violations of *this codebase's specific rules*. Bucket E exists to close that gap. The agent reads project reference material first, then reviews the diff against it.
 
@@ -149,9 +149,9 @@ Do not produce them.
 🟢 NITPICK; Style, future polish, deferable
 
 ## Confidence (tag every finding, separate from severity)
-HIGH; verified: I read the file / grepped the call sites.
-MED ; likely, but I only partially checked.
-LOW ; suspected; I could not fully verify within my time budget.
+HIGH: verified: I read the file / grepped the call sites.
+MED: likely, but I only partially checked.
+LOW: suspected; I could not fully verify within my time budget.
 
 Report LOW-confidence findings too; tag them LOW and let the main-session merge
 step adjudicate. Never drop a real finding because you're unsure; that call
@@ -243,9 +243,9 @@ For every issue you suspect, run a real check before asserting.
 🟢 NITPICK; Style alignment with project conventions, deferrable
 
 ## Confidence (tag every finding, separate from severity)
-HIGH; verified: I read the file / grepped, and quoted the rule verbatim.
-MED ; likely, but I only partially checked the code or the rule.
-LOW ; suspected; I could not fully verify within my time budget.
+HIGH: verified: I read the file / grepped, and quoted the rule verbatim.
+MED: likely, but I only partially checked the code or the rule.
+LOW: suspected; I could not fully verify within my time budget.
 
 Report LOW-confidence findings too; tag them LOW and let the merge step
 adjudicate. Never drop a real violation because you're unsure.
@@ -281,11 +281,11 @@ This rule is repeated inside each subagent prompt, but it also applies to your i
 
 ## Step 5: Severity tags
 
-🔴 **BLOCKING**; Real bug, regression, schema drift, security/privacy issue, or data correctness problem. Should not merge.
+🔴 **BLOCKING**: Real bug, regression, schema drift, security/privacy issue, or data correctness problem. Should not merge.
 
-🟡 **SHOULD-FIX**; Edge case that will eventually bite, observability gap, inconsistency, minor parity issue between code paths. Should be fixed but not blocking.
+🟡 **SHOULD-FIX**: Edge case that will eventually bite, observability gap, inconsistency, minor parity issue between code paths. Should be fixed but not blocking.
 
-🟢 **NITPICK**; Style preference, future polish, deferable consideration. Mention it but make clear it can be skipped.
+🟢 **NITPICK**: Style preference, future polish, deferable consideration. Mention it but make clear it can be skipped.
 
 ## Step 6: Merge subagent findings and present
 
@@ -293,7 +293,7 @@ When the five agents return; **this is the precision stage.** The subagents over
 
 1. **Deduplicate.** Two agents may flag the same issue from different angles; merge into one finding, keep the higher severity. Bucket E findings often overlap with A/B/C/D (e.g., a cover-identity leak is also a correctness issue); merge but preserve E's rule citation so the human sees *why* it's a violation.
 2. **Verify every finding you intend to surface; across all severities, not just 🔴.** The finding stage deliberately over-reported, including LOW-confidence items; turning that into precision is your job. For each finding, run a real `grep`/`Read` to confirm before passing it to the human (for Bucket E, open the cited rule file and confirm the rule actually says what the agent claimed; paraphrased rules are the most common Bucket E failure mode). Treat the 🔴s adversarially: a fresh-context subagent in a hurry is exactly the kind of reviewer that produces plausible-but-wrong blockers, so try to *refute* each one before you accept it.
-   - **Own the confidence filter; but drop only on evidence.** A finding tagged LOW-confidence gets *confirmed* (verify, then promote and re-tag), *refuted* (drop it; optionally note it under "checked and verified fine"), or *kept as LOW* with a one-line note on the residual uncertainty. Drop a finding **only because you checked and it isn't real**; never because it "seems minor" or "seems unlikely." Filtering on vibes here re-introduces exactly the recall loss the coverage-first finding stage was built to prevent.
+   - **Own the confidence filter; but drop only on evidence.** A finding tagged LOW-confidence gets *confirmed* (verify, then promote and re-tag), *refuted* (drop it; optionally note it under "checked and verified fine"), or *kept as LOW* with a one-line note on the residual uncertainty. Drop a finding **only because you checked and it isn't real**: never because it "seems minor" or "seems unlikely." Filtering on vibes here re-introduces exactly the recall loss the coverage-first finding stage was built to prevent.
 3. **Severity-order globally.** All 🔴 first across all buckets, then all 🟡, then 🟢; not bucket-by-bucket and not in the order agents returned.
 4. **Present in this format:**
 

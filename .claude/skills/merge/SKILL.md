@@ -27,7 +27,7 @@ Run this whenever a task is complete and verified. "Complete" = the requested ch
 - If on `main` (should not happen mid-session): create a session branch first, never commit to `main` directly. The one session branch is reused for the whole session.
 
 ### 2. Commit + push the work
-- Stage **only the files this task touched**; never blanket-commit unrelated changes (`git status --short` to see what's there).
+- Stage **only the files this task touched**: never blanket-commit unrelated changes (`git status --short` to see what's there).
 - Commit with a clear message; end with the standard `Co-Authored-By:` trailer.
 - `git push` (set upstream on first push of the branch).
 
@@ -52,16 +52,16 @@ If `mergeable` is `CONFLICTING` or the merge is blocked by divergence:
 gh pr merge <number> --merge
 ```
 - `--merge` → merge commit (matches this repo's `Merge pull request #...` history).
-- **No `--delete-branch`**: the one session branch is kept until the session is done.
+- **No `--delete-branch`**; the one session branch is kept until the session is done.
 - **No `--squash` / `--rebase`** unless the user explicitly asked.
-- **No `--admin`**: do not bypass branch protection or failing required checks. If the merge is blocked by checks/protection, report why and stop (pause the cycle for that task); do not force it.
+- **No `--admin`**; do not bypass branch protection or failing required checks. If the merge is blocked by checks/protection, report why and stop (pause the cycle for that task); do not force it.
 
 ### 7. Report
 Confirm the merge landed, give the PR URL, note the branch was kept. If anything blocked it (failing checks, protection, unresolved/ambiguous conflict), report the exact `gh`/`git` output and the reason; never claim success you did not verify.
 
 ## Why no per-merge confirm
 
-Merging into `main` is outward-facing and hard to fully undo. The single confirmation is **turning the mode on**; that is the explicit, standing authorization for the session. After that, per-merge prompts would defeat the purpose. The safety valves that remain:
+Merging into `main` is outward-facing and hard to fully undo. The single confirmation is **turning the mode on**: that is the explicit, standing authorization for the session. After that, per-merge prompts would defeat the purpose. The safety valves that remain:
 - the mode only fires on genuinely-complete, verified work;
 - ambiguous/semantic conflicts still stop and ask;
 - branch protection / required checks are still respected (no `--admin`);

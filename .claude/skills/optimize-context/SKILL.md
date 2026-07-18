@@ -13,7 +13,7 @@ The dominant token cost in long sessions is **input that reloads every turn**, n
 
 ### 1. MCP connectors: biggest single win, NOT scriptable
 Each connected MCP server injects its tool-name list AND any instruction block into every turn. `claude mcp list` shows them. Disconnect ones this project never uses.
-- Account/marketplace connectors (claude.ai → Settings → Connectors) are **account-level**; `claude mcp remove` can't touch them (they re-sync); the user toggles them in the UI. Reversible (reconnect anytime).
+- Account/marketplace connectors (claude.ai → Settings → Connectors) are **account-level**: `claude mcp remove` can't touch them (they re-sync); the user toggles them in the UI. Reversible (reconnect anytime).
 - This is the user's action, not a file edit. Identify the dead weight, name it, let them disconnect. Flag if a disconnect removes a capability the project sometimes needs (e.g. Context7 live docs → say so when you'd have used it).
 
 ### 2. Skill visibility: `skillOverrides` (project/bundled skills ONLY)
@@ -42,7 +42,7 @@ The harness injects every visible skill's name + description every turn. Hide un
 
 ## Gotchas (burned in)
 - **Durable vs ephemeral carrier:** a rule that looks duplicated by a SessionStart-hook message is NOT safe to cut; hook output is a one-time early message (droppable at compaction); CLAUDE.md re-injects every turn, so the kernel is the durable home (e.g. the caveman default stays in CLAUDE.md).
-- **`skillOverrides` is a silent no-op for plugin skills**: no error, the skill just keeps loading. A `skillUsage` entry like `superpowers:writing-skills` proves the skill RAN, not that an override key in that form works. Verify a disable by checking the skills list in a NEXT session, never by the write succeeding.
+- **`skillOverrides` is a silent no-op for plugin skills**; no error, the skill just keeps loading. A `skillUsage` entry like `superpowers:writing-skills` proves the skill RAN, not that an override key in that form works. Verify a disable by checking the skills list in a NEXT session, never by the write succeeding.
 - **Don't trust an agent's schema claim un-verified**: confirm enum values / property names against the real schema (`schemastore.org/claude-code-settings.json`) or the running config.
 
 ## Propagation to claude-starter

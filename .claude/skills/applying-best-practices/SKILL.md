@@ -32,7 +32,7 @@ When you spot what looks like a best-practice violation:
      single query that returns the same shape). Apply with a sanity check.
    - **Behavioral:** changes timing, ordering, or side-effects. Stop and
      check with the user.
-4. **Never bundle "fixes" that span risk categories** into one commit , 
+4. **Never bundle "fixes" that span risk categories** into one commit, 
    you lose the ability to bisect a regression to the actual cause.
 
 If a "fix" requires comments like "TODO: verify this still works" or
@@ -42,7 +42,7 @@ If a "fix" requires comments like "TODO: verify this still works" or
 
 ### Async / IO (highest leverage)
 
-- **Run independent awaits in `Promise.all`**: especially in route handlers
+- **Run independent awaits in `Promise.all`**; especially in route handlers
   that hit multiple external services or DB queries.
 - **Cheap sync checks before expensive awaits**: auth gates, feature flags,
   early-return validation should short-circuit before any DB/network call.
@@ -61,7 +61,7 @@ If a "fix" requires comments like "TODO: verify this still works" or
 
 - **Route-level code splitting via `React.lazy` + `Suspense`** (or the
   framework's equivalent) for top-level pages.
-- **Heavy components behind dynamic `import()`**: 3D, file-upload, PDF libs.
+- **Heavy components behind dynamic `import()`**; 3D, file-upload, PDF libs.
 - **Granular imports**: `import { X } from 'lib'`, not barrels, for
   icon/utility libraries that support it.
 - **Manual chunking for route-specific heavy deps** if the bundler supports it.
@@ -72,7 +72,7 @@ If a "fix" requires comments like "TODO: verify this still works" or
   `['things']` when params vary. Different params = different cache entry.
 - **One key per logical resource across components**: if two components
   fetch the same data, they MUST use the same key, or the cache desyncs.
-- **Don't use raw `fetch` for cacheable GETs**: use the query library. OK for
+- **Don't use raw `fetch` for cacheable GETs**; use the query library. OK for
   one-shot user-triggered actions (file exports, form submits) where
   dedup/caching aren't wanted.
 
@@ -89,7 +89,7 @@ If a "fix" requires comments like "TODO: verify this still works" or
 
 ### Rendering
 
-- **Long lists need either virtualization or `content-visibility: auto`** , 
+- **Long lists need either virtualization or `content-visibility: auto`**, 
   don't render 1000 DOM nodes if 50 are visible.
 - **`useTransition` / `useDeferredValue`** for filter inputs over large lists.
 - **No components defined inside other components' render**: they're
@@ -97,7 +97,7 @@ If a "fix" requires comments like "TODO: verify this still works" or
 
 ### JS perf (micro)
 
-- **`Set` / `Map` for repeated lookups**: `.find()` or `.includes()` in
+- **`Set` / `Map` for repeated lookups**; `.find()` or `.includes()` in
   a render loop is O(n²).
 - **Combine `.filter().map().filter()` chains** into one loop for large arrays.
 - **Cache property access in hot loops.**

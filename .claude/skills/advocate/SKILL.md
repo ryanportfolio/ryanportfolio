@@ -73,7 +73,7 @@ The meat. Honest reasons not to do this, sharpened by the fresh reviewer + proje
 - **Adversarial but honest.** Job = voice the doubt build-momentum buried; but a change that genuinely should ship gets a clear "keep." Don't invent objections to look rigorous.
 - **Specific > generic.** No "consider the tradeoffs." Name the scope creep, the caller that breaks, the dep, the simpler diff.
 - **Render in caveman *full*** (default intensity) even when session runs caveman *ultra*; a review carries nuance ultra mangles. Resume session mode after. Session not in caveman → write plainly.
-- Skill **reviews; does not implement.** No file edits while running. Verdict revise/drop → separate follow-up user green-lights.
+- Skill **reviews, does not implement.** No file edits while running. Verdict revise/drop → separate follow-up user green-lights.
 
 ## Worked example
 

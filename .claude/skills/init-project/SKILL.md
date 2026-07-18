@@ -29,7 +29,7 @@ If the repo is EMPTY (fresh spawn, no app code yet), either configure honest und
 
 Plain chat, numbered (popup tools are banned). Only ask what's actually unknown; skip questions the scaffold already answered:
 
-1. **Profile:** which best describes this project; **web-app** (has UI), **backend/CLI/library** (code, no UI), **data/notebooks**, or **writing/docs**? Lead with the guess detection supports ("scaffold says web-app; confirm?"), only truly ask when the repo is empty.
+1. **Profile:** which best describes this project: **web-app** (has UI), **backend/CLI/library** (code, no UI), **data/notebooks**, or **writing/docs**? Lead with the guess detection supports ("scaffold says web-app; confirm?"), only truly ask when the repo is empty.
 2. **Deploy target:** where will this run? (host/platform, database, where secrets live)
 3. **Sandbox capabilities:** can sessions in this environment run installs, builds, type-checks, tests meaningfully? Can the user reach a dev server the session starts? Is there a browser?
 4. **Authoritative verification:** what's the final word that a change works; local test suite, CI, a deploy log?

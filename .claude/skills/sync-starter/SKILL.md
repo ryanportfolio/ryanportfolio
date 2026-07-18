@@ -23,7 +23,7 @@ Only these paths are sync candidates:
 git diff --stat HEAD starter/main -- AGENTS.md .agents/CODEX-SKILL-COMPATIBILITY.md .claude/skills .claude/hooks .claude/scripts .claude/settings.json
 ```
 
-**Diverged-by-design; NEVER bulk-pull these:**
+**Diverged-by-design, NEVER bulk-pull these:**
 - `CLAUDE.md`; project-configured (FILL IN sections replaced). If the template's kernel changed, read the template version (`git show starter/main:CLAUDE.md`), and hand-merge the relevant rule into the project copy.
 - `.claude/reference/*`; project knowledge. Template only ships skeletons.
 - `.claude/skills/applying-best-practices/SKILL.md`; catalog is tuned per stack by `/init-project`. Hand-merge discipline-section changes only.

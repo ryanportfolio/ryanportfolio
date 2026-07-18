@@ -71,6 +71,13 @@ describe("generateReportHtml", () => {
     expect(html).toContain("Excluded from the overall score rather than guessed");
   });
 
+  it("null overall renders the en-dash placeholder in the grade chip", () => {
+    expect(thin.overall).toBeNull();
+    const html = generateReportHtml(thin);
+    expect(html).toContain(">–<");
+    expect(html).not.toContain("\u2014");
+  });
+
   it("escapes hostile repo-derived strings through the real render path", () => {
     const hostile = structuredClone(thin);
     (hostile as { repo: string }).repo = `ryanportfolio/<script>alert("x")</script>`;

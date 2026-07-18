@@ -16,9 +16,10 @@ the owner's plain typing-voice rules.
 - playbook.md, governance/README.md, plans/0001-0009: punctuation-only em-dash
   removal; no factual or structural changes.
 - app/ source, tests, eval runner, workflow comments: em dashes in comments,
-  strings, and rendered output replaced. Rendered-title format changed from
-  "audit — repo" to "audit: repo"; the null-score site placeholder is now an
-  en dash. Tests updated to match.
+  strings, and rendered output replaced. Rendered-title separator changed
+  from em dash to "audit: repo" colon form; the null-score site placeholder
+  is now an en dash. Tests updated to match, including a new site test
+  asserting the en-dash placeholder.
 - Repo-authored skills (homegrown plus reimplemented caveman/humanizer) and
   `.agents` adapters resynced. Two intentional em-dash survivors: the
   humanizer bad-example quote and its parenthetical character mention, which

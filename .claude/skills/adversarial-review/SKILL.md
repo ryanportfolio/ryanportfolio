@@ -11,7 +11,7 @@ Output is a posted PR comment; it has no approve/request-changes/merge
 power; merge authority stays with the owner (see governance/ for the
 merge-execution disclosure).
 
-The PR number comes from `adversarial-review; fresh-context adversarial PR review lane run locally via subscription`; if missing, ask which open PR to review.
+The PR number comes from the skill arguments; if missing, ask which open PR to review.
 
 ## Step 1: Gather the PR, nothing else
 
@@ -44,7 +44,7 @@ note, and this charge:
 ## Step 3: Post the review comment
 
 Write the reviewer's findings verbatim to a temp file, prefixed with:
-`**Independent adversarial review (fresh-context, local lane)**; refute-first pass; no approve/merge power.`
+`**Independent adversarial review (fresh-context, local lane)**: refute-first pass; no approve/merge power.`
 Then run: `gh pr comment <N> --body-file <file>`.
 
 ## Step 4: Report

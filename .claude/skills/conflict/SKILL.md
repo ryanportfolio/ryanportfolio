@@ -26,7 +26,7 @@ When two sessions edited the same page, expect both: some separable (auto), some
 1. **Confirm an op is in progress.** `git status`; look for "You have unmerged paths" / "rebase in progress" / "cherry-pick". If none, stop: nothing to resolve.
 2. **Note the operation**: it flips the sides:
    - **merge**: `HEAD`/`ours` = your branch, `>>>>>>>` side = incoming.
-   - **rebase**: **reversed**; `ours` = the branch you're rebasing *onto* (usually main), `theirs` = your commits. Re-read the labels every time; don't assume.
+   - **rebase**: **reversed**: `ours` = the branch you're rebasing *onto* (usually main), `theirs` = your commits. Re-read the labels every time; don't assume.
 3. **List conflicts:** `git diff --name-only --diff-filter=U`.
 4. **Per file, per hunk:** read the full hunk (both sides, plus surrounding context; `git show :1:path` is the merge base if you need it). Classify separable vs contradiction (table above).
    - Separable → merge preserving both, no markers left.
