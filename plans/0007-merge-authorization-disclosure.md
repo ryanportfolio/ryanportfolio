@@ -1,4 +1,4 @@
-# Plan 0007 — Merge-authorization disclosure
+# Plan 0007: Merge-authorization disclosure
 
 **Goal:** owner decision (2026-07-18): merges are agent-executed under a
 standing, session-scoped owner authorization (`/merge`), revocable at any
@@ -11,7 +11,7 @@ such claim to the honest version before any merge lands.
 - README experiment section + loop diagram: "human-only merge" →
   owner-authorized merge, with disclosure link to governance.
 - governance/README.md: checkpoint 4 reworded to merge *authorization*;
-  audit-trail bullet; NIST row; honest-limits gains a dated disclosure —
+  audit-trail bullet; NIST row; honest-limits gains a dated disclosure,
   including that the audit tool cannot distinguish agent-executed merges
   made with the owner's credentials (merger identity is the owner
   account), so this page discloses it instead; bootstrap chain PRs #1–#7

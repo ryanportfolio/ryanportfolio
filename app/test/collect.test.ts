@@ -35,7 +35,7 @@ const routes: Record<string, unknown> = {
   ],
   "/repos/o/r/pulls": [
     { number: 7, merged_at: "2026-01-02T10:00:00Z" },
-    { number: 6, merged_at: null }, // closed unmerged — excluded
+    { number: 6, merged_at: null }, // closed unmerged: excluded
   ],
   "/repos/o/r/pulls/7": {
     number: 7,

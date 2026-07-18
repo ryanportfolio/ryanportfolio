@@ -11,7 +11,7 @@ This is a checklist consulted during implementation work. It does two things:
    add stack-specific ones, and record real project examples as they accumulate
    (via `/recall save`).
 2. **Encodes the discipline** of investigating intent before "fixing"
-   apparent violations — because code that looks wrong is often intentional.
+   apparent violations; because code that looks wrong is often intentional.
 
 ## The discipline (read this first)
 
@@ -32,47 +32,47 @@ When you spot what looks like a best-practice violation:
      single query that returns the same shape). Apply with a sanity check.
    - **Behavioral:** changes timing, ordering, or side-effects. Stop and
      check with the user.
-4. **Never bundle "fixes" that span risk categories** into one commit —
+4. **Never bundle "fixes" that span risk categories** into one commit , 
    you lose the ability to bisect a regression to the actual cause.
 
 If a "fix" requires comments like "TODO: verify this still works" or
-"should be equivalent" — you haven't verified enough yet.
+"should be equivalent"; you haven't verified enough yet.
 
-## The catalog (generic web/TS baseline — tune per project)
+## The catalog (generic web/TS baseline: tune per project)
 
 ### Async / IO (highest leverage)
 
-- **Run independent awaits in `Promise.all`** — especially in route handlers
+- **Run independent awaits in `Promise.all`**: especially in route handlers
   that hit multiple external services or DB queries.
-- **Cheap sync checks before expensive awaits** — auth gates, feature flags,
+- **Cheap sync checks before expensive awaits**: auth gates, feature flags,
   early-return validation should short-circuit before any DB/network call.
-- **No N+1 over fat rows** — if a route loops `await getX(id)` per parent
+- **No N+1 over fat rows**: if a route loops `await getX(id)` per parent
   record, it's almost always a single grouped query in disguise
   (LEFT JOIN + COUNT, `WHERE id IN (...)`).
 
 ### Server caching
 
 - **Module-level cache for hot read-only data** (config files, status data).
-- **No request-scoped state in module variables** — keep in-memory maps
+- **No request-scoped state in module variables**: keep in-memory maps
   keyed by stable IDs, TTL-evicted.
-- **Don't re-read static files per request** — hoist file loads to module init.
+- **Don't re-read static files per request**: hoist file loads to module init.
 
 ### Bundle size
 
 - **Route-level code splitting via `React.lazy` + `Suspense`** (or the
   framework's equivalent) for top-level pages.
-- **Heavy components behind dynamic `import()`** — 3D, file-upload, PDF libs.
-- **Granular imports** — `import { X } from 'lib'`, not barrels, for
+- **Heavy components behind dynamic `import()`**: 3D, file-upload, PDF libs.
+- **Granular imports**: `import { X } from 'lib'`, not barrels, for
   icon/utility libraries that support it.
 - **Manual chunking for route-specific heavy deps** if the bundler supports it.
 
 ### Client data fetching (query-cache libraries)
 
-- **Stable, parameterized query keys** — `['things', { limit }]` not
+- **Stable, parameterized query keys**: `['things', { limit }]` not
   `['things']` when params vary. Different params = different cache entry.
-- **One key per logical resource across components** — if two components
+- **One key per logical resource across components**: if two components
   fetch the same data, they MUST use the same key, or the cache desyncs.
-- **Don't use raw `fetch` for cacheable GETs** — use the query library. OK for
+- **Don't use raw `fetch` for cacheable GETs**: use the query library. OK for
   one-shot user-triggered actions (file exports, form submits) where
   dedup/caching aren't wanted.
 
@@ -89,15 +89,15 @@ If a "fix" requires comments like "TODO: verify this still works" or
 
 ### Rendering
 
-- **Long lists need either virtualization or `content-visibility: auto`** —
+- **Long lists need either virtualization or `content-visibility: auto`** , 
   don't render 1000 DOM nodes if 50 are visible.
 - **`useTransition` / `useDeferredValue`** for filter inputs over large lists.
-- **No components defined inside other components' render** — they're
+- **No components defined inside other components' render**: they're
   recreated each render and lose state.
 
 ### JS perf (micro)
 
-- **`Set` / `Map` for repeated lookups** — `.find()` or `.includes()` in
+- **`Set` / `Map` for repeated lookups**: `.find()` or `.includes()` in
   a render loop is O(n²).
 - **Combine `.filter().map().filter()` chains** into one loop for large arrays.
 - **Cache property access in hot loops.**
@@ -105,7 +105,7 @@ If a "fix" requires comments like "TODO: verify this still works" or
 ## Project-specific gotchas the catalog doesn't cover
 
 See `.claude/reference/pitfalls.md` for this project's accumulated traps.
-Add new ones there via `/recall save` — not here.
+Add new ones there via `/recall save`; not here.
 
 For verification constraints (what this sandbox can and can't run), see
 CLAUDE.md's verification section.
@@ -114,7 +114,7 @@ CLAUDE.md's verification section.
 
 - BEFORE implementing a non-trivial feature, refactor, or perf fix.
 - When the user asks to "optimize", "make X faster", "fix this perf issue".
-- When applying a code-review finding — to make sure the "fix" doesn't
+- When applying a code-review finding; to make sure the "fix" doesn't
   break the thing the original code was doing intentionally.
 - When you spot what looks like a best-practice violation in unfamiliar
-  code — pause, investigate, then decide.
+  code; pause, investigate, then decide.

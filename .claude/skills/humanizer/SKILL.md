@@ -17,16 +17,16 @@ Load when the user asks to humanize, de-AI, de-slop, unslop, or un-ChatGPT text;
 
 ## Input modes
 
-1. **Inline** — user pastes text. Rewrite in the reply.
-2. **File** — user points at a path. Read it; prefer targeted section edits over full-file rewrites unless the whole file is slop. Show a diff or changed sections; never silently overwrite.
-3. **Voice sample** — user provides their own writing (inline or file). Read the sample first; mirror rhythm, word choice, and punctuation. See Voice calibration below.
+1. **Inline**: user pastes text. Rewrite in the reply.
+2. **File**: user points at a path. Read it; prefer targeted section edits over full-file rewrites unless the whole file is slop. Show a diff or changed sections; never silently overwrite.
+3. **Voice sample**: user provides their own writing (inline or file). Read the sample first; mirror rhythm, word choice, and punctuation. See Voice calibration below.
 
 ## Workflow
 
 1. Read the input (and voice sample if provided).
 2. Scan the **Pattern checklist** below. Open `patterns.md` only when you need before/after examples for a specific tell.
 3. Rewrite: remove tells, preserve facts, match tone or sample voice.
-4. **Add soul** — sterile "clean" prose is still a tell (see below).
+4. **Add soul**: sterile "clean" prose is still a tell (see below).
 5. **Internal self-audit:** "What still reads as obviously AI?" Revise once more.
 6. Deliver per **Output** below.
 
@@ -79,10 +79,10 @@ Scan for these. Numbers map to `patterns.md` for examples.
 
 **Compact scan lines** (use every pass):
 
-- **Content** — pivotal moment, testament, evolving landscape, nestled, experts say, despite challenges… continues to thrive.
-- **Language** — delve, crucial, showcase, foster, leverage, serves as, highlighting…/ensuring…, not just X it's Y, rule of three, from X to Y.
-- **Style** — do not use excessive em dashes (—); use periods, commas, semicolons, or hyphens instead. Also cut colon comparison crutches, **Speed:** Speed improved…, Great question! / I hope this helps!
-- **Plain speech** — substrate/wedge/harness/paradigm; feelings instead of mechanism; split sentences that need a second read; utilize/leverage/facilitate.
+- **Content**: pivotal moment, testament, evolving landscape, nestled, experts say, despite challenges… continues to thrive.
+- **Language**: delve, crucial, showcase, foster, leverage, serves as, highlighting…/ensuring…, not just X it's Y, rule of three, from X to Y.
+- **Style**: do not use excessive em dashes (—); use periods, commas, semicolons, or hyphens instead. Also cut colon comparison crutches, **Speed:** Speed improved…, Great question! / I hope this helps!
+- **Plain speech**: substrate/wedge/harness/paradigm; feelings instead of mechanism; split sentences that need a second read; utilize/leverage/facilitate.
 
 **Inline-header nuance:** bad = `**Speed:** Speed improved…` (label restates the line). OK = `**Schema in TypeScript.** Tables live in one file.` (label names; next sentence adds detail).
 
@@ -120,12 +120,12 @@ Apply targeted edits; show diff or changed sections.
 
 ## Anti-patterns
 
-- Don't strip grammatically required hyphens — see pattern #26 in `patterns.md`.
+- Don't strip grammatically required hyphens; see pattern #26 in `patterns.md`.
 - Don't replace one tell with another (em dashes → semicolon storms).
 - Don't sanitize into neutral, voiceless prose.
 - Don't apply to short replies, code comments, or commit subjects.
 - Don't silently overwrite files.
-- Don't fabricate quotes, stats, or sources to sound human — invented specificity is worse than vague AI prose.
+- Don't fabricate quotes, stats, or sources to sound human; invented specificity is worse than vague AI prose.
 
 ## Reference
 

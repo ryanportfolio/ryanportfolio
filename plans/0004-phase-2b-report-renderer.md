@@ -1,4 +1,4 @@
-# Plan 0004 — Phase 2b: report renderer + fleet runner
+# Plan 0004: Phase 2b: report renderer + fleet runner
 
 **Goal:** turn `ScoreReport` JSON into publishable markdown, and add the
 local fleet runner that Phase 3 uses to audit the whole portfolio.
@@ -6,7 +6,7 @@ local fleet runner that Phase 3 uses to audit the whole portfolio.
 ## Renderer (`app/src/report/`)
 
 - `render.ts`: `ScoreReport` → one markdown report. Aggregate metrics and
-  provenance only — renders from facts-derived scores, which already cannot
+  provenance only; renders from facts-derived scores, which already cannot
   contain source excerpts (privacy boundary is upstream at collection).
   Includes a methodology + "could not verify" section.
 - `scoreboard.ts`: rows → scoreboard table, `reports/README.md` index, and
@@ -18,7 +18,7 @@ local fleet runner that Phase 3 uses to audit the whole portfolio.
 
 - Reads a **local, gitignored** `app/fleet.config.json` (include + exclude
   lists). Committed `fleet.config.example.json` shows the shape with
-  placeholder names only: private repo names — including excluded ones —
+  placeholder names only: private repo names, including excluded ones,
   must not be committed by the tool's config scaffolding.
 - Refuses to run without an explicit `exclude` array (forces the
   do-not-feature decision to be stated locally, per fleet audit rules).

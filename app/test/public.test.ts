@@ -6,7 +6,7 @@ import { makeFacts, makePull } from "./helpers.js";
 const report = scoreRepo(makeFacts({ pullRequests: [makePull(), makePull({ number: 2 })] }));
 
 describe("toPublicReport (privacy projection)", () => {
-  it("emits exactly the allowlisted top-level keys — nothing rides along", () => {
+  it("emits exactly the allowlisted top-level keys, nothing rides along", () => {
     const pub = toPublicReport(report);
     expect(Object.keys(pub).sort()).toEqual([
       "collectedAt",

@@ -20,7 +20,7 @@ const fixtures = readdirSync(fixturesDir)
   .filter((f) => f.endsWith(".facts.json"))
   .sort();
 if (fixtures.length === 0) {
-  console.error("No fixtures found — eval lane is vacuous.");
+  console.error("No fixtures found; eval lane is vacuous.");
   process.exit(1);
 }
 
@@ -32,7 +32,7 @@ for (const file of fixtures) {
   const first = JSON.stringify(scoreRepo(facts), null, 2) + "\n";
   const second = JSON.stringify(scoreRepo(facts), null, 2) + "\n";
   if (first !== second) {
-    console.error(`FAIL ${name}: nondeterministic — two runs over identical facts differ.`);
+    console.error(`FAIL ${name}: nondeterministic: two runs over identical facts differ.`);
     failures += 1;
     continue;
   }

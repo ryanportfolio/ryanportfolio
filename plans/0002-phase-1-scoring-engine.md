@@ -1,4 +1,4 @@
-# Plan 0002 — Phase 1: scoring engine + CLI
+# Plan 0002: Phase 1: scoring engine + CLI
 
 **Goal:** deterministic scoring core, GitHub API collector, CLI. Vitest suite in CI.
 
@@ -8,7 +8,7 @@ Two-layer split, enforced by module boundaries:
 
 - **Collect** (`app/src/collect.ts`, `app/src/github.ts`): GitHub REST API →
   normalized `RepoFacts`. No cloning. Injectable fetch for testing. Privacy is
-  enforced at this layer: facts hold derived aggregates and booleans only —
+  enforced at this layer: facts hold derived aggregates and booleans only;
   never commit-message bodies, PR titles/bodies, file contents, or diffs. What
   the collector doesn't retain, the report can't leak.
 - **Score** (`app/src/score/`): pure functions `RepoFacts → ScoreReport`. No
@@ -29,12 +29,12 @@ Two-layer split, enforced by module boundaries:
 | `audit_trail` | PR description substance + review + check records present | composite |
 
 Rollup: weighted mean over scorable dimensions; unverifiable dimensions score
-`null` ("could not verify"), are excluded, and weights renormalize — never
+`null` ("could not verify"), are excluded, and weights renormalize; never
 guessed. Banded grades: Elite / Strong / Developing / Early / Ad-hoc.
 
 ## CLI
 
-`agentic-audit <owner>/<repo> [--json <file>]` — collect (token from
+`agentic-audit <owner>/<repo> [--json <file>]`: collect (token from
 `GITHUB_TOKEN`/`GH_TOKEN` env if present), score, print summary table.
 
 ## Testing

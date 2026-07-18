@@ -1,4 +1,4 @@
-# Plan 0005 — Governance map + pipeline playbook
+# Plan 0005: Governance map + pipeline playbook
 
 **Goal:** the two remaining documents from the repo contents spec.
 
@@ -7,7 +7,7 @@
 One page: every human-in-the-loop checkpoint in this repo's pipeline, what
 the audit trail consists of (and where each artifact lives), and a short
 mapping of each control to NIST AI RMF function vocabulary (Govern / Map /
-Measure / Manage). Facts about *this* repo only — no claims that other
+Measure / Manage). Facts about *this* repo only; no claims that other
 projects run the full pipeline.
 
 ## `playbook.md`
@@ -19,5 +19,5 @@ Written so it could be republished as a corewise.academy guide.
 
 ## Verification
 
-Docs only — gate + suite must stay green; claims cross-checked against what
+Docs only; gate + suite must stay green; claims cross-checked against what
 the repo actually contains.

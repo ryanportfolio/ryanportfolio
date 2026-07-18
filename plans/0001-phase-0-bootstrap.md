@@ -1,4 +1,4 @@
-# Plan 0001 — Phase 0 bootstrap
+# Plan 0001: Phase 0 bootstrap
 
 **Goal:** first PR through the full pipeline loop, with a minimal but real CI gate.
 
@@ -9,7 +9,7 @@
   repo layout map.
 - Minimal CI gate (`.github/workflows/gate.yml`): runs `scripts/gate.mjs` on
   every PR. The gate checks real repo invariants (README structure, required
-  links, plan-note presence) — it is intentionally minimal, not fake. Phase 1
+  links, plan-note presence); it is intentionally minimal, not fake. Phase 1
   replaces its core with the Vitest suite.
 - This plan note, establishing the plans/ convention: one plan note per PR,
   linked from the PR body.

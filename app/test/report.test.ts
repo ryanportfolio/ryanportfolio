@@ -16,8 +16,8 @@ describe("renderReportMarkdown", () => {
   it("renders grade, provenance, dimensions, and methodology", () => {
     const report = scoreRepo(makeFacts());
     const md = renderReportMarkdown(report);
-    expect(md).toContain("# Agentic-SDLC audit — ryanportfolio/example");
-    expect(md).toContain(`— ${report.grade}**`);
+    expect(md).toContain("# Agentic-SDLC audit: ryanportfolio/example");
+    expect(md).toContain(`, ${report.grade}**`);
     expect(md).toContain("Head commit: `abc1234`");
     expect(md).toContain("| Dimension | Score | Weight | Basis |");
     expect(md).toContain("## Methodology");

@@ -19,7 +19,7 @@ lookup, skip the gates and just do the work.
 Every hard task passes through five gates. A gate must pass before the next one opens. When a task
 stalls or a result surprises you, name which gate you're at and re-run it.
 
-### Gate 1 — Scope before work
+### Gate 1: Scope before work
 
 State what done looks like before touching anything.
 
@@ -35,7 +35,7 @@ State what done looks like before touching anything.
 - Right-size the effort. Match the depth of this process to the stakes of the task. Deep reasoning
   belongs in planning and review, not in mechanical steps.
 
-### Gate 2 — Evidence before reasoning
+### Gate 2: Evidence before reasoning
 
 Never design from memory of what a file, API, or dataset "probably" looks like. Open it.
 
@@ -47,7 +47,7 @@ Never design from memory of what a file, API, or dataset "probably" looks like. 
 - Keep a live plan for anything with 3+ steps. Slice by dependency, not by category: each step's
   output feeds the next. The plan is a hypothesis, not a contract.
 
-### Gate 3 — Reason adversarially
+### Gate 3: Reason adversarially
 
 Before committing to an answer, switch roles and try to kill it.
 
@@ -65,7 +65,7 @@ Before committing to an answer, switch roles and try to kill it.
 - Two failed attempts at the same fix means the diagnosis is wrong. Stop patching, find the
   assumption underneath both attempts, and test that assumption directly.
 
-### Gate 4 — Verify before declaring done
+### Gate 4: Verify before declaring done
 
 "It ran" is not verification. Verify at the layer of the claim.
 
@@ -82,7 +82,7 @@ Before committing to an answer, switch roles and try to kill it.
 - Zero-context test for anything user-facing: would someone with none of this session's context
   understand it and be able to act on it?
 
-### Gate 5 — Report calibrated
+### Gate 5: Report calibrated
 
 The report is part of the work, not an afterthought.
 

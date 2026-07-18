@@ -1,6 +1,6 @@
-# Plan 0003 — Phase 2a: independent AI reviewer + eval lane
+# Plan 0003: Phase 2a: independent AI reviewer + eval lane
 
-**Goal:** the two remaining pipeline lanes — adversarial fresh-context AI
+**Goal:** the two remaining pipeline lanes: adversarial fresh-context AI
 review on every PR, and a deterministic eval harness in the gate.
 
 ## AI reviewer (`.github/workflows/ai-review.yml`)
@@ -9,14 +9,14 @@ review on every PR, and a deterministic eval harness in the gate.
   recommendation from the open decisions; swap to a direct API call is a
   one-file change if Ryan prefers).
 - Fresh context by construction: the action starts with no builder session
-  state — it sees only the diff, the repo, and its instructions.
+  state; it sees only the diff, the repo, and its instructions.
 - Adversarial prompt: refute, don't approve. Checks plan-note linkage, scope
   vs plan, scoring determinism, the collection privacy boundary, honesty
   rails, and test coverage of changed behavior.
 - Posts a PR review comment; it has no merge or approval power. Merging
   stays human-only.
 - Inert until `ANTHROPIC_API_KEY` repo secret is configured (steps skip with
-  a visible notice) — Ryan action required.
+  a visible notice); Ryan action required.
 - LLM use stays in the review lane only, per the hard rules.
 
 ## Eval lane (`app/eval/`)
@@ -32,4 +32,4 @@ review on every PR, and a deterministic eval harness in the gate.
 
 - `npm run eval` green locally; gate workflow runs it.
 - Reviewer workflow YAML validated; live run requires the repo secret
-  (flagged in PR — cannot be verified from this environment).
+  (flagged in PR; cannot be verified from this environment).

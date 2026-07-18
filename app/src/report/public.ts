@@ -3,7 +3,7 @@
  *
  * PRIVACY ENFORCEMENT, not trust: JSON.stringify(report) would publish
  * whatever the object carries now and forever. This allowlist projection is
- * the only path to reports/data/*.json — a field added to ScoreReport in a
+ * the only path to reports/data/*.json; a field added to ScoreReport in a
  * future PR stays private until it is added here (and to the key-set test)
  * on purpose.
  */
@@ -62,7 +62,7 @@ export function toPublicReport(report: ScoreReport): PublicReport {
   };
 }
 
-/** Serialized public artifact — the only string fleet.ts writes to reports/data/. */
+/** Serialized public artifact, the only string fleet.ts writes to reports/data/. */
 export function publicReportJson(report: ScoreReport): string {
   return JSON.stringify(toPublicReport(report), null, 2) + "\n";
 }

@@ -1,5 +1,5 @@
 # Deploy the fleet-audit viewer to GitHub Pages on every push to main.
-# Static build from committed reports/data/*.json — no secrets, no runtime.
+# Static build from committed reports/data/*.json; no secrets, no runtime.
 name: pages
 
 on:

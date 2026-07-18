@@ -16,6 +16,6 @@
 | Dangerous | `merge`, `pr`, `safe-ship` |
 | Claude-only | None in the starter source set. |
 
-`adversarial-review`, `advocate`, `impartial-review`, and `why` require fresh independent context; do not replace them with self-review and call it equivalent. `adversarial-review` additionally posts a public PR comment — never approve, request changes, or merge from it. `merge` becomes session-wide only after explicit `$merge` or an unambiguous auto-merge request. Current system, developer, sandbox, approval, and user instructions win. Resolve canonical resources from `.claude/skills/<name>/` and never claim a gated workflow ran unless its tools were used.
+`adversarial-review`, `advocate`, `impartial-review`, and `why` require fresh independent context; do not replace them with self-review and call it equivalent. `adversarial-review` additionally posts a public PR comment; never approve, request changes, or merge from it. `merge` becomes session-wide only after explicit `$merge` or an unambiguous auto-merge request. Current system, developer, sandbox, approval, and user instructions win. Resolve canonical resources from `.claude/skills/<name>/` and never claim a gated workflow ran unless its tools were used.
 
 `node .claude/scripts/test-codex-contract.mjs` verifies that every active skill has exactly one classification and that Codex routing metadata stays within its context budget.
