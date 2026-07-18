@@ -1,0 +1,39 @@
+{
+  "repo": {
+    "owner": "fixtures",
+    "name": "thin-signal",
+    "defaultBranch": "main",
+    "isPrivate": true,
+    "collectedAt": "2026-03-01T00:00:00Z",
+    "headSha": "t000001"
+  },
+  "commits": [
+    {
+      "sha": "t000001",
+      "authorLogin": "ryan",
+      "authorIsBot": false,
+      "hasAgentCoAuthorTrailer": false,
+      "hasAnyCoAuthorTrailer": false,
+      "committedAt": "2026-02-20T10:00:00Z"
+    },
+    {
+      "sha": "t000002",
+      "authorLogin": "ryan",
+      "authorIsBot": false,
+      "hasAgentCoAuthorTrailer": false,
+      "hasAnyCoAuthorTrailer": false,
+      "committedAt": "2026-02-19T10:00:00Z"
+    }
+  ],
+  "pullRequests": [],
+  "workflows": {
+    "hasWorkflowDir": false,
+    "workflowFileCount": 0
+  },
+  "limits": {
+    "maxCommits": 300,
+    "maxPullRequests": 50,
+    "commitsTruncated": false,
+    "pullRequestsTruncated": false
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "repo": "fixtures/disciplined",
+  "collectedAt": "2026-03-01T00:00:00Z",
+  "headSha": "d000001",
+  "dimensions": [
+    {
+      "key": "agent_attribution",
+      "label": "Agent attribution & provenance",
+      "score": 100,
+      "weight": 0.1,
+      "detail": "5/5 commits have clear provenance (linked account, bot identity, or co-author trailer). Agent-involved share is reported as context, not judged.",
+      "metrics": {
+        "commits_sampled": 5,
+        "agent_involved_pct": 40,
+        "commits_per_week": 1.8
+      }
+    },
+    {
+      "key": "review_coverage",
+      "label": "PR review coverage",
+      "score": 100,
+      "weight": 0.15,
+      "detail": "3/3 merged PRs received at least one review not authored by the PR author.",
+      "metrics": {
+        "merged_prs": 3,
+        "reviewed_prs": 3
+      }
+    },
+    {
+      "key": "review_catch_rate",
+      "label": "Review catch rate",
+      "score": 66.7,
+      "weight": 0.1,
+      "detail": "2/3 reviewed PRs had commits pushed after the first review and before merge (review produced change).",
+      "metrics": {
+        "reviewed_prs": 3,
+        "prs_changed_after_review": 2
+      }
+    },
+    {
+      "key": "human_merge_gate",
+      "label": "Human merge gate",
+      "score": 100,
+      "weight": 0.15,
+      "detail": "3/3 sampled merges were performed by a non-bot account.",
+      "metrics": {
+        "merges_with_known_merger": 3,
+        "human_merges": 3
+      }
+    },
+    {
+      "key": "ci_gate",
+      "label": "CI test/eval gate",
+      "score": 100,
+      "weight": 0.15,
+      "detail": "2 workflow file(s) present (40pts). 100% of sampled merged PRs had all check runs passing at head (up to 60pts).",
+      "metrics": {
+        "workflow_files": 2,
+        "prs_with_checks": 3,
+        "pr_check_pass_rate_pct": 100
+      }
+    },
+    {
+      "key": "batch_size",
+      "label": "Batch size",
+      "score": 100,
+      "weight": 0.1,
+      "detail": "Median merged-PR diff size is 100 lines (additions+deletions). Small batches score higher.",
+      "metrics": {
+        "median_diff_lines": 100,
+        "p90_diff_lines": 190
+      }
+    },
+    {
+      "key": "lead_time",
+      "label": "Lead time (first commit → merge)",
+      "score": 85,
+      "weight": 0.05,
+      "detail": "Median lead time from first PR commit to merge is 51h.",
+      "metrics": {
+        "median_lead_time_hours": 51,
+        "prs_measured": 3
+      }
+    },
+    {
+      "key": "plan_evidence",
+      "label": "Plan-before-code evidence",
+      "score": 100,
+      "weight": 0.1,
+      "detail": "3/3 merged PRs reference a linked issue or plan document in the PR body.",
+      "metrics": {
+        "merged_prs": 3,
+        "prs_with_plan_ref": 3
+      }
+    },
+    {
+      "key": "audit_trail",
+      "label": "Audit-trail completeness",
+      "score": 100,
+      "weight": 0.1,
+      "detail": "Mean of: substantive PR description ≥120 chars (3/3), review recorded (3/3), CI checks recorded (3/3).",
+      "metrics": {
+        "substantive_description_prs": 3,
+        "review_recorded_prs": 3,
+        "checks_recorded_prs": 3
+      }
+    }
+  ],
+  "overall": 95.9,
+  "grade": "Elite",
+  "unverified": [],
+  "sample": {
+    "commits": 5,
+    "mergedPullRequests": 3,
+    "commitsTruncated": false,
+    "pullRequestsTruncated": false
+  }
+}

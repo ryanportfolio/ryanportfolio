@@ -32,3 +32,6 @@ jobs:
       - name: Tests
         working-directory: app
         run: npm test
+      - name: Evals (golden reports + determinism)
+        working-directory: app
+        run: npm run eval

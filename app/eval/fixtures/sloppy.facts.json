@@ -1,0 +1,96 @@
+{
+  "repo": {
+    "owner": "fixtures",
+    "name": "sloppy",
+    "defaultBranch": "master",
+    "isPrivate": false,
+    "collectedAt": "2026-03-01T00:00:00Z",
+    "headSha": "s000001"
+  },
+  "commits": [
+    {
+      "sha": "s000001",
+      "authorLogin": null,
+      "authorIsBot": false,
+      "hasAgentCoAuthorTrailer": false,
+      "hasAnyCoAuthorTrailer": false,
+      "committedAt": "2026-02-20T10:00:00Z"
+    },
+    {
+      "sha": "s000002",
+      "authorLogin": null,
+      "authorIsBot": false,
+      "hasAgentCoAuthorTrailer": false,
+      "hasAnyCoAuthorTrailer": false,
+      "committedAt": "2026-02-19T10:00:00Z"
+    },
+    {
+      "sha": "s000003",
+      "authorLogin": "ryan",
+      "authorIsBot": false,
+      "hasAgentCoAuthorTrailer": false,
+      "hasAnyCoAuthorTrailer": false,
+      "committedAt": "2026-02-18T10:00:00Z"
+    },
+    {
+      "sha": "s000004",
+      "authorLogin": null,
+      "authorIsBot": false,
+      "hasAgentCoAuthorTrailer": false,
+      "hasAnyCoAuthorTrailer": false,
+      "committedAt": "2026-01-05T10:00:00Z"
+    }
+  ],
+  "pullRequests": [
+    {
+      "number": 3,
+      "authorLogin": "ryan",
+      "authorIsBot": false,
+      "bodyLength": 0,
+      "bodyRefsIssue": false,
+      "bodyRefsPlanDoc": false,
+      "createdAt": "2026-01-10T12:00:00Z",
+      "mergedAt": "2026-02-20T10:00:00Z",
+      "mergedByLogin": "merge-o-matic[bot]",
+      "mergedByIsBot": true,
+      "additions": 4200,
+      "deletions": 800,
+      "changedFiles": 4,
+      "commitCount": 3,
+      "firstCommitAt": "2026-01-05T10:00:00Z",
+      "reviews": [],
+      "commitsAfterFirstReview": 0,
+      "checks": null
+    },
+    {
+      "number": 2,
+      "authorLogin": "ryan",
+      "authorIsBot": false,
+      "bodyLength": 40,
+      "bodyRefsIssue": false,
+      "bodyRefsPlanDoc": false,
+      "createdAt": "2026-01-10T12:00:00Z",
+      "mergedAt": "2026-02-10T10:00:00Z",
+      "mergedByLogin": "ryan",
+      "mergedByIsBot": false,
+      "additions": 1800,
+      "deletions": 300,
+      "changedFiles": 4,
+      "commitCount": 3,
+      "firstCommitAt": "2026-01-10T10:00:00Z",
+      "reviews": [],
+      "commitsAfterFirstReview": 0,
+      "checks": null
+    }
+  ],
+  "workflows": {
+    "hasWorkflowDir": false,
+    "workflowFileCount": 0
+  },
+  "limits": {
+    "maxCommits": 300,
+    "maxPullRequests": 50,
+    "commitsTruncated": false,
+    "pullRequestsTruncated": false
+  }
+}
