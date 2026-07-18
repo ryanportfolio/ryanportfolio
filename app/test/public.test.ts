@@ -55,11 +55,18 @@ describe("toPublicReport (privacy projection)", () => {
 });
 
 describe("attestation passthrough", () => {
-  it("defaults to null, carries owner text when given, appears in the key set", () => {
+  it("defaults to null; owner text ships wrapped in its own qualification", () => {
     expect(toPublicReport(report).attestation).toBeNull();
     const withText = toPublicReport(report, "Reviews happen in fresh sessions.");
-    expect(withText.attestation).toBe("Reviews happen in fresh sessions.");
-    expect(publicReportJson(report, "stated context")).toContain("stated context");
+    expect(withText.attestation).toEqual({
+      text: "Reviews happen in fresh sessions.",
+      verified: false,
+      scored: false,
+    });
+    const json = publicReportJson(report, "stated context");
+    expect(json).toContain("stated context");
+    expect(json).toContain('"verified": false');
+    expect(json).toContain('"scored": false');
   });
 });
 

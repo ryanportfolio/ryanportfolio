@@ -51,7 +51,12 @@ export function renderReportsIndex(rows: ScoreboardRow[], generatedAt: string): 
     "One deterministic, scored engineering report per audited repo. Private repos are audited locally with an owner-scoped token; only aggregate metrics are published, and every report is human-approved before it lands here.",
   );
   lines.push("");
-  lines.push(renderScoreboardTable(rows, "../"));
+  // The index lives inside reports/, so links are plain filenames.
+  const localRows = rows.map((r) => ({
+    ...r,
+    reportPath: r.reportPath.replace(/^reports\//, ""),
+  }));
+  lines.push(renderScoreboardTable(localRows));
   lines.push("");
   lines.push(`_Last regenerated: ${generatedAt}. Unflattering scores stay in; the credibility is the honesty._`);
   lines.push("");

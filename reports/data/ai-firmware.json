@@ -1,5 +1,9 @@
 {
-  "attestation": "Independent review for this repo happens as fresh-context AI audit sessions outside GitHub (handoff audits). Those sessions leave no GitHub artifacts, so they earn no credit in the recorded-review dimensions above.",
+  "attestation": {
+    "text": "Independent review for this repo happens as fresh-context AI audit sessions outside GitHub (handoff audits). Those sessions leave no GitHub artifacts, so they earn no credit in the recorded-review dimensions above.",
+    "verified": false,
+    "scored": false
+  },
   "repo": "ryanportfolio/AI-Firmware",
   "collectedAt": "2026-07-18T18:46:39.728Z",
   "headSha": "4f913e0416375e4a421cd96daec742f35ec7f786",

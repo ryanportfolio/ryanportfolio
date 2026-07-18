@@ -27,9 +27,10 @@ export interface PublicReport {
   unverified: string[];
   sample: ScoreReport["sample"];
   dimensions: PublicDimension[];
-  /** Owner-stated context. Never verified, never scored; rendered under an
-   * explicit label. Null when the owner attested nothing. */
-  attestation: string | null;
+  /** Owner-stated context. The qualification travels inside the artifact so
+   * a direct JSON consumer cannot receive the claim without it. Null when
+   * the owner attested nothing. */
+  attestation: { text: string; verified: false; scored: false } | null;
 }
 
 function projectDimension(d: DimensionResult): PublicDimension {
@@ -49,7 +50,8 @@ function projectDimension(d: DimensionResult): PublicDimension {
 
 export function toPublicReport(report: ScoreReport, attestation: string | null = null): PublicReport {
   return {
-    attestation,
+    attestation:
+      attestation === null ? null : { text: attestation, verified: false, scored: false },
     repo: report.repo,
     collectedAt: report.collectedAt,
     headSha: report.headSha,

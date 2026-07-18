@@ -1,5 +1,9 @@
 {
-  "attestation": "Independent review for this repo happens as fresh-context AI audit sessions outside GitHub (handoff audits). Those sessions leave no GitHub artifacts, so they earn no credit in the recorded-review dimensions above.",
+  "attestation": {
+    "text": "Independent review for this repo happens as fresh-context AI audit sessions outside GitHub (handoff audits). Those sessions leave no GitHub artifacts, so they earn no credit in the recorded-review dimensions above.",
+    "verified": false,
+    "scored": false
+  },
   "repo": "ryanportfolio/PixelSwarm",
   "collectedAt": "2026-07-18T18:46:07.755Z",
   "headSha": "c04fe98b179e6152dd036f1060f4a7e1e3c50895",
