@@ -145,6 +145,35 @@ describe("generateReportHtml", () => {
     expect(page).not.toContain("handoff audits");
   });
 
+  it("info sections render as audit clauses, not paragraph walls", () => {
+    const index = generateIndexHtml([healthy]);
+    // Exclusions E-1..E-3, meaning S-1..S-3, method M-1, and the tagged
+    // owner declaration D-1 on the index. Clause numbers are self-links.
+    for (const id of ["E-1", "E-2", "E-3", "S-1", "S-2", "S-3", "M-1", "D-1"]) {
+      expect(index).toContain(`href="#${id.toLowerCase()}">${id}</a>`);
+    }
+    expect(index).toContain(`<span class="tag-unverified">Unverified</span>`);
+    const page = generateReportHtml(healthy);
+    expect(page).toContain(`href="#e-1">E-1</a>`);
+    // The declaration and its unverified tag are index-only.
+    expect(page).not.toContain(`clause-no">D-1`);
+    expect(page).not.toContain(`<span class="tag-unverified">`);
+  });
+
+  it("report pages carry the stamp chip and colophon; index chips stay flat", () => {
+    const page = generateReportHtml(healthy);
+    expect(page).toMatch(/class="chip [a-z]+ stamp"/);
+    for (const dt of ["Commit", "Collected", "Sample", "Publication"]) {
+      expect(page).toContain(`<dt>${dt}</dt>`);
+    }
+    // The publication row states the rule, never asserts a per-report event.
+    expect(page).toContain("Requires prior owner approval");
+    expect(page).not.toContain("Owner-approved before publication");
+    // Markup check, not raw substring: the CSS block names .chip.stamp on
+    // every page; only report markup may apply the class.
+    expect(generateIndexHtml([healthy])).not.toContain(` stamp"`);
+  });
+
   it("chrome invariants: brand-font origin, fallback stacks, zero scripts", () => {
     for (const html of [generateIndexHtml([healthy]), generateReportHtml(healthy)]) {
       expect(html).toContain("https://corewise.academy/fonts/");

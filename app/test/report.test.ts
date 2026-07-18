@@ -32,6 +32,15 @@ describe("renderReportMarkdown", () => {
       md.indexOf("## What this score means"),
     );
     expect(md.indexOf("## What this score cannot see")).toBeLessThan(md.indexOf("## Dimensions"));
+    // Pin the exact published sentences: the site's clause items and this
+    // renderer share one source, and editing an item text must fail here,
+    // not silently change published markdown.
+    expect(md).toContain(
+      "- Work that leaves no GitHub artifact is invisible. Reviews run in a separate AI session, audits handed to another tool, and local test runs do not exist to this tool unless they were posted back to the pull request.",
+    );
+    expect(md).toContain(
+      "This score measures process discipline, not code quality. The tool never reads the code. It reads only GitHub metadata: commits, pull requests, reviews, check runs, and merge events. It scores only what is recorded on GitHub; discipline that leaves no artifact there earns nothing.",
+    );
     expect(md).toContain("In plain terms, each dimension asks:");
     expect(md).toContain(
       "- **Recorded review coverage**: Of the merged pull requests, how many carry a recorded review by anyone other than the author?",
