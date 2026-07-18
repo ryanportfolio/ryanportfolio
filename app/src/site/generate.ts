@@ -139,7 +139,7 @@ a.clause-no:hover{text-decoration:underline}
 .clause-label{margin:0;font-size:1rem;font-weight:600;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}
 .clause-detail{margin:.15rem 0 0;font-size:.82rem;line-height:1.55;color:var(--ink-mute)}
 .clauses{margin:.4rem 0 0}
-.tag-unverified{font-family:var(--font-mono);font-weight:400;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--developing);background:var(--panel);border:1px dashed currentColor;padding:.1rem .45rem;white-space:nowrap}
+.tag-notscored{font-family:var(--font-mono);font-weight:400;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--developing);background:var(--panel);border:1px dashed currentColor;padding:.1rem .45rem;white-space:nowrap}
 .callout .clause-detail{color:var(--ink-soft)}
 .clause-ref{margin:.35rem 0 0;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.02em;color:var(--ink-soft)}
 .dot-row{display:flex;align-items:baseline;gap:.5rem}
@@ -204,12 +204,14 @@ ${body}
 /** Owner-voice declaration for the fleet index only. The generic tool copy
  * in PLAIN_LIMITS_ITEMS stays repo-agnostic; this states the owner's own
  * practice, attributed and conditional, tagged UNVERIFIED in the render. */
-/** First person by design: this is the owner speaking, under the tool's
- * UNVERIFIED tag. The conditional framing is the honesty rail. */
+/** First person by design: this is the owner speaking about his own
+ * practice, stated as fact (owner decision, plan 0021; evidenced there
+ * from local session history). The honest limit that remains published
+ * is scoring status: the scorer cannot see those sessions. */
 const FLEET_DECLARATION: PlainClause = {
   id: "D-1",
   label: "Owner's declaration: reviews run off GitHub",
-  text: "Every repo on this board is solo. My reviews almost always run as handoff audits in separate AI sessions, which leave no GitHub artifact. The tool has not verified that claim; if the claim is accurate, the review dimensions here understate actual practice. Where I have stated that practice for a repo, its report carries it as an unverified attestation.",
+  text: "Every repo on this board is solo. My reviews almost always run as handoff audits in separate AI sessions, which leave no GitHub artifact. The deterministic scorer cannot see those sessions and gives them no score credit, so the review dimensions here understate that practice. Where I have stated it for a repo, its report carries the statement as an attestation outside the scored evidence.",
 };
 
 /** The public skill behind the declared practice: it drafts a
@@ -226,7 +228,7 @@ const HANDOFF_SKILL_REF = `The skill behind that practice is public: <a href="${
 function clauseRow(c: PlainClause, tag: string | null = null, refHtml: string | null = null): string {
   const anchor = c.id.toLowerCase();
   return `<div class="clause" id="${esc(anchor)}"><a class="clause-no" href="#${esc(anchor)}">${esc(c.id)}</a><div>
-<p class="clause-label"><span>${esc(c.label)}</span>${tag ? `<span class="tag-unverified">${esc(tag)}</span>` : ""}</p>
+<p class="clause-label"><span>${esc(c.label)}</span>${tag ? `<span class="tag-notscored">${esc(tag)}</span>` : ""}</p>
 <p class="clause-detail">${esc(c.text)}</p>
 ${refHtml ? `<p class="clause-ref">${refHtml}</p>\n` : ""}</div></div>`;
 }
@@ -235,7 +237,7 @@ ${refHtml ? `<p class="clause-ref">${refHtml}</p>\n` : ""}</div></div>`;
  * cannot see, followed by what the owner states about that gap. */
 function limitsCallout(withDeclaration: boolean): string {
   return `<aside class="callout"><span class="callout-title">${esc(PLAIN_LIMITS_TITLE)}</span>
-${PLAIN_LIMITS_ITEMS.map((c) => clauseRow(c)).join("\n")}${withDeclaration ? "\n" + clauseRow(FLEET_DECLARATION, "Unverified", HANDOFF_SKILL_REF) : ""}
+${PLAIN_LIMITS_ITEMS.map((c) => clauseRow(c)).join("\n")}${withDeclaration ? "\n" + clauseRow(FLEET_DECLARATION, "Not scored", HANDOFF_SKILL_REF) : ""}
 </aside>`;
 }
 
