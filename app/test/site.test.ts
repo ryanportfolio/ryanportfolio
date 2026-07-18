@@ -129,6 +129,19 @@ describe("generateReportHtml", () => {
     expect(html).not.toContain(`Legacy <b>`);
   });
 
+  it("limits callout sits upfront: before the scoreboard and the dimension table", () => {
+    const index = generateIndexHtml([healthy]);
+    expect(index.indexOf("What this score cannot see")).toBeGreaterThan(-1);
+    expect(index.indexOf("What this score cannot see")).toBeLessThan(index.indexOf("Scoreboard"));
+    expect(index).toContain("almost always run as handoff audits");
+    expect(index).toContain("an attestation the tool has not verified");
+    const page = generateReportHtml(healthy);
+    expect(page.indexOf("What this score cannot see")).toBeGreaterThan(-1);
+    expect(page.indexOf("What this score cannot see")).toBeLessThan(page.indexOf("Dimensions"));
+    // Report pages stay repo-agnostic: no fleet-specific practice claims.
+    expect(page).not.toContain("handoff audits");
+  });
+
   it("chrome invariants: brand-font origin, fallback stacks, zero scripts", () => {
     for (const html of [generateIndexHtml([healthy]), generateReportHtml(healthy)]) {
       expect(html).toContain("https://corewise.academy/fonts/");

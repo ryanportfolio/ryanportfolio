@@ -33,6 +33,12 @@ export function renderReportMarkdown(
     `- Sample: ${report.sample.commits} commits${report.sample.commitsTruncated ? " (truncated at collection limit)" : ""}, ${report.sample.mergedPullRequests} merged PRs${report.sample.pullRequestsTruncated ? " (truncated at collection limit)" : ""}`,
   );
   lines.push("");
+  // Upfront by design: the invisible-work and solo-blind-spot caveat is the
+  // most important context for reading the numbers below.
+  lines.push(`## ${PLAIN_LIMITS_TITLE}`);
+  lines.push("");
+  for (const p of PLAIN_LIMITS) lines.push(`- ${p}`);
+  lines.push("");
   lines.push(`## ${PLAIN_MEANING_TITLE}`);
   lines.push("");
   for (const p of PLAIN_MEANING) lines.push(p, "");
@@ -89,10 +95,6 @@ export function renderReportMarkdown(
     for (const line of attestation.split("\n")) lines.push(`> ${line}`);
     lines.push("");
   }
-  lines.push(`## ${PLAIN_LIMITS_TITLE}`);
-  lines.push("");
-  for (const p of PLAIN_LIMITS) lines.push(`- ${p}`);
-  lines.push("");
   lines.push("## Methodology");
   lines.push("");
   lines.push(
