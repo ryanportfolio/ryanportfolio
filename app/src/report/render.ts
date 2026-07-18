@@ -84,7 +84,9 @@ export function renderReportMarkdown(
       "Stated by the repo owner. The tool has not verified this and it earns no score credit.",
     );
     lines.push("");
-    lines.push(`> ${attestation}`);
+    // Prefix every line so a multi-line attestation cannot escape the
+    // blockquote and masquerade as report content.
+    for (const line of attestation.split("\n")) lines.push(`> ${line}`);
     lines.push("");
   }
   lines.push(`## ${PLAIN_LIMITS_TITLE}`);

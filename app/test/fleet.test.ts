@@ -31,6 +31,15 @@ describe("writeReportArtifacts", () => {
     expect(md).toContain("# Agentic-SDLC audit");
   });
 
+  it("whitespace-only attestation normalizes to null (nothing renders)", () => {
+    writeReportArtifacts(dir, "wsatt", report, new Map(), "   ");
+    const json = JSON.parse(readFileSync(join(dir, "data", "wsatt.json"), "utf8")) as {
+      attestation: string | null;
+    };
+    expect(json.attestation).toBeNull();
+    expect(readFileSync(join(dir, "wsatt.md"), "utf8")).not.toContain("Owner attestation");
+  });
+
   it("colliding artifact filenames throw instead of overwriting", () => {
     const written = new Map<string, string>();
     writeReportArtifacts(dir, "range", report, written);

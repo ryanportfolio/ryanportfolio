@@ -67,9 +67,17 @@ the practice into evidence:
 2. Alternatively, post fresh-session audit output as a formal PR review
    from a second (machine) account. A comment from your own account does
    not count: review credit requires a reviewer who is not the author.
+   Set exactly one of the two secrets in option 1; do not configure both.
 3. Do not launder self-review through a bot re-poster just to earn credit;
-   that games the metric the audit exists to measure. Either produce an
-   independent recorded review or let the report state the gap.
+   that games the metric the audit exists to measure. The line between 2
+   and 3 is who produced the judgment, not who posted it: recording an
+   independent fresh-context session's findings is evidence, re-posting
+   the author's own approval under a bot identity is fraud. Either
+   produce an independent recorded review or let the report state the
+   gap.
+4. Owner attestations publish verbatim on the public report. Never paste
+   private-repo detail (code, commit text, config, internal names) into
+   one; state the practice, not the content.
 
 ## Conventions that make it work
 

@@ -3,6 +3,6 @@
   "include": ["public-repo-one", "private-repo-two", "this-repo"],
   "exclude": ["repo-you-never-want-featured"],
   "attestations": {
-    "private-repo-two": "Optional owner-stated context, rendered as not verified and not scored."
+    "private-repo-two": "Optional owner-stated context, rendered as not verified and not scored. PUBLISHES VERBATIM: never include private code, commit text, config, or internal names."
   }
 }

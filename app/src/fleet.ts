@@ -70,6 +70,8 @@ export function writeReportArtifacts(
   written: Map<string, string> = new Map(),
   attestation: string | null = null,
 ): void {
+  // Absent, empty, and whitespace-only all mean "no attestation".
+  attestation = attestation?.trim() || null;
   const jsonName = jsonArtifactName(name);
   const prior = written.get(jsonName);
   if (prior !== undefined) {

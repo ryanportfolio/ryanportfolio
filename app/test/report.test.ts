@@ -41,6 +41,14 @@ describe("renderReportMarkdown", () => {
     expect(renderReportMarkdown(report)).not.toContain("## Owner attestation");
   });
 
+  it("multi-line attestations cannot escape the blockquote", () => {
+    const report = scoreRepo(makeFacts());
+    const md = renderReportMarkdown(report, "Audited.\n\n## CI gate\n\nVerified independently.");
+    expect(md).toContain("> Audited.");
+    expect(md).toContain("> ## CI gate");
+    expect(md).not.toContain("\n## CI gate");
+  });
+
   it("plain-language grade bands match the engine's gradeFor thresholds", () => {
     const sentence = PLAIN_MEANING.join(" ");
     for (const [score, grade] of [
