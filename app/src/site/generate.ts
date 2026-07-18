@@ -9,11 +9,12 @@
  */
 import type { DimensionResult, ScoreReport } from "../types.js";
 import {
-  PLAIN_LIMITS,
+  PLAIN_LIMITS_ITEMS,
   PLAIN_LIMITS_TITLE,
-  PLAIN_MEANING,
+  PLAIN_MEANING_ITEMS,
   PLAIN_MEANING_TITLE,
   PLAIN_QUESTIONS,
+  type PlainClause,
 } from "../report/plain.js";
 
 export function esc(s: string): string {
@@ -50,10 +51,10 @@ const GRADE_CLASS: Record<string, string> = {
   Unscorable: "unscorable",
 };
 
-function gradeChip(grade: string, overall: number | null): string {
+function gradeChip(grade: string, overall: number | null, stamp = false): string {
   const cls = GRADE_CLASS[grade] ?? "unscorable";
   const score = overall === null ? "–" : `${overall}`;
-  return `<span class="chip ${cls}"><b>${esc(score)}</b> ${esc(grade)}</span>`;
+  return `<span class="chip ${cls}${stamp ? " stamp" : ""}"><b>${esc(score)}</b> ${esc(grade)}</span>`;
 }
 
 function bar(d: DimensionResult): string {
@@ -84,10 +85,10 @@ const CSS = `
 --ink:#1c1914;--ink-soft:#574f43;--ink-mute:#6b6252;
 --line:rgba(28,25,20,.16);--line-soft:rgba(28,25,20,.08);
 --accent:#2743d0;--accent-deep:#1c31a4;--accent-wash:rgba(39,67,208,.09);
---elite:#2e6b34;--strong:#1c31a4;--developing:#8a6a15;--early:#a14e1a;--adhoc:#a12525;--unscorable:#766d5d}
+--elite:#2e6b34;--strong:#1c31a4;--developing:#8a6a15;--early:#9c3f12;--adhoc:#a12525;--unscorable:#766d5d}
 @media (prefers-color-scheme: dark){:root{
 --paper:#121420;--paper-2:#0d0f18;--panel:#181b2a;
---ink:#e8e4d8;--ink-soft:#a9a496;--ink-mute:#8f8b7a;
+--ink:#e8e4d8;--ink-soft:#a9a496;--ink-mute:#9a9685;
 --line:rgba(232,228,216,.16);--line-soft:rgba(232,228,216,.07);
 --accent:#96a8ff;--accent-deep:#b4c1ff;--accent-wash:rgba(150,168,255,.1);
 --elite:#7fc98b;--strong:#96a8ff;--developing:#d9b45c;--early:#e0885a;--adhoc:#e57373;--unscorable:#84806f}}
@@ -108,7 +109,7 @@ code{font-family:var(--font-mono);font-size:.82em;background:var(--accent-wash);
 main{max-width:960px;margin:0 auto;padding:2.8rem 1.25rem 4rem}
 h1{font-family:var(--font-display);font-weight:400;font-size:2.07rem;line-height:1.08;margin:0 0 .5rem;overflow-wrap:anywhere}
 h2{font-family:var(--font-mono);font-weight:500;font-size:.76rem;text-transform:uppercase;letter-spacing:var(--tracking-caps);color:var(--accent-deep);margin:2.6rem 0 .9rem}
-h2:before{content:"\\2726\\00a0\\00a0"/"";color:var(--accent)}
+h2:before{content:"\\00a7\\00a0\\00a0"/"";color:var(--accent)}
 .muted{color:var(--ink-mute)}.small{font-size:.88rem}
 .backlink{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase}
 table{width:100%;border-collapse:collapse;margin:.6rem 0}
@@ -123,18 +124,53 @@ th{font-family:var(--font-mono);color:var(--ink-mute);font-weight:500;font-size:
 .bar{position:relative;height:1.35rem;background:var(--paper-2);border:1px solid var(--line);min-width:180px;overflow:hidden}
 .bar i{position:absolute;inset:0;width:0;background:var(--accent);opacity:.3}
 .bar span{position:absolute;inset:0;display:flex;align-items:center;padding-left:.5rem;font-family:var(--font-mono);font-size:.72rem}
-.bar.unverified span{color:var(--ink-mute);font-style:italic;font-family:var(--font-body);font-size:.8rem}
+.bar.unverified{background:transparent;border-color:transparent}
+.bar.unverified span{color:var(--ink-mute);font-style:italic;font-family:var(--font-body);font-size:.8rem;padding-left:0}
 .question{margin-top:.25rem;max-width:28rem}
 .panel{background:var(--panel);border:1px solid var(--line);padding:1rem 1.2rem;margin:.8rem 0}
 .panel ul{padding-left:1.1rem}
-.callout{border:1px solid var(--accent);border-left:4px solid var(--accent);background:var(--accent-wash);padding:1.1rem 1.3rem;margin:1.4rem 0}
-.callout .callout-title{font-family:var(--font-mono);font-weight:500;font-size:.76rem;text-transform:uppercase;letter-spacing:var(--tracking-caps);color:var(--accent-deep);display:block;margin-bottom:.6rem}
-.callout p{margin:.55rem 0}
+.callout{border:1px solid var(--accent);border-left:4px solid var(--accent);background:var(--accent-wash);padding:.9rem 1.3rem 1rem;margin:1.4rem 0}
+.callout .callout-title{font-family:var(--font-mono);font-weight:500;font-size:.76rem;text-transform:uppercase;letter-spacing:var(--tracking-caps);color:var(--accent-deep);display:block;margin-bottom:.3rem}
+.clause{display:grid;grid-template-columns:2.8rem 1fr;gap:0 .7rem;padding:.6rem 0;border-top:1px solid var(--line-soft)}
+.clauses .clause:first-child{border-top:0}
+.clause:target{background:var(--accent-wash)}
+a.clause-no{font-family:var(--font-mono);font-size:.72rem;color:var(--accent-deep);padding-top:.28rem;text-decoration:none}
+a.clause-no:hover{text-decoration:underline}
+.clause-label{margin:0;font-size:1rem;font-weight:600;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}
+.clause-detail{margin:.15rem 0 0;font-size:.82rem;line-height:1.55;color:var(--ink-mute)}
+.clauses{margin:.4rem 0 0}
+.tag-unverified{font-family:var(--font-mono);font-weight:400;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--developing);border:1px solid currentColor;padding:.1rem .45rem;white-space:nowrap}
+.dot-row{display:flex;align-items:baseline;gap:.5rem}
+.dot-row .dots{flex:1;min-width:2rem;border-bottom:1px dotted var(--line);transform:translateY(-.28em)}
+.report-arrow{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--accent-deep)}
+.report-arrow:hover{text-decoration:underline}
+.colophon{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);margin:1.2rem 0;background:var(--panel)}
+.colophon>div{display:grid;grid-template-columns:6.5rem 1fr;gap:0 .8rem;padding:.55rem .9rem;border-top:1px solid var(--line-soft)}
+.colophon>div:nth-child(-n+2){border-top:0}
+.colophon>div:nth-child(odd){border-right:1px solid var(--line-soft)}
+.colophon dt{font-family:var(--font-mono);font-size:.62rem;letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--ink-mute);padding-top:.22em}
+.colophon dd{margin:0;font-family:var(--font-mono);font-size:.76rem;overflow-wrap:anywhere}
+.colophon code{background:none;padding:0}
+.stampline{margin:.4rem 0 0}
+.chip.stamp{border-style:double;border-width:3px;padding:.5rem 1.05rem;font-size:.88rem;transform:rotate(-2deg);transform-origin:left center;margin:.3rem 0 .5rem .2rem;opacity:.92}
+.chip.stamp b{font-size:1.15rem}
+footer span{display:block}
 footer{margin-top:3.5rem;padding-top:1.2rem;border-top:1px solid var(--line);font-family:var(--font-mono);font-size:.72rem;line-height:1.7;letter-spacing:.02em;color:var(--ink-mute)}
 footer a{color:var(--ink-soft)}
 @media(max-width:720px){.masthead{padding:.8rem 1rem}.masthead nav{display:none}
 h1{font-size:1.66rem}
-table{display:block;overflow-x:auto}}
+table{display:block;overflow-x:auto}
+.clause{grid-template-columns:1fr;gap:.1rem 0}
+a.clause-no{padding-top:0}
+.colophon{grid-template-columns:1fr}
+.colophon>div{border-right:0!important}
+.colophon>div:nth-child(2){border-top:1px solid var(--line-soft)}
+.dimtable{display:block;overflow:visible}
+.dimtable thead{display:none}
+.dimtable tbody,.dimtable tr,.dimtable td{display:block;border:0;padding:0}
+.dimtable tr{border-top:1px solid var(--line);padding:.7rem 0}
+.dimtable td{padding:.2rem 0}
+.dimtable .bar{max-width:100%}}
 @media print{body:after,.masthead{display:none}}
 `;
 
@@ -163,25 +199,46 @@ ${body}
 `;
 }
 
-/** Owner-voice context for the fleet index only. The generic tool copy in
- * PLAIN_LIMITS stays repo-agnostic; this states the owner's own practice,
- * and score-credit language stays tied to the unverified-attestation frame. */
-const FLEET_CONTEXT =
-  "Every repo on this board is solo. The owner states that his reviews almost always run as handoff audits in separate AI sessions, which leave no GitHub artifact. The tool has not verified that claim and cannot credit what it cannot see; if the claim is accurate, the review dimensions here understate actual practice. Where the owner has stated that practice for a repo, the report carries it as an unverified attestation.";
+/** Owner-voice declaration for the fleet index only. The generic tool copy
+ * in PLAIN_LIMITS_ITEMS stays repo-agnostic; this states the owner's own
+ * practice, attributed and conditional, tagged UNVERIFIED in the render. */
+const FLEET_DECLARATION: PlainClause = {
+  id: "D-1",
+  label: "Owner's declaration: reviews run off GitHub",
+  text: "Every repo on this board is solo. The owner states that his reviews almost always run as handoff audits in separate AI sessions, which leave no GitHub artifact. The tool has not verified that claim; if the claim is accurate, the review dimensions here understate actual practice. Where the owner has stated that practice for a repo, the report carries it as an unverified attestation.",
+};
 
-function limitsCallout(lead: string | null): string {
+/** One audit clause: mono number (a self-link anchor), scannable label,
+ * full sentence(s) as a small detail line. The detail keeps every qualifier
+ * of the approved copy; only the wall-of-text presentation is gone. */
+function clauseRow(c: PlainClause, tag: string | null = null): string {
+  const anchor = c.id.toLowerCase();
+  return `<div class="clause" id="${esc(anchor)}"><a class="clause-no" href="#${esc(anchor)}">${esc(c.id)}</a><div>
+<p class="clause-label"><span>${esc(c.label)}</span>${tag ? `<span class="tag-unverified">${esc(tag)}</span>` : ""}</p>
+<p class="clause-detail">${esc(c.text)}</p>
+</div></div>`;
+}
+
+/** Exclusions first, then the owner's declaration: what the instrument
+ * cannot see, followed by what the owner states about that gap. */
+function limitsCallout(withDeclaration: boolean): string {
   return `<aside class="callout"><span class="callout-title">${esc(PLAIN_LIMITS_TITLE)}</span>
-${lead ? `<p>${esc(lead)}</p>\n` : ""}${PLAIN_LIMITS.map((p) => `<p>${esc(p)}</p>`).join("\n")}
+${PLAIN_LIMITS_ITEMS.map((c) => clauseRow(c)).join("\n")}${withDeclaration ? "\n" + clauseRow(FLEET_DECLARATION, "Unverified") : ""}
 </aside>`;
 }
 
-const FOOTER = `<footer class="small muted">
-Scores are deterministic: same repo state, same score; no LLM in the scoring path.
-Reports contain aggregate metrics only: no source code, commit messages, PR text, or config values.
-Every published report is explicitly approved by the owner first; the rule lives in the
-<a href="https://github.com/ryanportfolio/ryanportfolio/blob/main/governance/README.md">governance page</a>.
-<a href="https://github.com/ryanportfolio/ryanportfolio">Pipeline &amp; tool source</a>.
-<a href="https://corewise.academy/">corewise.academy</a>.
+function meaningSection(): string {
+  return `<h2>${esc(PLAIN_MEANING_TITLE)}</h2>
+<div class="clauses">
+${PLAIN_MEANING_ITEMS.map((c) => clauseRow(c)).join("\n")}
+</div>`;
+}
+
+const FOOTER = `<footer>
+<span>Deterministic: same repo state, same score. No LLM in the scoring path.</span>
+<span>Aggregates only: no source code, commit messages, PR text, or config values.</span>
+<span>Every report owner-approved before publication: <a href="https://github.com/ryanportfolio/ryanportfolio/blob/main/governance/README.md">governance</a>.</span>
+<span><a href="https://github.com/ryanportfolio/ryanportfolio">Pipeline &amp; tool source</a> · <a href="https://corewise.academy/">corewise.academy</a></span>
 </footer>`;
 
 export function generateIndexHtml(reports: ScoreReport[]): string {
@@ -201,7 +258,7 @@ export function generateIndexHtml(reports: ScoreReport[]): string {
 ${sorted
   .map(
     (r) =>
-      `<tr><td>${esc(r.repo)}</td><td>${gradeChip(r.grade, r.overall)}</td><td><a href="${esc(slugOf(r))}.html">full report</a></td></tr>`,
+      `<tr><td><span class="dot-row"><span>${esc(r.repo)}</span><i class="dots"></i></span></td><td>${gradeChip(r.grade, r.overall)}</td><td><a class="report-arrow" aria-label="full report: ${esc(r.repo)}" href="${esc(slugOf(r))}.html">report →</a></td></tr>`,
   )
   .join("\n")}
 </tbody></table>`;
@@ -211,16 +268,18 @@ ${sorted
 <a href="https://github.com/ryanportfolio">ryanportfolio</a>'s repos, most private. The
 tool and pipeline are public and deterministic; reports on private repos are reproducible
 by the owner from the pinned commit. Unflattering scores stay in.</p>
-${limitsCallout(FLEET_CONTEXT)}
+${limitsCallout(true)}
 <h2>Scoreboard</h2>
 ${rows}
-<h2>${esc(PLAIN_MEANING_TITLE)}</h2>
-${PLAIN_MEANING.map((p) => `<p class="small">${esc(p)}</p>`).join("\n")}
+${meaningSection()}
 <h2>How these scores are made</h2>
-<div class="panel small">
-Every change to the audit tool itself flows: plan → agent build → independent fresh-context
+<div class="clauses">
+<div class="clause" id="m-1"><a class="clause-no" href="#m-1">M-1</a><div>
+<p class="clause-label"><span>Built by the pipeline it documents</span></p>
+<p class="clause-detail">Every change to the audit tool itself flows: plan → agent build → independent fresh-context
 AI review → CI test+eval gate → owner-authorized merge. The repo's own PR history is the
-living demo: <a href="https://github.com/ryanportfolio/ryanportfolio/pulls?q=is%3Apr">read it</a>.
+living demo: <a href="https://github.com/ryanportfolio/ryanportfolio/pulls?q=is%3Apr">read it</a>.</p>
+</div></div>
 </div>
 ${FOOTER}`;
   return page("Fleet audit: ryanportfolio", body);
@@ -257,13 +316,16 @@ export function generateReportHtml(report: SiteReport): string {
 
   const body = `<p class="backlink"><a href="index.html">← scoreboard</a></p>
 <h1>${esc(report.repo)}</h1>
-<p>${gradeChip(report.grade, report.overall)}</p>
-<p class="small muted">Collected ${esc(report.collectedAt)} at <code>${esc(report.headSha ?? "(no commits)")}</code>;
-sample: ${report.sample.commits} commits${report.sample.commitsTruncated ? " (truncated)" : ""},
-${report.sample.mergedPullRequests} merged PRs${report.sample.pullRequestsTruncated ? " (truncated)" : ""}.</p>
-${limitsCallout(null)}
+<p class="stampline">${gradeChip(report.grade, report.overall, true)}</p>
+<dl class="colophon">
+<div><dt>Commit</dt><dd><code>${esc(report.headSha ?? "(no commits)")}</code></dd></div>
+<div><dt>Collected</dt><dd>${esc(report.collectedAt)}</dd></div>
+<div><dt>Sample</dt><dd>${report.sample.commits} commits${report.sample.commitsTruncated ? " (truncated)" : ""} · ${report.sample.mergedPullRequests} merged PRs${report.sample.pullRequestsTruncated ? " (truncated)" : ""}</dd></div>
+<div><dt>Status</dt><dd>Owner-approved before publication</dd></div>
+</dl>
+${limitsCallout(false)}
 <h2>Dimensions</h2>
-<table><thead><tr><th>Dimension</th><th>Score</th><th>Basis</th></tr></thead><tbody>
+<table class="dimtable"><thead><tr><th>Dimension</th><th>Score</th><th>Basis</th></tr></thead><tbody>
 ${dims}
 </tbody></table>
 ${unverified}
@@ -275,8 +337,7 @@ ${(() => {
 <p>${esc(att)}</p></div>`
     : "";
 })()}
-<h2>${esc(PLAIN_MEANING_TITLE)}</h2>
-${PLAIN_MEANING.map((p) => `<p class="small">${esc(p)}</p>`).join("\n")}
+${meaningSection()}
 ${FOOTER}`;
   return page(`${report.repo}: agentic-SDLC audit`, body);
 }
