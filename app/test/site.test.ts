@@ -129,6 +129,17 @@ describe("generateReportHtml", () => {
     expect(html).not.toContain(`Legacy <b>`);
   });
 
+  it("chrome invariants: brand-font origin, fallback stacks, zero scripts", () => {
+    for (const html of [generateIndexHtml([healthy]), generateReportHtml(healthy)]) {
+      expect(html).toContain("https://corewise.academy/fonts/");
+      expect(html).toContain("Georgia,serif");
+      expect(html).toContain("ui-monospace");
+      expect(html).not.toContain("<script");
+      expect(html).toContain(`class="masthead"`);
+      expect(html).toContain(`href="https://corewise.academy/"`);
+    }
+  });
+
   it("slug collisions throw instead of silently overwriting", () => {
     const a = structuredClone(healthy);
     const b = structuredClone(healthy);

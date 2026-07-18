@@ -1,10 +1,11 @@
 /**
  * Static site generator: ScoreReport[] → recruiter-facing viewer.
- * Pure HTML/CSS, no frameworks, no scripts, no third-party assets. Brand
- * fonts load cross-origin from corewise.academy (the owner's own origin,
- * CORS `*` on /fonts/) with serif/mono fallback stacks so the site stays
- * readable if they fail. Deterministic: same reports → same bytes.
- * Renders aggregates only (privacy boundary upstream).
+ * Pure HTML/CSS, no frameworks, no scripts, no third-party origins. Brand
+ * fonts are self-hosted on corewise.academy (the owner's own origin) and
+ * load cross-origin, which requires CORS `*` on /fonts/ there; serif/mono
+ * fallback stacks keep the site readable if they fail. Deterministic:
+ * same reports → same bytes. Renders aggregates only (privacy boundary
+ * upstream).
  */
 import type { DimensionResult, ScoreReport } from "../types.js";
 import {
@@ -64,7 +65,9 @@ function bar(d: DimensionResult): string {
   return `<div class="bar"><i style="width:${width}%"></i><span>${esc(String(d.score))}</span></div>`;
 }
 
-/** Brand-font origin: the owner's own site; /fonts/ serves CORS `*`. */
+/** Brand-font origin: the owner's own site; requires CORS `*` on /fonts/.
+ * Interpolated raw into the <style> block: must stay a compile-time
+ * constant, never configurable input (no CSS escaping exists here). */
 const FONT_ORIGIN = "https://corewise.academy";
 
 const CSS = `
@@ -78,13 +81,13 @@ const CSS = `
 --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
 --tracking-caps:.14em;--ease:cubic-bezier(.22,1,.36,1);--dur:.45s;
 --paper:#f3efe4;--paper-2:#ece6d6;--panel:#faf7ef;
---ink:#1c1914;--ink-soft:#574f43;--ink-mute:#766d5d;
+--ink:#1c1914;--ink-soft:#574f43;--ink-mute:#6b6252;
 --line:rgba(28,25,20,.16);--line-soft:rgba(28,25,20,.08);
 --accent:#2743d0;--accent-deep:#1c31a4;--accent-wash:rgba(39,67,208,.09);
 --elite:#2e6b34;--strong:#1c31a4;--developing:#8a6a15;--early:#a14e1a;--adhoc:#a12525;--unscorable:#766d5d}
 @media (prefers-color-scheme: dark){:root{
 --paper:#121420;--paper-2:#0d0f18;--panel:#181b2a;
---ink:#e8e4d8;--ink-soft:#a9a496;--ink-mute:#84806f;
+--ink:#e8e4d8;--ink-soft:#a9a496;--ink-mute:#8f8b7a;
 --line:rgba(232,228,216,.16);--line-soft:rgba(232,228,216,.07);
 --accent:#96a8ff;--accent-deep:#b4c1ff;--accent-wash:rgba(150,168,255,.1);
 --elite:#7fc98b;--strong:#96a8ff;--developing:#d9b45c;--early:#e0885a;--adhoc:#e57373;--unscorable:#84806f}}
@@ -96,7 +99,7 @@ a{color:var(--accent-deep);text-decoration:underline;text-decoration-color:color
 a:hover{text-decoration-color:var(--accent)}
 ::selection{background:var(--accent);color:var(--paper)}
 code{font-family:var(--font-mono);font-size:.82em;background:var(--accent-wash);padding:.08em .35em}
-.masthead{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 2rem;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--paper) 84%,transparent);backdrop-filter:blur(10px)}
+.masthead{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 2rem;border-bottom:1px solid var(--line);background:var(--paper);background:color-mix(in srgb,var(--paper) 84%,transparent);backdrop-filter:blur(10px)}
 .wordmark{font-family:var(--font-display);font-size:1.15rem;letter-spacing:.02em;color:var(--ink);text-decoration:none}
 .wordmark em{font-style:normal;color:var(--accent-deep)}
 .masthead nav{display:flex;gap:1.6rem;align-items:center}
@@ -105,7 +108,7 @@ code{font-family:var(--font-mono);font-size:.82em;background:var(--accent-wash);
 main{max-width:960px;margin:0 auto;padding:2.8rem 1.25rem 4rem}
 h1{font-family:var(--font-display);font-weight:400;font-size:2.07rem;line-height:1.08;margin:0 0 .5rem;overflow-wrap:anywhere}
 h2{font-family:var(--font-mono);font-weight:500;font-size:.76rem;text-transform:uppercase;letter-spacing:var(--tracking-caps);color:var(--accent-deep);margin:2.6rem 0 .9rem}
-h2:before{content:"\\2726\\00a0\\00a0";color:var(--accent)}
+h2:before{content:"\\2726\\00a0\\00a0"/"";color:var(--accent)}
 .muted{color:var(--ink-mute)}.small{font-size:.88rem}
 .backlink{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase}
 table{width:100%;border-collapse:collapse;margin:.6rem 0}
@@ -129,6 +132,7 @@ footer a{color:var(--ink-soft)}
 @media(max-width:720px){.masthead{padding:.8rem 1rem}.masthead nav{display:none}
 h1{font-size:1.66rem}
 table{display:block;overflow-x:auto}}
+@media print{body:after,.masthead{display:none}}
 `;
 
 function page(title: string, body: string): string {
@@ -162,6 +166,7 @@ Reports contain aggregate metrics only: no source code, commit messages, PR text
 Every published report is explicitly approved by the owner first; the rule lives in the
 <a href="https://github.com/ryanportfolio/ryanportfolio/blob/main/governance/README.md">governance page</a>.
 <a href="https://github.com/ryanportfolio/ryanportfolio">Pipeline &amp; tool source</a>.
+<a href="https://corewise.academy/">corewise.academy</a>.
 </footer>`;
 
 export function generateIndexHtml(reports: ScoreReport[]): string {
