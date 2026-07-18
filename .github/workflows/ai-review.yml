@@ -1,11 +1,17 @@
-# Independent adversarial AI review on every PR.
+# Independent adversarial AI review — portable CI template.
 #
-# Fresh context by construction: this job starts with no builder-session
+# In THIS repo the live review lane runs locally on the owner's Claude
+# subscription (.claude/skills/adversarial-review — solo workflow: PRs are
+# only pushed while the owner's machine is on), so this workflow is
+# intentionally inert: no ANTHROPIC_API_KEY secret is configured and each
+# run skips with a visible notice. It stays here as the copy-pastable,
+# event-driven variant for repos that want the lane always-on in CI —
+# add the secret (or subscription OAuth-token auth) to activate.
+#
+# Fresh context by construction: the job starts with no builder-session
 # state — it sees only the diff, the repo, and the instructions below.
 # It posts a review comment; it has NO merge or approval power. Merging is
-# human-only. Inert until the ANTHROPIC_API_KEY repo secret is configured.
-#
-# Copy-pastable into other repos: adjust the review checklist to taste.
+# human-only.
 name: ai-review
 
 on:
