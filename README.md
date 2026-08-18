@@ -4,7 +4,7 @@
 <source media="(max-width: 500px) and (prefers-color-scheme: dark)" srcset="assets/masthead-narrow-dark.svg">
 <source media="(max-width: 500px)" srcset="assets/masthead-narrow-light.svg">
 <source media="(prefers-color-scheme: dark)" srcset="assets/masthead-dark.svg">
-<img alt="Ryan Allen. I build AI systems, developer tools, and one Steam game. All of it ships through a review pipeline I built." src="assets/masthead-light.svg" width="100%">
+<img alt="Ryan Allen. I build AI systems and developer tools. All of it ships through a review pipeline I built." src="assets/masthead-light.svg" width="100%">
 </picture>
 
 ### Products
@@ -228,9 +228,9 @@ The model that wrote the code never grades it.
 <img alt="The review stage, one diff, two independent passes. Pass one is a handoff audit: a fresh session with no memory of the build, told to break the work. Pass two is a cross-vendor review: the same diff through a different vendor’s model. Each marks the lines it flagged, on its own side of the diff, and the two disagree." src="assets/review-light.svg" width="100%">
 </picture>
 
-Both passes are skills I wrote: **[handoff audit](https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/handoff-audit/SKILL.md)** and **[/codex-review](https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/codex-review/SKILL.md)**, the newer one, which runs the diff through OpenAI's Codex CLI and verifies every finding before it counts. Then CI, then a merge I authorise. [How I score all of it](AUDIT.md).
+Both passes are skills I wrote: **[handoff audit](https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/handoff-audit/SKILL.md)** and **[/codex-review](https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/codex-review/SKILL.md)**. [How I score all of it](AUDIT.md).
 
-Those skills ship with **[Harness Firmware](https://fullbuild.ai/harness-firmware)**, the self-syncing template I start every repo from. The part that does the work is a reference library the agent writes back into: every gotcha that bites once gets recorded as a pitfall, and the next session reads it before touching that area. Knowledge accumulates in the repo instead of evaporating when a session ends.
+Those skills ship with **[Harness Firmware](https://fullbuild.ai/harness-firmware)**, the self-syncing template I start every repo from. The part that does the work is a reference library the agent writes back into: every gotcha that bites once gets recorded as a pitfall, and the next session reads it before touching that area. [Knowledge accumulates in the repo](https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/recall/SKILL.md) instead of evaporating when a session ends.
 
 ### Where to go next
 

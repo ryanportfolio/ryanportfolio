@@ -18,7 +18,7 @@
   @keyframes mk4{0%,59.4%{opacity:0}60.9%{opacity:1}94%{opacity:1}100%{opacity:0}}
   .mk5{animation:mk5 10s linear infinite}
   @keyframes mk5{0%,43.9%{opacity:0}45.4%{opacity:1}94%{opacity:1}100%{opacity:0}}
-  @media (prefers-reduced-motion:reduce){*{animation:none!important}.w,.r{stroke-dashoffset:0}.n,.mk{opacity:1}}</style>
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}.w,.r{stroke-dashoffset:0}.mk,.cw0{opacity:1}.cm0{opacity:1;stroke-dashoffset:0}}</style>
 <rect width="400" height="442" fill="#0d1117"/>
 
 <text x="26" y="26" font-family="ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="8" fill="#9198a1" letter-spacing=".12em">THE REVIEW STAGE / ONE DIFF / TWO PASSES</text>
