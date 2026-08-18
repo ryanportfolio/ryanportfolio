@@ -100,3 +100,34 @@ local specimen at 1x and 2x, not on the live profile. Headless Chromium advances
 an `<img>`-hosted SVG clock only as it paints, so captured frames land earlier in
 the loop than wall-clock time suggests; that is a capture artifact, not a defect.
 First push is the real test.
+
+## Third pass: the pipeline speaks the site's language
+
+The five-box rail was the diagram any generator draws. fullbuild.ai states its
+process as a sentence with one cycling slot and a drawn mark
+(`idea → design → engineering → ⟨audit⟩ ⟳ shipped`), so the masthead now uses the
+same construction: `plan → build → ⟨audit⟩ → ci ⟳ merged`, cycling the site's own
+four words, audit / iterate / refine / harden.
+
+- The underline is the site's `greenline`, same construction: fifteen points, a
+  sine wobble along the run, a 0.8 degree tilt, drawn over 340ms on the same
+  easing. Amplitude and stroke scale with the type instead of staying at the
+  hero's fixed 4px, which at 13px would have read as a bar.
+- The loop is drawn, not `U+27F3`. That glyph is missing from plenty of system
+  monospace fonts and would have fallen back to a blank or a box.
+- Word widths come from the monospace advance, which is what makes a per-word
+  underline length computable at build time without a font engine.
+
+### Contract amendment
+
+The accent was reserved for the honest gap. It now also carries the review mark on
+the front door. The mark that says "this is being worked" and the mark that says
+"the instrument went blind here" are the same idea, so they share the one colour
+and nothing else uses it.
+
+### Masthead copy
+
+The Steam game came out of the positioning line. Appending it to a list made the
+line carry an inventory item, which reads as padding however it is worded, and two
+attempts to reword it did not fix that. MAIMCOIL is a product card with a real
+capture, so the grid proves the range and the masthead only makes the claim.

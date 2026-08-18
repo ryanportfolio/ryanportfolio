@@ -33,8 +33,12 @@ const SHORT = {
 };
 
 // ---- constraint contract -------------------------------------------------
-// ONE accent, spent only on the honest gap: a measured zero, or could-not-verify.
+// ONE accent, and it is the pen. It marks the honest gap on the audit page (a
+//   measured zero, or could-not-verify) and the review mark on the front door.
 //   Never on decoration, never on the human gate, never on a good score.
+//   Amended when the pipeline took fullbuild.ai's drawn-mark form: the mark that
+//   says "this is being worked" is the same idea as the mark that says "the
+//   instrument went blind here", so they share the one colour and nothing else does.
 // solid fill      = measured value, opacity encodes magnitude
 // dashed + hatch  = the instrument could not see it
 // filled node     = a human decision point; hollow = automated
@@ -49,24 +53,110 @@ const MONO = "ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,'Liberation 
 const SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif";
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 // Switching the animations off is not enough: the drawn-in rules start at a full
-// dash offset and the nodes start transparent, so a reader who asks for reduced
-// motion would get a panel with its lines missing. Restore the end state too.
+// dash offset, the marks start transparent and every cycling word starts hidden,
+// so a reader who asks for reduced motion would get a panel with its lines missing
+// and an empty slot. Restore the end state, and settle the slot on the first word.
 const REDUCED = '@media (prefers-reduced-motion:reduce){*{animation:none!important}'
-              + '.w,.r{stroke-dashoffset:0}.n,.mk{opacity:1}}';
+              + '.w,.r{stroke-dashoffset:0}.mk,.cw0{opacity:1}'
+              + '.cm0{opacity:1;stroke-dashoffset:0}}';
 
-// Wide labels wrap to two lines and go unreadable in a 400px frame, so narrow
-// gets its own single-word set rather than a shrunk copy of the wide one.
-const STAGES      = [['PLAN',0],['AGENT BUILD',0],['ADVERSARIAL REVIEW',0],['CI GATE',0],['OWNER MERGE',1]];
-const STAGES_THIN = [['PLAN',0],['BUILD',0],['REVIEW',0],['CI',0],['MERGE',1]];
+// The pipeline used to be five boxes on a rail, which is the diagram every
+// generator draws. fullbuild.ai states its process as a sentence with one slot
+// that cycles and gets a drawn mark: idea > design > engineering > (audit) > shipped.
+// Same construction here, same four words, so the profile and the site read as one
+// hand. The cycling words are the review stage, which is the honest place for them.
+const CYCLE = ['audit', 'iterate', 'refine', 'harden'];
+const HEAD  = 'plan → build → ';
+const TAIL  = '→ ci';
+const TERM  = 'merged';
+const ADV   = 0.6;  // monospace advance as a fraction of font size
+
+// The house underline, same construction as the site: fifteen points, a sine
+// wobble along the run, a slight tilt. Amplitude and stroke scale with the type
+// rather than staying at the hero's fixed 4px, which at this size would read as a
+// bar rather than a pen stroke.
+function greenline(w, fs) {
+  const amp = fs * 0.05, tilt = Math.tan(-0.8 * Math.PI / 180);
+  const pts = [];
+  for (let i = 0; i <= 14; i++) {
+    pts.push([(i / 14) * (w + 8) - 4,
+              amp * Math.sin(1.7 * i + 0.6) + (i / 14 - 0.5) * 2 * tilt * (w / 2)]);
+  }
+  let len = 0;
+  for (let i = 1; i < pts.length; i++) len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+  return { pts: pts.map(p => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' '), len: Math.ceil(len) + 1 };
+}
+
+// A drawn loop glyph rather than U+27F3, which is missing from plenty of system
+// monospace fonts and would fall back to a blank or a box.
+function loopGlyph(c, r, sw) {
+  const a0 = -Math.PI / 2, a1 = a0 + 1.62 * Math.PI;  // ~292deg, leaves a readable gap
+  const P = a => [r * Math.cos(a), r * Math.sin(a)];
+  const [x0, y0] = P(a0), [x1, y1] = P(a1);
+  // Tangent at the end of a clockwise sweep, so the head points along the travel
+  // rather than at a guessed angle. Guessing it is why the first one read as a ring.
+  const dir = [-Math.sin(a1), Math.cos(a1)];
+  const L = 3.1 * sw, back = [-dir[0] * L, -dir[1] * L];
+  const rot = (v, t) => [v[0] * Math.cos(t) - v[1] * Math.sin(t), v[0] * Math.sin(t) + v[1] * Math.cos(t)];
+  const w1 = rot(back, 0.5), w2 = rot(back, -0.5);
+  const f = n => n.toFixed(2);
+  const S = `fill="none" stroke="${c.mute}" stroke-width="${f(sw)}" stroke-linecap="round"`;
+  return `<path d="M${f(x0)},${f(y0)} A${f(r)},${f(r)} 0 1 1 ${f(x1)},${f(y1)}" ${S}/>`
+       + `<path d="M${f(x1 + w1[0])},${f(y1 + w1[1])} L${f(x1)},${f(y1)} L${f(x1 + w2[0])},${f(y1 + w2[1])}" ${S} stroke-linejoin="round"/>`;
+}
+
+// One 12s loop, four phases. Each word fades in, its underline draws over 340ms on
+// the site's easing, both hold, both clear. The loop glyph turns once per cycle.
+function pipeline(c, x0, y, fs) {
+  const adv = fs * ADV;
+  const slotW = Math.max(...CYCLE.map(w => w.length)) * adv;
+  const sx = x0 + HEAD.length * adv;
+  const tx = sx + slotW + adv * 0.8;
+  const lx = tx + (TAIL.length + 1.9) * adv;
+  const mx = lx + fs * 1.05;
+
+  let body = `<text x="${x0}" y="${y}" font-family="${MONO}" font-size="${fs}" fill="${c.mute}">${HEAD.trimEnd()}</text>`;
+  CYCLE.forEach((word, i) => {
+    const w = word.length * adv, cx = sx + (slotW - w) / 2;
+    const g = greenline(w, fs);
+    body += `<text class="cw cw${i}" x="${cx.toFixed(1)}" y="${y}" font-family="${MONO}" font-size="${fs}" fill="${c.ink}">${word}</text>`;
+    body += `<polyline class="cm cm${i}" points="${g.pts}" transform="translate(${cx.toFixed(1)},${(y + fs * 0.34).toFixed(1)})" `
+         +  `fill="none" stroke="${c.accent}" stroke-width="${(fs * 0.13).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  });
+  body += `<text x="${tx.toFixed(1)}" y="${y}" font-family="${MONO}" font-size="${fs}" fill="${c.mute}">${TAIL}</text>`;
+  body += `<g transform="translate(${lx.toFixed(1)},${(y - fs * 0.3).toFixed(1)})"><g class="lp">`
+       +  loopGlyph(c, fs * 0.5, fs * 0.12) + `</g></g>`;
+  body += `<rect x="${mx.toFixed(1)}" y="${(y - fs * 0.58).toFixed(1)}" width="${(fs * 0.42).toFixed(1)}" height="${(fs * 0.42).toFixed(1)}" fill="${c.fill}"/>`;
+  body += `<text x="${(mx + fs * 0.78).toFixed(1)}" y="${y}" font-family="${MONO}" font-size="${fs}" fill="${c.ink}">${TERM}</text>`;
+
+  let css = `
+  .cw{opacity:0}.cm{opacity:0}
+  .lp{animation:lp 12s linear infinite}
+  @keyframes lp{to{transform:rotate(360deg)}}`;
+  CYCLE.forEach((word, i) => {
+    const s = i * 25, g = greenline(word.length * adv, fs);
+    css += `
+  .cw${i}{animation:cw${i} 12s linear infinite}
+  @keyframes cw${i}{0%,${s}%{opacity:0}${s + 1}%,${s + 22}%{opacity:1}${s + 24}%,100%{opacity:0}}
+  .cm${i}{stroke-dasharray:${g.len};animation:cm${i} 12s linear infinite}
+  @keyframes cm${i}{0%,${s}%{stroke-dashoffset:${g.len};opacity:0}${s + 1}%{stroke-dashoffset:${g.len};opacity:1;animation-timing-function:cubic-bezier(.55,0,.45,1)}${s + 4}%,${s + 22}%{stroke-dashoffset:0;opacity:1}${s + 24}%,100%{stroke-dashoffset:0;opacity:0}}`;
+  });
+  return { body, css };
+}
 
 // Line breaks are hand-set, not wrapped: the wide column runs out at roughly 57
 // characters before it reaches the pipeline diagram, and a wrapper cannot know
 // where the sentence wants to break.
+// The Steam game is deliberately not named here. Appending it to the list made a
+// positioning line carry an inventory item, which reads as padding however it is
+// worded. MAIMCOIL is a product card with a real capture, so the grid proves the
+// range and the masthead only has to make the claim.
 const COPY = {
-  wide:   ['I build AI systems, developer tools, and one Steam game.',
+  wide:   ['I build AI systems and developer tools.',
            'All of it ships through a review pipeline I built.'],
-  narrow: ['I build AI systems, developer tools,', 'and one Steam game.',
-           'All of it ships through a review', 'pipeline I built.'],
+  narrow: ['I build AI systems and developer tools.',
+           'All of it ships through a review',
+           'pipeline I built.'],
 };
 
 // ---- panel: masthead -----------------------------------------------------
@@ -76,20 +166,8 @@ function masthead(t, narrow) {
 }
 
 function mastheadWide(c) {
-  const W = 880, H = 196, px = 470, pw = W - 30 - px, py = 92;
-  const step = pw / (STAGES.length - 1);
-
-  let pipe = `<line class="w" x1="${px}" y1="${py}" x2="${px + pw}" y2="${py}" stroke="${c.rule}" stroke-width="1"/>`;
-  STAGES.forEach(([label, human], i) => {
-    const x = px + i * step, r = human ? 6.5 : 4.5;
-    pipe += `<rect class="n" x="${(x - r).toFixed(1)}" y="${(py - r).toFixed(1)}" width="${r * 2}" height="${r * 2}" `
-         +  `fill="${human ? c.fill : c.bg}" stroke="${human ? c.fill : c.mute}" stroke-width="1.4" `
-         +  `style="animation-delay:${(0.18 + i * 0.08).toFixed(2)}s"/>`;
-    label.split(' ').forEach((w, wi) => {
-      pipe += `<text x="${x}" y="${py + 21 + wi * 9}" font-family="${MONO}" font-size="7.2" `
-           +  `fill="${human ? c.ink : c.mute}" text-anchor="middle" letter-spacing=".06em">${w}</text>`;
-    });
-  });
+  const W = 880, H = 196, px = 470, py = 96;
+  const pipe = pipeline(c, px, py, 13);
 
   let stat = '';
   [[String(repos.length),'REPOS SCORED'],[String(TOT.commits),'COMMITS READ'],[String(TOT.prs),'MERGED PRS']]
@@ -104,29 +182,19 @@ function mastheadWide(c) {
 <line class="r" x1="26" y1="41" x2="${W - 26}" y2="41" stroke="${c.rule}" stroke-width="1"/>
 <text x="24" y="92" font-family="${SANS}" font-size="44" font-weight="600" fill="${c.ink}" letter-spacing="-.022em">Ryan Allen</text>
 ${COPY.wide.map((l, i) => `<text x="26" y="${124 + i * 22}" font-family="${SANS}" font-size="15.5" fill="${c.mute}">${esc(l)}</text>`).join('\n')}
-<text x="${px}" y="${py - 26}" font-family="${MONO}" font-size="8" fill="${c.mute}" letter-spacing=".1em">EVERY CHANGE TAKES THIS PATH</text>
-${pipe}
-<rect class="tk" x="${(px - 2.5).toFixed(1)}" y="${py - 16}" width="5" height="5" fill="${c.fill}"/>
-${stat}`, mastStyle(W, step));
+<text x="${px}" y="${py - 28}" font-family="${MONO}" font-size="8" fill="${c.mute}" letter-spacing=".1em">EVERY CHANGE TAKES THIS PATH</text>
+${pipe.body}
+${stat}`, mastStyle(W, pipe.css));
 }
 
 function mastheadThin(c) {
   // Height follows the copy: a variant with an extra line would otherwise push
   // the sentences straight through the pipeline label.
-  const W = 400, px = 26, pw = W - 52;
+  const W = 400, px = 26;
   const lastLine = 110 + (COPY.narrow.length - 1) * 19;
-  const py = lastLine + 46;
-  const H = py + 88;
-  const step = pw / (STAGES_THIN.length - 1);
-
-  let pipe = `<line class="w" x1="${px}" y1="${py}" x2="${px + pw}" y2="${py}" stroke="${c.rule}" stroke-width="1"/>`;
-  STAGES_THIN.forEach(([label, human], i) => {
-    const x = px + i * step, r = human ? 6 : 4.2;
-    pipe += `<rect class="n" x="${(x - r).toFixed(1)}" y="${(py - r).toFixed(1)}" width="${(r * 2).toFixed(1)}" height="${(r * 2).toFixed(1)}" `
-         +  `fill="${human ? c.fill : c.bg}" stroke="${human ? c.fill : c.mute}" stroke-width="1.3" `
-         +  `style="animation-delay:${(0.18 + i * 0.08).toFixed(2)}s"/>`;
-    pipe += `<text x="${x}" y="${py + 19}" font-family="${MONO}" font-size="7.6" fill="${human ? c.ink : c.mute}" text-anchor="middle" letter-spacing=".05em">${label}</text>`;
-  });
+  const py = lastLine + 54;
+  const H = py + 76;
+  const pipe = pipeline(c, px, py, 11);
 
   let stat = '';
   [[String(repos.length),'REPOS'],[String(TOT.commits),'COMMITS'],[String(TOT.prs),'MERGED PRS']]
@@ -141,36 +209,21 @@ function mastheadThin(c) {
 <line class="r" x1="26" y1="38" x2="${W - 26}" y2="38" stroke="${c.rule}" stroke-width="1"/>
 <text x="24" y="82" font-family="${SANS}" font-size="36" font-weight="600" fill="${c.ink}" letter-spacing="-.022em">Ryan Allen</text>
 ${COPY.narrow.map((l, i) => `<text x="26" y="${110 + i * 19}" font-family="${SANS}" font-size="13.5" fill="${c.mute}">${esc(l)}</text>`).join('\n')}
-<text x="26" y="${py - 24}" font-family="${MONO}" font-size="7.6" fill="${c.mute}" letter-spacing=".1em">EVERY CHANGE TAKES THIS PATH</text>
-${pipe}
-<rect class="tk" x="${(px - 2.5).toFixed(1)}" y="${py - 15}" width="5" height="5" fill="${c.fill}"/>
-${stat}`, mastStyle(W, step));
+<text x="26" y="${py - 26}" font-family="${MONO}" font-size="7.6" fill="${c.mute}" letter-spacing=".1em">EVERY CHANGE TAKES THIS PATH</text>
+${pipe.body}
+${stat}`, mastStyle(W, pipe.css));
 }
 
 // Read off the copy rather than restated, so the two cannot drift apart.
-const ariaMast = () => `Ryan Allen. ${COPY.wide.join(' ')} Pipeline: `
-  + `${STAGES.map(s => s[0].toLowerCase()).join(', ')}. `
+const ariaMast = () => `Ryan Allen. ${COPY.wide.join(' ')} `
+  + `Every change takes this path: ${HEAD.replace(/→/g, 'then')}${CYCLE.join(', ')}, `
+  + `${TAIL.replace('→', 'then')}, and ${TERM}. `
   + `${repos.length} repositories scored, ${TOT.commits} commits read, ${TOT.prs} merged pull requests.`;
 
-// The draw-in is a one-shot and it is over in under a second, which on a profile
-// page means nobody sees it: the panel is already finished by the time you look.
-// The travelling mark is the part that is actually visible, so it loops. It is
-// ink, not accent, because it is a change moving normally rather than a finding.
-const travel = step => {
-  const at = i => `transform:translateX(${(i * step).toFixed(1)}px)`;
-  const stops = [[10, 0], [18, 1], [26, 1], [34, 2], [46, 2], [54, 3], [62, 3], [70, 4]]
-    .map(([pc, i]) => `${pc}%{${at(i)}}`).join('');
-  return `
-  .tk{opacity:0;animation:tk 9s cubic-bezier(.6,0,.4,1) 1.2s infinite}
-  @keyframes tk{0%{${at(0)};opacity:0}4%{${at(0)};opacity:1}${stops}94%{${at(4)};opacity:1}100%{${at(4)};opacity:0}}`;
-};
-
-const mastStyle = (W, step) => `
+const mastStyle = (W, extra) => `
   .w{stroke-dasharray:${W};stroke-dashoffset:${W};animation:dr .8s cubic-bezier(.3,.8,.3,1) .15s both}
   .r{stroke-dasharray:${W};stroke-dashoffset:${W};animation:dr .9s cubic-bezier(.3,.8,.3,1) both}
-  @keyframes dr{to{stroke-dashoffset:0}}
-  .n{opacity:0;animation:fi .3s ease-out both}
-  @keyframes fi{to{opacity:1}}${travel(step)}
+  @keyframes dr{to{stroke-dashoffset:0}}${extra}
   ${REDUCED}`;
 
 function svg(W, H, c, aria, body, style) {
