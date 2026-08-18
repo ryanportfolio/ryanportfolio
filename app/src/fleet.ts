@@ -123,9 +123,11 @@ async function main(): Promise<void> {
   const generatedAt = new Date().toISOString();
   writeFileSync(resolve(reportsDir, "README.md"), renderReportsIndex(rows, generatedAt));
 
-  const readmePath = resolve(repoRoot, "README.md");
-  const readme = readFileSync(readmePath, "utf8");
-  writeFileSync(readmePath, updateReadmeScoreboard(readme, renderScoreboardTable(rows)));
+  // The scoreboard lives in AUDIT.md: the root README is the profile front door
+  // and carries no scoreboard markers.
+  const auditPath = resolve(repoRoot, "AUDIT.md");
+  const audit = readFileSync(auditPath, "utf8");
+  writeFileSync(auditPath, updateReadmeScoreboard(audit, renderScoreboardTable(rows)));
 
   console.error(
     `\nDone: ${rows.length} report(s) rendered into the working tree. Review every page, then publish via PR. Nothing is public until the owner merges.`,

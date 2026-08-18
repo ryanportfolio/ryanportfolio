@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 86" width="400" height="86" role="img" aria-label="ZipFlow. Double click a ZIP, get the folder, the ZIP deletes itself.">
+<rect width="400" height="86" fill="#0d1117"/>
+<rect x="16.5" y="25.5" width="8" height="8" fill="none" stroke="#9198a1" stroke-width="1.3"/>
+<text x="36" y="34" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15.5" font-weight="600" fill="#f0f6fc" letter-spacing="-.008em">ZipFlow</text>
+<text x="386" y="34" font-family="ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="8.4" fill="#9198a1" text-anchor="end" letter-spacing=".06em">WINDOWS</text>
+<line x1="16" y1="45" x2="386" y2="45" stroke="#21262d" stroke-width="1"/>
+<text x="16" y="62" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9198a1">Double click a ZIP, get the folder, the ZIP deletes itself</text>
+</svg>
