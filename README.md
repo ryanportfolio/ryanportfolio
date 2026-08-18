@@ -1,11 +1,13 @@
 <a href="https://fullbuild.ai"><img src="assets/img/hero.jpg" alt="A plotter drafts a technical elevation on the left; the same sheet is marked up and checked on the right." width="100%"></a>
 
+<a href="https://fullbuild.ai/harness-firmware">
 <picture>
 <source media="(max-width: 500px) and (prefers-color-scheme: dark)" srcset="assets/masthead-narrow-dark.svg">
 <source media="(max-width: 500px)" srcset="assets/masthead-narrow-light.svg">
 <source media="(prefers-color-scheme: dark)" srcset="assets/masthead-dark.svg">
 <img alt="Ryan Allen. I build AI systems and developer tools. All of it ships through a review pipeline I built." src="assets/masthead-light.svg" width="100%">
 </picture>
+</a>
 
 ### Products
 

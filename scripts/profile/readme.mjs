@@ -51,25 +51,33 @@ function grid(tier) {
 const MASTHEAD_ALT = 'Ryan Allen. I build AI systems and developer tools. '
   + 'All of it ships through a review pipeline I built.';
 
+// Built once and counted below, so "one card per item" is checked against the
+// grids themselves rather than the whole page. An item may also be linked from
+// prose or from a panel; what must never happen is a second card.
+const GRIDS = ['product', 'tool', 'proof', 'utility'].map(grid);
+const [PRODUCTS, TOOLS, PROOF, UTILITY] = GRIDS;
+
 const md = `<a href="https://fullbuild.ai"><img src="assets/img/hero.jpg" alt="A plotter drafts a technical elevation on the left; the same sheet is marked up and checked on the right." width="100%"></a>
 
+<a href="https://fullbuild.ai/harness-firmware">
 ${pic('masthead', MASTHEAD_ALT, true)}
+</a>
 
 ### Products
 
-${grid('product')}
+${PRODUCTS}
 
 ### Developer tools
 
-${grid('tool')}
+${TOOLS}
 
 ### Engineering
 
-${grid('proof')}
+${PROOF}
 
 ### Desktop utilities
 
-${grid('utility')}
+${UTILITY}
 
 ### Prototypes
 
@@ -95,12 +103,14 @@ Those skills ship with **[Harness Firmware](https://fullbuild.ai/harness-firmwar
 fs.writeFileSync(path.resolve('README.md'), md);
 
 // countable honesty: every inventory item gets exactly one card, every product
-// carries a real capture, every referenced asset is actually on disk. This counts
-// the card link form specifically, so prose may also mention an item by name.
+// carries a real capture, every referenced asset is actually on disk. Counted
+// against the grids, not the page: the masthead links Harness Firmware and the
+// review prose links others, and neither of those is a duplicate card.
+const gridHtml = GRIDS.join('\n');
 let bad = 0;
 for (const it of items) {
-  const hits = md.split(`href="${it.url}"`).length - 1;
-  if (hits !== 1) { console.error(`FAIL ${it.name}: linked ${hits} times`); bad++; }
+  const hits = gridHtml.split(`href="${it.url}"`).length - 1;
+  if (hits !== 1) { console.error(`FAIL ${it.name}: ${hits} cards`); bad++; }
   if (it.tier === 'product' && !it.shot) { console.error(`FAIL ${it.name}: product without a capture`); bad++; }
 }
 for (const m of md.matchAll(/(?:src|srcset)="(assets\/[^"]+)"/g)) {
