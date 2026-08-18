@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 424 86" width="424" height="86" role="img" aria-label="dealstream. Go services ingesting eight retailer feeds into Postgres, ClickHouse and Redis.">
+<rect width="424" height="86" fill="#ffffff"/>
+<rect x="16.5" y="25.5" width="8" height="8" fill="none" stroke="#59636e" stroke-width="1.3"/>
+<text x="36" y="34" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15.5" font-weight="600" fill="#1f2328" letter-spacing="-.008em">dealstream</text>
+<text x="410" y="34" font-family="ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="8.4" fill="#59636e" text-anchor="end" letter-spacing=".06em">GO</text>
+<line x1="16" y1="45" x2="410" y2="45" stroke="#eaeef2" stroke-width="1"/>
+<text x="16" y="62" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="11.5" fill="#59636e">Go services ingesting eight retailer feeds into Postgres,</text>
+<text x="16" y="77" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="11.5" fill="#59636e">ClickHouse and Redis</text>
+</svg>

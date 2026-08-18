@@ -34,14 +34,30 @@ for (const link of requiredLinks) {
   check(`README links ${link}`, readme.includes(link));
 }
 
+// README.md is the GitHub profile front door; the audit tool's own surface,
+// including the scoreboard the fleet run rewrites, lives in AUDIT.md.
+const auditPath = resolve(root, "AUDIT.md");
+check("AUDIT.md exists", existsSync(auditPath));
+const audit = existsSync(auditPath) ? readFileSync(auditPath, "utf8") : "";
+
+check("README links AUDIT.md", readme.includes("AUDIT.md"));
 check(
-  "README has fleet audit scoreboard section",
-  /^## Fleet audit scoreboard$/m.test(readme),
+  "AUDIT.md has the scoreboard markers the fleet run rewrites",
+  audit.includes("<!-- scoreboard:start -->") && audit.includes("<!-- scoreboard:end -->"),
 );
 check(
-  "README states the experiment",
-  readme.includes("exclusively through the pipeline it documents"),
+  "AUDIT.md states the experiment",
+  audit.includes("exclusively through the pipeline it documents"),
 );
+
+// Every product the front door claims must actually be linked from it.
+const requiredProducts = [
+  "https://store.steampowered.com/app/4975550/MAIMCOIL",
+  "https://fullbuild.ai/prototype",
+];
+for (const link of requiredProducts) {
+  check(`README links ${link}`, readme.includes(link));
+}
 
 const plansDir = resolve(root, "plans");
 const planNotes = existsSync(plansDir)

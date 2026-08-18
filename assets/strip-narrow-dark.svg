@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="400" height="250" role="img" aria-label="Recorded review coverage scores zero out of one hundred on 8 of 9 repositories. The reviews run in separate sessions that leave no GitHub artifact, so the scorer cannot see them.">
+
+<rect width="400" height="250" fill="#0d1117"/>
+
+<text x="26" y="24" font-family="ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="8" fill="#9198a1" letter-spacing=".12em">DETERMINISTIC AUDITOR / 9 REPOSITORIES</text>
+<line x1="26" y1="36" x2="374" y2="36" stroke="#3d444d" stroke-width="1"/>
+<text x="26" y="96" font-family="ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="54" font-weight="600" fill="#f0883e" letter-spacing="-.03em">0</text>
+<text x="68" y="96" font-family="ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="20" fill="#9198a1">/100</text>
+<text x="26" y="118" font-family="ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="8.4" fill="#f0f6fc" letter-spacing=".07em">RECORDED REVIEW COVERAGE</text>
+<text x="26" y="131" font-family="ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="8.4" fill="#9198a1" letter-spacing=".07em">ON 8 OF 9 REPOSITORIES</text>
+<line x1="26" y1="150" x2="374" y2="150" stroke="#3d444d" stroke-width="1"/>
+<text x="26" y="172" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#f0f6fc">The reviews happen. They run in separate</text>
+<text x="26" y="189" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#f0f6fc">zero-context sessions told to falsify the work,</text>
+<text x="26" y="206" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#f0f6fc">and that leaves no GitHub artifact.</text>
+<text x="26" y="228" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9198a1">The scorer counts only what GitHub records.</text>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 424 86" width="424" height="86" role="img" aria-label="Harness Firmware. Self-syncing project template for AI coding agents, 20 bundled skills.">
+<rect width="424" height="86" fill="#0d1117"/>
+<rect x="16" y="25" width="9" height="9" fill="#f0f6fc"/>
+<text x="36" y="34" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15.5" font-weight="600" fill="#f0f6fc" letter-spacing="-.008em">Harness Firmware</text>
+<text x="410" y="34" font-family="ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="8.4" fill="#9198a1" text-anchor="end" letter-spacing=".06em">FULLBUILD.AI</text>
+<line x1="16" y1="45" x2="410" y2="45" stroke="#21262d" stroke-width="1"/>
+<text x="16" y="62" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9198a1">Self-syncing project template for AI coding agents, 20 bundled</text>
+<text x="16" y="77" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9198a1">skills</text>
+</svg>
