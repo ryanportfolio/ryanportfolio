@@ -48,12 +48,26 @@ const THEMES = {
 const MONO = "ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,'Liberation Mono',monospace";
 const SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif";
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-const REDUCED = '@media (prefers-reduced-motion:reduce){*{animation:none!important}}';
+// Switching the animations off is not enough: the drawn-in rules start at a full
+// dash offset and the nodes start transparent, so a reader who asks for reduced
+// motion would get a panel with its lines missing. Restore the end state too.
+const REDUCED = '@media (prefers-reduced-motion:reduce){*{animation:none!important}'
+              + '.w,.r{stroke-dashoffset:0}.n,.mk{opacity:1}}';
 
 // Wide labels wrap to two lines and go unreadable in a 400px frame, so narrow
 // gets its own single-word set rather than a shrunk copy of the wide one.
 const STAGES      = [['PLAN',0],['AGENT BUILD',0],['ADVERSARIAL REVIEW',0],['CI GATE',0],['OWNER MERGE',1]];
 const STAGES_THIN = [['PLAN',0],['BUILD',0],['REVIEW',0],['CI',0],['MERGE',1]];
+
+// Line breaks are hand-set, not wrapped: the wide column runs out at roughly 57
+// characters before it reaches the pipeline diagram, and a wrapper cannot know
+// where the sentence wants to break.
+const COPY = {
+  wide:   ['I build AI systems, developer tools, and one Steam game.',
+           'All of it ships through a review pipeline I built.'],
+  narrow: ['I build AI systems, developer tools,', 'and one Steam game.',
+           'All of it ships through a review', 'pipeline I built.'],
+};
 
 // ---- panel: masthead -----------------------------------------------------
 function masthead(t, narrow) {
@@ -89,15 +103,20 @@ function mastheadWide(c) {
 <text x="26" y="28" font-family="${MONO}" font-size="9.5" fill="${c.mute}" letter-spacing=".14em">FLEET AUDIT / COLLECTED ${COLLECTED} / DETERMINISTIC SCORER / NO MODEL IN THE SCORING PATH</text>
 <line class="r" x1="26" y1="41" x2="${W - 26}" y2="41" stroke="${c.rule}" stroke-width="1"/>
 <text x="24" y="92" font-family="${SANS}" font-size="44" font-weight="600" fill="${c.ink}" letter-spacing="-.022em">Ryan Allen</text>
-<text x="26" y="124" font-family="${SANS}" font-size="15.5" fill="${c.mute}">AI agents do the work. A human gates every merge.</text>
-<text x="26" y="147" font-family="${SANS}" font-size="15.5" fill="${c.mute}">The pipeline is public and it grades itself in the open.</text>
+${COPY.wide.map((l, i) => `<text x="26" y="${124 + i * 22}" font-family="${SANS}" font-size="15.5" fill="${c.mute}">${esc(l)}</text>`).join('\n')}
 <text x="${px}" y="${py - 26}" font-family="${MONO}" font-size="8" fill="${c.mute}" letter-spacing=".1em">EVERY CHANGE TAKES THIS PATH</text>
 ${pipe}
-${stat}`, mastStyle(W));
+<rect class="tk" x="${(px - 2.5).toFixed(1)}" y="${py - 16}" width="5" height="5" fill="${c.fill}"/>
+${stat}`, mastStyle(W, step));
 }
 
 function mastheadThin(c) {
-  const W = 400, H = 268, py = 178, px = 26, pw = W - 52;
+  // Height follows the copy: a variant with an extra line would otherwise push
+  // the sentences straight through the pipeline label.
+  const W = 400, px = 26, pw = W - 52;
+  const lastLine = 110 + (COPY.narrow.length - 1) * 19;
+  const py = lastLine + 46;
+  const H = py + 88;
   const step = pw / (STAGES_THIN.length - 1);
 
   let pipe = `<line class="w" x1="${px}" y1="${py}" x2="${px + pw}" y2="${py}" stroke="${c.rule}" stroke-width="1"/>`;
@@ -121,21 +140,37 @@ function mastheadThin(c) {
 <text x="26" y="26" font-family="${MONO}" font-size="8" fill="${c.mute}" letter-spacing=".12em">DETERMINISTIC SCORER / NO MODEL IN THE PATH</text>
 <line class="r" x1="26" y1="38" x2="${W - 26}" y2="38" stroke="${c.rule}" stroke-width="1"/>
 <text x="24" y="82" font-family="${SANS}" font-size="36" font-weight="600" fill="${c.ink}" letter-spacing="-.022em">Ryan Allen</text>
-<text x="26" y="110" font-family="${SANS}" font-size="13.5" fill="${c.mute}">AI agents do the work.</text>
-<text x="26" y="129" font-family="${SANS}" font-size="13.5" fill="${c.mute}">A human gates every merge.</text>
+${COPY.narrow.map((l, i) => `<text x="26" y="${110 + i * 19}" font-family="${SANS}" font-size="13.5" fill="${c.mute}">${esc(l)}</text>`).join('\n')}
 <text x="26" y="${py - 24}" font-family="${MONO}" font-size="7.6" fill="${c.mute}" letter-spacing=".1em">EVERY CHANGE TAKES THIS PATH</text>
 ${pipe}
-${stat}`, mastStyle(W));
+<rect class="tk" x="${(px - 2.5).toFixed(1)}" y="${py - 15}" width="5" height="5" fill="${c.fill}"/>
+${stat}`, mastStyle(W, step));
 }
 
-const ariaMast = () => `Ryan Allen. AI agents do the work, a human gates every merge. Pipeline: plan, agent build, adversarial review, CI gate, owner merge. ${repos.length} repositories scored, ${TOT.commits} commits read, ${TOT.prs} merged pull requests.`;
+// Read off the copy rather than restated, so the two cannot drift apart.
+const ariaMast = () => `Ryan Allen. ${COPY.wide.join(' ')} Pipeline: `
+  + `${STAGES.map(s => s[0].toLowerCase()).join(', ')}. `
+  + `${repos.length} repositories scored, ${TOT.commits} commits read, ${TOT.prs} merged pull requests.`;
 
-const mastStyle = W => `
+// The draw-in is a one-shot and it is over in under a second, which on a profile
+// page means nobody sees it: the panel is already finished by the time you look.
+// The travelling mark is the part that is actually visible, so it loops. It is
+// ink, not accent, because it is a change moving normally rather than a finding.
+const travel = step => {
+  const at = i => `transform:translateX(${(i * step).toFixed(1)}px)`;
+  const stops = [[10, 0], [18, 1], [26, 1], [34, 2], [46, 2], [54, 3], [62, 3], [70, 4]]
+    .map(([pc, i]) => `${pc}%{${at(i)}}`).join('');
+  return `
+  .tk{opacity:0;animation:tk 9s cubic-bezier(.6,0,.4,1) 1.2s infinite}
+  @keyframes tk{0%{${at(0)};opacity:0}4%{${at(0)};opacity:1}${stops}94%{${at(4)};opacity:1}100%{${at(4)};opacity:0}}`;
+};
+
+const mastStyle = (W, step) => `
   .w{stroke-dasharray:${W};stroke-dashoffset:${W};animation:dr .8s cubic-bezier(.3,.8,.3,1) .15s both}
   .r{stroke-dasharray:${W};stroke-dashoffset:${W};animation:dr .9s cubic-bezier(.3,.8,.3,1) both}
   @keyframes dr{to{stroke-dashoffset:0}}
   .n{opacity:0;animation:fi .3s ease-out both}
-  @keyframes fi{to{opacity:1}}
+  @keyframes fi{to{opacity:1}}${travel(step)}
   ${REDUCED}`;
 
 function svg(W, H, c, aria, body, style) {
@@ -182,6 +217,140 @@ function strip(t, narrow) {
 <text x="${gx}" y="98" font-family="${SANS}" font-size="14.5" fill="${c.ink}">told to falsify the work, and that leaves no GitHub artifact.</text>
 <text x="${gx}" y="128" font-family="${SANS}" font-size="14.5" fill="${c.mute}">The scorer counts only what GitHub records, so it scores this</text>
 <text x="${gx}" y="150" font-family="${SANS}" font-size="14.5" fill="${c.mute}">nothing. Weighting around it was the other option.</text>`);
+}
+
+// ---- panel: review path --------------------------------------------------
+// The masthead draws the whole path. This panel opens up one stage of it, the
+// review, because that is the part that is unusual and the part a sentence
+// describes badly. Two passes read the same diff and mark different lines,
+// which is the whole argument for running two of them.
+//
+// Marks are ink, not accent. Running the accent here would spend it on a good
+// outcome; it stays reserved for the footer, where the instrument goes blind.
+const REV_ROWS = 18;
+const P1_MARKS = [2, 7, 13];   // what the first pass caught
+const P2_MARKS = [5, 7, 15];   // what the second caught: one row in common
+const REV_COPY = {
+  p1: ['A fresh session with no', 'memory of the build, told', 'to break the work'],
+  p2: ['The same diff again,', 'through a different', "vendor's model"],
+};
+
+// Seeded so a rebuild is byte-identical and the light and dark panels agree.
+const ROW_W = (() => {
+  let s = 20260817;
+  return Array.from({ length: REV_ROWS }, () => {
+    s = (s * 1103515245 + 12345) & 0x7fffffff;
+    return 0.30 + (s / 0x7fffffff) * 0.66;
+  });
+})();
+
+// One loop, ten seconds: pass one sweeps down, pass two sweeps back up, then a
+// beat before it repeats. Each mark gets its own keyframes so it lands exactly
+// when the sweep reaches its row instead of on a guessed delay.
+function revStyle(bh, marks) {
+  const pct = t => (t / 10 * 100).toFixed(1);
+  let s = `
+  .sw{opacity:0}
+  .s1{animation:s1 10s cubic-bezier(.45,0,.55,1) infinite}
+  .s2{animation:s2 10s cubic-bezier(.45,0,.55,1) infinite}
+  @keyframes s1{0%{transform:translateY(0);opacity:0}2%{opacity:1}33%{transform:translateY(${bh}px);opacity:1}36%,100%{transform:translateY(${bh}px);opacity:0}}
+  @keyframes s2{0%,40%{transform:translateY(${bh}px);opacity:0}42%{opacity:1}73%{transform:translateY(0);opacity:1}76%,100%{transform:translateY(0);opacity:0}}
+  .mk{opacity:0}`;
+  marks.forEach((at, i) => {
+    s += `\n  .mk${i}{animation:mk${i} 10s linear infinite}`;
+    s += `\n  @keyframes mk${i}{0%,${pct(at)}%{opacity:0}${pct(at + 0.15)}%{opacity:1}94%{opacity:1}100%{opacity:0}}`;
+  });
+  return s + `\n  ${REDUCED}`;
+}
+
+// Deliberately asserts no numbers. How the scorer treats these passes is the
+// audit tool's business and lives on AUDIT.md; the front door just shows the shape.
+const ariaRev = () => 'How the work gets reviewed. The same diff is read twice. '
+  + 'The first pass is a handoff audit: a fresh session with no memory of the build, told to break the work. '
+  + "The second is a cross-vendor review: the same diff through a different vendor's model. "
+  + 'Each pass marks the lines it flagged, on its own side of the diff, and the two disagree.';
+
+function review(t, narrow) {
+  const c = THEMES[t];
+  const L = narrow
+    ? { W:400, bx:150, bw:190, by:150, gap:8,  mono:8,   sans:12,   lead:16 }
+    : { W:880, bx:270, bw:340, by:78,  gap:10, mono:9.5, sans:13.5, lead:18 };
+  L.gutL = L.bx - 24;
+  L.gutR = L.bx + L.bw + 10;
+  const bh = (REV_ROWS - 1) * L.gap;
+  const rowY = i => L.by + i * L.gap;
+
+  // Sweep time for a row: pass one runs 0 to 3.3s down the block, pass two runs
+  // 4.0 to 7.3s back up it. A mark lands as its own sweep crosses it.
+  const marks = [
+    ...P1_MARKS.map(r => (r / (REV_ROWS - 1)) * 3.3),
+    ...P2_MARKS.map(r => 4.0 + ((REV_ROWS - 1 - r) / (REV_ROWS - 1)) * 3.3),
+  ];
+
+  let rows = '';
+  ROW_W.forEach((w, i) => {
+    rows += `<line x1="${L.bx}" y1="${rowY(i)}" x2="${(L.bx + w * L.bw).toFixed(1)}" y2="${rowY(i)}" `
+         +  `stroke="${c.mute}" stroke-width="1.6" opacity=".38"/>`;
+  });
+
+  let mk = '';
+  [...P1_MARKS.map(r => [r, L.gutL]), ...P2_MARKS.map(r => [r, L.gutR])].forEach(([r, x], i) => {
+    mk += `<rect class="mk mk${i}" x="${x}" y="${rowY(r) - 2}" width="14" height="4" fill="${c.fill}"/>`;
+  });
+
+  const sweep = cls => `<line class="sw ${cls}" x1="${L.gutL - 4}" y1="${L.by}" x2="${L.bx + L.bw + 14}" y2="${L.by}" `
+    + `stroke="${c.ink}" stroke-width="1" opacity="0"/>`;
+
+  const label = (x, y, kicker, lines, anchor = 'start') => {
+    let s = `<text x="${x}" y="${y}" font-family="${MONO}" font-size="${narrow ? 8 : 9}" fill="${c.ink}" `
+          + `text-anchor="${anchor}" letter-spacing=".12em">${kicker}</text>`;
+    lines.forEach((l, i) => {
+      s += `<text x="${x}" y="${y + 20 + i * L.lead}" font-family="${SANS}" font-size="${L.sans}" `
+        +  `fill="${c.mute}" text-anchor="${anchor}">${esc(l)}</text>`;
+    });
+    return s;
+  };
+
+  const bound = y => `<line x1="${L.bx - 10}" y1="${y}" x2="${L.bx + L.bw + 10}" y2="${y}" stroke="${c.rule}" stroke-width="1"/>`;
+
+  // Without this a reader sees ticks appear and has to guess. Say what the mark
+  // is, and let the side it lands on say which pass put it there.
+  // Two short lines, not one long one: the left column runs out at the diff
+  // block and a single line walks straight into the rows.
+  const legend = y => {
+    const fs = narrow ? 7.6 : 8.5;
+    const line = (t, dy) => `<text x="48" y="${y + dy}" font-family="${MONO}" font-size="${fs}" `
+      + `fill="${c.mute}" letter-spacing=".08em">${t}</text>`;
+    return `<rect x="26" y="${y - 4}" width="14" height="4" fill="${c.fill}"/>`
+      + line('MARKS ARE LINES A PASS FLAGGED', 0)
+      + line('EACH PASS MARKS ITS OWN SIDE', 13);
+  };
+
+  const last = rowY(REV_ROWS - 1);
+
+  if (narrow) {
+    const H = last + 156;
+    return svg(L.W, H, c, ariaRev(), `
+<text x="26" y="26" font-family="${MONO}" font-size="8" fill="${c.mute}" letter-spacing=".12em">THE REVIEW STAGE / ONE DIFF / TWO PASSES</text>
+<line x1="26" y1="38" x2="${L.W - 26}" y2="38" stroke="${c.rule}" stroke-width="1"/>
+${label(26, 60, 'PASS 1  HANDOFF AUDIT', REV_COPY.p1)}
+${bound(L.by - 14)}
+${rows}${mk}${sweep('s1')}${sweep('s2')}
+${bound(last + 14)}
+${label(26, last + 40, 'PASS 2  CROSS-VENDOR', REV_COPY.p2)}
+${legend(last + 128)}`, revStyle(bh, marks));
+  }
+
+  const H = last + 40;
+  return svg(L.W, H, c, ariaRev(), `
+<text x="26" y="26" font-family="${MONO}" font-size="${L.mono}" fill="${c.mute}" letter-spacing=".13em">THE REVIEW STAGE / ONE DIFF / TWO INDEPENDENT PASSES</text>
+<line x1="26" y1="38" x2="${L.W - 26}" y2="38" stroke="${c.rule}" stroke-width="1"/>
+${label(26, L.by - 8, 'PASS 1  HANDOFF AUDIT', REV_COPY.p1)}
+${label(L.W - 26, last + 16 - 56, 'PASS 2  CROSS-VENDOR', REV_COPY.p2, 'end')}
+${bound(L.by - 16)}
+${rows}${mk}${sweep('s1')}${sweep('s2')}
+${bound(last + 16)}
+${legend(L.by + 122)}`, revStyle(bh, marks));
 }
 
 // ---- panel: fleet matrix (tool page) -------------------------------------
@@ -242,6 +411,8 @@ for (const t of ['light', 'dark']) {
   fs.writeFileSync(path.join(OUT, `masthead-narrow-${t}.svg`), masthead(t, true));
   fs.writeFileSync(path.join(OUT, `strip-${t}.svg`),           strip(t, false));
   fs.writeFileSync(path.join(OUT, `strip-narrow-${t}.svg`),    strip(t, true));
+  fs.writeFileSync(path.join(OUT, `review-${t}.svg`),          review(t, false));
+  fs.writeFileSync(path.join(OUT, `review-narrow-${t}.svg`),   review(t, true));
   fs.writeFileSync(path.join(OUT, `matrix-${t}.svg`),          matrix(t));
 }
 
@@ -254,6 +425,7 @@ const NEED = {
   masthead: ['repos','commits','prs'], 'masthead-narrow': ['repos','commits','prs'],
   strip: ['zeroReview','repos'], 'strip-narrow': ['zeroReview','repos'],
   matrix: ['repos','dims'],
+  // review-* asserts no numbers by design, so there is nothing here to recheck.
 };
 let bad = 0;
 for (const t of ['light','dark']) for (const [p, keys] of Object.entries(NEED)) {

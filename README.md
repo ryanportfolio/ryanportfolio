@@ -1,10 +1,10 @@
-<img src="assets/img/hero.jpg" alt="A plotter drafts a technical elevation on the left; the same sheet is marked up and checked on the right.">
+<a href="https://fullbuild.ai"><img src="assets/img/hero.jpg" alt="A plotter drafts a technical elevation on the left; the same sheet is marked up and checked on the right." width="100%"></a>
 
 <picture>
 <source media="(max-width: 500px) and (prefers-color-scheme: dark)" srcset="assets/masthead-narrow-dark.svg">
 <source media="(max-width: 500px)" srcset="assets/masthead-narrow-light.svg">
 <source media="(prefers-color-scheme: dark)" srcset="assets/masthead-dark.svg">
-<img alt="Ryan Allen. AI agents do the work, a human gates every merge." src="assets/masthead-light.svg">
+<img alt="Ryan Allen. I build AI systems, developer tools, and one Steam game. All of it ships through a review pipeline I built." src="assets/masthead-light.svg" width="100%">
 </picture>
 
 ### Products
@@ -213,20 +213,25 @@
 
 ### Prototypes
 
-<a href="https://fullbuild.ai/prototype"><img src="assets/img/prototypes.jpg" alt="fullbuild.ai prototypes: immersive web, digital storytelling, WebGL, motion, systems."></a>
+<a href="https://fullbuild.ai/prototype"><img src="assets/img/prototypes.jpg" alt="fullbuild.ai prototypes: immersive web, digital storytelling, WebGL, motion, systems." width="100%"></a>
 
 ### How the work gets reviewed
 
-<img src="assets/img/review.jpg" alt="Two differently built inspection arms check the same drawing from opposite sides, each leaving its own correction marks, with a stamp press waiting at the end.">
+The model that wrote the code never grades it.
 
-The agent that wrote the code never grades it. Every change gets checked twice, by two things that did not build it, before anything reaches a branch I would merge.
+<a href="https://fullbuild.ai"><img src="assets/img/review.jpg" alt="Two differently built inspection arms check the same drawing from opposite sides, each leaving its own correction marks, with a stamp press waiting at the end." width="100%"></a>
 
-A **[handoff audit](https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/handoff-audit/SKILL.md)** writes a self-contained brief for a zero-context session and charges it to falsify the work rather than approve it. A **[cross-vendor review](https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/codex-review/SKILL.md)** then runs the same diff through a different vendor's model entirely, OpenAI's Codex CLI at high reasoning, and every finding it returns is verified before it counts. Two vendors disagree in different places than one vendor disagrees with itself.
+<picture>
+<source media="(max-width: 500px) and (prefers-color-scheme: dark)" srcset="assets/review-narrow-dark.svg">
+<source media="(max-width: 500px)" srcset="assets/review-narrow-light.svg">
+<source media="(prefers-color-scheme: dark)" srcset="assets/review-dark.svg">
+<img alt="The review stage, one diff, two independent passes. Pass one is a handoff audit: a fresh session with no memory of the build, told to break the work. Pass two is a cross-vendor review: the same diff through a different vendor’s model. Each marks the lines it flagged, on its own side of the diff, and the two disagree." src="assets/review-light.svg" width="100%">
+</picture>
 
-Then CI, then a merge I authorise. None of that leaves a GitHub artifact, so my own deterministic auditor scores the review work at zero and publishes the zero rather than weighting around it.
+Both passes are skills I wrote: **[handoff audit](https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/handoff-audit/SKILL.md)** and **[/codex-review](https://github.com/ryanportfolio/AI-Firmware/blob/main/.claude/skills/codex-review/SKILL.md)**, the newer one, which runs the diff through OpenAI's Codex CLI and verifies every finding before it counts. Then CI, then a merge I authorise. [How I score all of it](AUDIT.md).
 
-Every repo I own carries a scored report from that auditor: same repo state, same score, no model in the scoring path. [How the scoring works](AUDIT.md) and the [live report viewer](https://audit.corewise.academy/).
+Those skills ship with **[Harness Firmware](https://fullbuild.ai/harness-firmware)**, the self-syncing template I start every repo from. The part that does the work is a reference library the agent writes back into: every gotcha that bites once gets recorded as a pitfall, and the next session reads it before touching that area. Knowledge accumulates in the repo instead of evaporating when a session ends.
 
-### Elsewhere
+### Where to go next
 
-[fullbuild.ai](https://fullbuild.ai) portfolio and prototypes · [corewise.academy](https://corewise.academy/about) guides · [savetokens.tips](https://savetokens.tips) measured token techniques
+[**fullbuild.ai**](https://fullbuild.ai) carries this work with case notes and live prototypes. Background is on my [about page](https://corewise.academy/about).

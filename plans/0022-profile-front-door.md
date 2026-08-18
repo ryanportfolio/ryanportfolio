@@ -61,3 +61,42 @@ phone variants, both survive GitHub's markdown API sanitizer. Neither has been
 observed on a live GitHub profile page. First push is the test; if camo or the
 profile render path drops either, the page degrades to a static wide panel rather
 than breaking.
+
+## Second pass, after the page went live
+
+Owner review of the live profile drove these:
+
+- **The review method became a drawing.** Three paragraphs describing a handoff
+  audit and a cross-vendor review are now one animated panel: one diff, two
+  passes sweeping it from opposite ends, each marking the lines it flagged on its
+  own side. The prose under it shrank to the two skill links and the CTA.
+- **The panel asserts no numbers.** The 0/100 review-coverage line came off it
+  entirely. Scorer behaviour is the audit tool's subject and belongs on AUDIT.md,
+  so `NEED` in panels.mjs no longer lists the review panel: there is nothing on it
+  to recheck.
+- **Motion that anyone actually sees.** The masthead draw-in was measured on the
+  live page and it does run; it is simply a one-shot that finishes in under a
+  second, so the panel is already static by the time a reader looks. Both panels
+  now carry a looping element as well, which is the part that reads as alive.
+- **Reduced motion was broken and is fixed.** `animation:none` alone left the
+  rules at full dash offset and the nodes transparent, so a reader who asks for
+  reduced motion got a masthead with its lines missing. The media query now
+  restores the end state.
+- **Panels fill their container** via `width="100%"`, and the hero and review
+  illustrations link to fullbuild.ai rather than to themselves.
+- **Harness Firmware got a CTA** in the review section, described by what it
+  actually does: the reference library the agent writes pitfalls back into.
+- **Two product captures were retaken** at 1920 wide against owner-supplied
+  reference framings, replacing a sparse Kine Fractal shot and a CoreWise shot
+  with an announcement bar across it.
+- **The Elsewhere footer went.** Two of its three links were already cards in the
+  grid, so it was duplicating the page. What replaced it points at fullbuild.ai
+  and the about page, neither of which appears elsewhere.
+
+### Still unverified
+
+The looping animation and the narrow-variant media queries are verified in a
+local specimen at 1x and 2x, not on the live profile. Headless Chromium advances
+an `<img>`-hosted SVG clock only as it paints, so captured frames land earlier in
+the loop than wall-clock time suggests; that is a capture artifact, not a defect.
+First push is the real test.
